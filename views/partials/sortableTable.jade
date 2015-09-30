@@ -1,0 +1,17 @@
+//
+   Created by a on 9/9/2015.
+
+div
+   div( ng-controller="SortableTableCtrl")
+      h2 Purchases:
+      table(cellspacing="0")
+         tr
+            th( ng-click="changeSorting('date')") Date
+            th( ng-click="changeSorting('text')") Description
+            th( ng-click="changeSorting('price')") Amount
+            th( ng-click="changeSorting('availability')") Status
+         tr( ng-repeat="purchase in purchases.data|orderBy:sort.column:sort.descending")
+            td( class="first") {{purchase.date}}
+            td {{purchase.text}}
+            td {{purchase.price}}
+            td {{purchase.availability}}

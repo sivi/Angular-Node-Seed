@@ -1,0 +1,7 @@
+//
+   Created by a on 9/9/2015.
+
+div(ng-controller="RestaurantListCtrl")
+   ul
+      li(ng-repeat="restaurant in restaurants")
+         a(href="/restaurant/{{restaurant.id}}") {{restaurant.name}}

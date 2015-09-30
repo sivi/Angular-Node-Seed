@@ -1,0 +1,8 @@
+logs/*
+!.gitkeep
+node_modules/
+public/bower_components/
+test/unit/services/testData0.js
+tmp
+.DS_Store
+.idea

@@ -1,0 +1,37 @@
+Step 1)
+run mongod.exe WITHOUT authorization (is DB admin is not set yet):
+C:\Tools\DB_Tools\MongoDB_3_1\bin\mongod.exe --dbpath C:\Home\Work\Workspaces\MongoDB\data
+
+Step 2)
+run mongo shell:
+C:\Tools\DB_Tools\MongoDB_3_1\bin\mongo
+
+Step 3)
+add DB admin user (using mongo shell):
+
+use admin
+db.createUser(
+  {
+    user: "admin",
+    pwd: "password",
+    roles: [ { role: "userAdminAnyDatabase", db: "admin" } ]
+  }
+)
+
+Step 4)
+add test user (using mongo shell):
+
+use testDB
+db.createUser(
+    {
+      user: "automaticTestUser",
+      pwd: "automaticPassword",
+      roles: [
+         { role: "dbOwner", db: "testDB" }
+      ]
+    }
+)
+
+Step 5)
+run mongod.exe WITH autorization:
+C:\Tools\DB_Tools\MongoDB_3_1\bin\mongod.exe --dbpath C:\Home\Work\Workspaces\MongoDB\data --auth

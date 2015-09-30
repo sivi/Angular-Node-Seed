@@ -1,0 +1,56 @@
+extends layout
+
+block body
+  div(ng-app="myApp")
+    div(ng-controller='AppCtrl')
+      h2 Hello {{name}}
+      ul.menu
+        li
+          a(href='view1') view1
+        li
+          a(href='view2') view2
+        li
+          a(href='sortableTable') sortable table
+        li
+          a(href='restaurant') Restaurants
+        li
+          a(href='signup') Sign up
+        li
+          a(href='userProfile') User profile
+        li
+          a(href='login') Login
+        li
+          a(href='svgDiagram') SvgDiagram
+        li
+          a(href='autoCompleteTest') autoCompleteTest
+
+    div(ng-view)
+
+    div(id="AppWrapperDIV" ng-controller="toggler1Ctrl")
+        div(ng-show="!isDataReady()")
+          | {{dataReady}}
+          | Waiting input
+        div(ng-show="isDataReady()")
+          | {{dataReady}}
+          | Input Done.
+    div(ng-controller='AppCtrl')
+        | Angular seed app: v
+        span(app-version)
+
+  script(src="/bower_components/angular/angular.js")
+  script(src="/bower_components/angular-resource/angular-resource.js")
+  script(src="/bower_components/angular-route/angular-route.js")
+  script(src="/bower_components/d3/d3.js")
+  script(src="/js/app.js")
+  script(src="/js/services.js")
+  script(src="/js/controllers.js")
+    // Note that autoComplete.js depends on controllers.js
+  script(src="/js/autoComplete.js")
+  script(src="/js/autoCompleteDirective.js")
+  script(src="/js/userControllers.js")
+  script(src="/js/toggleController.js")
+  script(src="/js/sortableTableController.js")
+  script(src="/js/filters.js")
+  script(src="/js/directives.js")
+  script(src="/js/svgDiagramController.js")
+  script(src="/js/onLoad.js")

@@ -1,0 +1,13 @@
+//
+   Created by a on 9/26/2015.
+
+div(ng-controller="AutoCompleteCtrl")
+   p Autocomplete test
+   div
+      label Entry One
+         auto-complete(domain-data='One')
+      | {{One.entryValue}}
+   div
+      label Entry Two
+         auto-complete(domain-data='Two')
+      | {{Two.entryValue}}

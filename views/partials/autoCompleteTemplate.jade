@@ -1,0 +1,10 @@
+//
+   Created by a on 9/26/2015.
+input(type='text', placeholder='Start typing ...',
+      ng-model='searchText', ng-change='changeHandler()',
+      ng-keydown='checkKeyDown($event)')
+ul( id="suggestions", class="suggestions-list")
+   li( ng-repeat="suggestion in suggestions", class="blockSpan",
+       ng-click="addToSelectedTags($index)",
+       ng-mouseover="$parent.selectedIndex=$index",
+       ng-class="{active : selectedIndex===$index}") {{suggestion}}
