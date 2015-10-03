@@ -3,7 +3,11 @@
  */
 "use strict";
 var mongoose = require('mongoose');
-require('../sequenceModel');
+var dbAuxiliary = require('../../../toolbox/DBAuxiliary');
+
+var surveyQuestionID = "survey_question_id";
+var surveyQuestionModelName = 'SurveyQuestionModel';
+var collectionName = 'surveyQuestions';
 
 var surveyQuestionSchema = mongoose.Schema({
   name: String,
@@ -26,18 +30,17 @@ var surveyQuestionSchema = mongoose.Schema({
  */
 surveyQuestionSchema.pre('save', function(next) {
   if (!this.isNew) return next();
-
+  var thisInstance = this;
   //
   //  create Promise which will retrieve new ID from counter
   //  and insert into new User before saving to DB
   //
-  mongoose.model('CounterModel').getIdPromise(this.surveyQuestionIdCounter())
+  mongoose.model('CounterModel').getIdPromise(surveyQuestionID)
     .then(function(result){
-      this.survey_question_id = result;
+      thisInstance.survey_question_id = result;
       next();
     })
     .catch(function(err){
-      console.err("counter FAILED --" + JSON.stringify(err));
       next(new Error(err));
     });
 });
@@ -49,36 +52,22 @@ surveyQuestionSchema.pre('save', function(next) {
  * @param {Function} aCallback caller's function
  */
 surveyQuestionSchema.static('load', function (id, aCallback) {
-  this.findOne({ survey_question_id : id })
-    .exec(aCallback);
+  dbAuxiliary.load(this, surveyQuestionID, id, aCallback);
 });
 
 /**
- * List surveys
+ * List survey questions
  *
  * @param {Object} options
+ *                  object with members:
+ *                  criteria (http://docs.mongodb.org/manual/reference/operator/query/),
+ *                  select,
+ *                  perPage (nuber of results per pae),
+ *                  page (nuber of pages to skip from beginning)
  * @param {Function} aCallback
  */
 surveyQuestionSchema.static('lookup', function (options, aCallback) {
-
-  console.log("options " + JSON.stringify(options));
-
-  var criteria = options.criteria || {};
-
-  var query = this.find(criteria);
-  if(options.select){
-    query.select(options.select);
-  }
-  if(options.sort){
-    query.sort(options.sort); // sort by date
-  }
-  if(options.perPage){
-    query.limit(options.perPage);
-  }
-  if(options.page){
-    query.skip(options.perPage * options.page);
-  }
-  query.exec(aCallback);
+  dbAuxiliary.lookup(this, options, aCallback);
 });
 /**
  * Count surveys
@@ -87,14 +76,48 @@ surveyQuestionSchema.static('lookup', function (options, aCallback) {
  * @param {Function} aCallback
  */
 surveyQuestionSchema.static('itemCount', function (options, aCallback) {
-  var criteria = options.criteria || {};
-  this.count(criteria)
-    .exec(aCallback);
+  dbAuxiliary.itemCount(this, options, aCallback);
 });
 
 surveyQuestionSchema.statics.surveyQuestionIdCounter = function(){
-  return "survey_question_id";
+  return surveyQuestionID;
 };
-
-var collectionName = 'surveyQuestions';
-var surveySectionModel = mongoose.model('SurveyQuestionModel', surveyQuestionSchema, collectionName);
+/**
+ * Obtain Promise for load by ID
+ *
+ * @param id
+ */
+surveyQuestionSchema.statics.getSurveyQuestionLoadPromise = function(id){
+  return dbAuxiliary.getLoadPromise(mongoose, surveyQuestionModelName, id);
+};
+/**
+ * Obtain Promise for query by options.
+ * NOTE:
+ *      result is always result set, stored in an array
+ *      (which is empty if no result can be located) !!!
+ *
+ * @param options
+ */
+surveyQuestionSchema.statics.getSurveyQuestionLookupPromise = function(options){
+  return dbAuxiliary.getLookupPromise(mongoose, surveyQuestionModelName, options);
+};
+/**
+ *
+ * @param surveyData
+ */
+surveyQuestionSchema.statics.getSurveyQuestionSavePromise = function(surveyQuestionData){
+  return dbAuxiliary.getSavePromise(mongoose, surveyQuestionModelName, surveyQuestionData);
+};
+/**
+ *
+ * @param options
+ * @returns {Promise}
+ */
+surveyQuestionSchema.statics.getSurveyQuestionCountPromise = function(options){
+  return dbAuxiliary.getItemCountPromise(mongoose, surveyQuestionModelName, options);
+};
+/**
+ *
+ * @type {Aggregate|Model|{findElementsOverride, toString}|*}
+ */
+var surveySectionModel = mongoose.model(surveyQuestionModelName, surveyQuestionSchema, collectionName);

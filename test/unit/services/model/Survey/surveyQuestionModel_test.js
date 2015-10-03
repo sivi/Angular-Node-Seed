@@ -5,13 +5,13 @@
 
 var mongoose = require('mongoose');
 require('../../../../../services/model/sequenceModel');
-require('../../../../../services/model/Survey/SurveyModel');
+require('../../../../../services/model/Survey/SurveyQuestionModel');
 // development auxiliary
 var testDBUrl = 'mongodb://automaticTestUser:automaticPassword@localhost:27017/testDB';
 console.log("Connecting ..." + testDBUrl);
 mongoose.connect(testDBUrl); 	// connect to mongoDB database on modulus.io
 
-var surveyModel = mongoose.model('SurveyModel');
+var surveyQuestionModel = mongoose.model('SurveyQuestionModel');
 var sequenceModel = mongoose.model('CounterModel');
 
 var id;
@@ -41,22 +41,22 @@ var testInitSurveySequence = function(){
   var queryOptions = {
   criteria: {name: {$regex: /^Survey/i}}
   };
-  checkState(surveyModel.surveyIdCounter()) // needed only if first time at all
+  checkState(surveyQuestionModel.surveyQuestionIdCounter()) // needed only if first time at all
     .then(function(result){
       ct1 = Date.now();
       console.log("checkState id " + id);
-      return surveyModel.getSurveySavePromise(dataInstance);
+      return surveyQuestionModel.getSurveyQuestionSavePromise(dataInstance);
     })
     .then(function(result){
-      id = result[surveyModel.surveyIdCounter()];
+      id = result[surveyQuestionModel.surveyQuestionIdCounter()];
       ct2 = Date.now();
       console.log("obtained id " + id);
       console.log("check " + (ct1 - ct0) + " get " + (ct2 - ct1));
-      return surveyModel.getSurveyLoadPromise(id);
+      return surveyQuestionModel.getSurveyQuestionLoadPromise(id);
     })
     .then(function(result){
       console.log("loaded " + result);
-      return surveyModel.getSurveyLookupPromise(queryOptions);
+      return surveyQuestionModel.getSurveyQuestionLookupPromise(queryOptions);
     })
     .then(function(result){
       console.log("Queried " + result);

@@ -47,7 +47,7 @@ surveySchema.pre('save', function(next) {
  * @param {Function} aCallback caller's function
  */
 surveySchema.static('load', function (id, aCallback) {
-  dbAuxiliary.load(this, id, aCallback);
+  dbAuxiliary.load(this, surveyID, id, aCallback);
 });
 
 /**
@@ -71,9 +71,7 @@ surveySchema.static('lookup', function (options, aCallback) {
  * @param {Function} aCallback
  */
 surveySchema.static('itemCount', function (options, aCallback) {
-  var criteria = options.criteria || {};
-  this.count(criteria)
-    .exec(aCallback);
+  dbAuxiliary.itemCount(this, options, aCallback);
 });
 /**
  *
@@ -107,6 +105,14 @@ surveySchema.statics.getSurveyLookupPromise = function(options){
  */
 surveySchema.statics.getSurveySavePromise = function(surveyData){
   return dbAuxiliary.getSavePromise(mongoose, surveyModelName, surveyData);
+};
+/**
+ *
+ * @param options
+ * @returns {Promise}
+ */
+surveySchema.statics.getSurveyCountPromise = function(options){
+  return dbAuxiliary.getItemCountPromise(mongoose, surveyModelName, options);
 };
 /**
  *

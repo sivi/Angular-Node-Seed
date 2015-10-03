@@ -89,3 +89,15 @@ exports.findByParam = function (arr, obj, cb) {
   }
   // else undefined is returned
 };
+
+exports.getTimeoutPromise = function(timeoutPeriod){
+  var loadPromise = new Promise(function(resolve, reject){
+    setTimeout(function(err, result) {
+      if (err)
+        reject(err);
+      else
+        resolve(result);
+    },timeoutPeriod);
+  });
+  return loadPromise;
+};

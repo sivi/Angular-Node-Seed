@@ -5,13 +5,13 @@
 
 var mongoose = require('mongoose');
 require('../../../../../services/model/sequenceModel');
-require('../../../../../services/model/Survey/SurveyModel');
+require('../../../../../services/model/Survey/SurveyPageModel');
 // development auxiliary
 var testDBUrl = 'mongodb://automaticTestUser:automaticPassword@localhost:27017/testDB';
 console.log("Connecting ..." + testDBUrl);
 mongoose.connect(testDBUrl); 	// connect to mongoDB database on modulus.io
 
-var surveyModel = mongoose.model('SurveyModel');
+var surveyPageModel = mongoose.model('SurveyPageModel');
 var sequenceModel = mongoose.model('CounterModel');
 
 var id;
@@ -32,6 +32,7 @@ var testInitSurveySequence = function(){
   //startdate: Date.now(),
   //  enddate: Date.now(),
   var dataInstance = {
+    survey_id: 1,
     name: 'Survey 1',
     text: 'Survey 1 - text',
     label: 'Survey 1 - label',
@@ -41,22 +42,22 @@ var testInitSurveySequence = function(){
   var queryOptions = {
   criteria: {name: {$regex: /^Survey/i}}
   };
-  checkState(surveyModel.surveyIdCounter()) // needed only if first time at all
+  checkState(surveyPageModel.surveyPageIdCounter()) // needed only if first time at all
     .then(function(result){
       ct1 = Date.now();
       console.log("checkState id " + id);
-      return surveyModel.getSurveySavePromise(dataInstance);
+      return surveyPageModel.getSurveyPageSavePromise(dataInstance);
     })
     .then(function(result){
-      id = result[surveyModel.surveyIdCounter()];
+      id = result[surveyPageModel.surveyPageIdCounter()];
       ct2 = Date.now();
       console.log("obtained id " + id);
       console.log("check " + (ct1 - ct0) + " get " + (ct2 - ct1));
-      return surveyModel.getSurveyLoadPromise(id);
+      return surveyPageModel.getSurveyPageLoadPromise(id);
     })
     .then(function(result){
       console.log("loaded " + result);
-      return surveyModel.getSurveyLookupPromise(queryOptions);
+      return surveyPageModel.getSurveyPageLookupPromise(queryOptions);
     })
     .then(function(result){
       console.log("Queried " + result);

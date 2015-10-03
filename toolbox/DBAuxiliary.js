@@ -11,10 +11,11 @@
  * @param id
  * @param aCallback
  */
-exports.load = function(dbSchema, id, aCallback){
-  dbSchema.findOne({ survey_id : id })
+exports.load = function(dbSchema, idName, idValue, aCallback){
+  var qObject = {};
+  qObject[idName] = idValue;
+  dbSchema.findOne(qObject)
     .exec(aCallback);
-  
 };
 /**
  *
@@ -42,6 +43,17 @@ exports.lookup = function (dbSchema, options, aCallback) {
     query.skip(options.perPage * options.page);
   }
   query.exec(aCallback);
+};
+/**
+ * Count surveys
+ *
+ * @param {Object} options
+ * @param {Function} aCallback
+ */
+exports.itemCount = function (dbSchema, options, aCallback) {
+  var criteria = options.criteria || {};
+  dbSchema.count(criteria)
+    .exec(aCallback);
 };
 /**
  *
@@ -73,6 +85,25 @@ exports.getLookupPromise = function(mongoose, schemaModelName, options){
   var loadPromise = new Promise(function(resolve, reject){
     var AModel = mongoose.model(schemaModelName);
     AModel.lookup(options, function(err, resultSet) {
+      if (err)
+        reject(err);
+      else
+        resolve(resultSet);
+    });
+  });
+  return loadPromise;
+};
+/**
+ *
+ * @param mongoose
+ * @param schemaModelName
+ * @param options
+ * @returns {Promise}
+ */
+exports.getItemCountPromise = function(mongoose, schemaModelName, options){
+  var loadPromise = new Promise(function(resolve, reject){
+    var AModel = mongoose.model(schemaModelName);
+    AModel.itemCount(options, function(err, resultSet) {
       if (err)
         reject(err);
       else
