@@ -20,7 +20,7 @@ but it is safe to ignore), then run
 to install angular and other client side packages
 
 
-Useful links
+### Useful links
 Pro et contra NodeJS
 http://stackoverflow.com/questions/5062614/how-to-decide-when-to-use-node-js?rq=1
 
@@ -49,6 +49,14 @@ https://nodejs.org/api/
 https://nodejs.org/en/docs/es6/
 // AngularJS
 https://docs.angularjs.org/api
+
+#### Mobile app
+
+[How to convert an existing AngularJS web app to a Cordova app?](http://stackoverflow.com/questions/25961013/how-to-convert-an-existing-angularjs-web-app-to-a-cordova-app)
+
+[Building Mobile Apps with AngularJS and Ionic](http://blog.ionic.io/angular-mobile-dev/)
+
+
 
 # Angular Express Seed
 

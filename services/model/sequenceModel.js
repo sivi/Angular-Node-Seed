@@ -84,10 +84,10 @@ countersSchema.statics.getIdPromise = function(sequencerName){
 
 module.exports = function(mongoose) {
   return {
-    checkInitialState: checkInitialState,
-    checkInitialStatePromise: checkInitialStatePromise,
-    getNext: getNext,
-    getIdPromise: getIdPromise
+    checkInitialState: countersSchema.checkInitialState,
+    checkInitialStatePromise: countersSchema.checkInitialStatePromise,
+    getNext: countersSchema.getNext,
+    getIdPromise: countersSchema.getIdPromise
   };
 };
 

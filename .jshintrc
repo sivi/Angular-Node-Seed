@@ -13,6 +13,7 @@
     "require": false,
     "console": false,
     "__dirname": false,
-    "process": false
+    "process": false,
+    "Promise": false
   }
 }
