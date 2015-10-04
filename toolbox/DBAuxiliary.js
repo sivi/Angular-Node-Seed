@@ -122,7 +122,11 @@ exports.getItemCountPromise = function(mongoose, schemaModelName, options){
 exports.getSavePromise = function(mongoose, schemaModelName, saveData){
   var savePromise = new Promise(function(resolve, reject){
     var AModel = mongoose.model(schemaModelName);
-    var saveInstance = new AModel(saveData);
+    var saveInstance;
+    if(saveData instanceof AModel)
+        saveInstance = saveData;
+    else
+        saveInstance = new AModel(saveData);
     saveInstance.save(function (err) {
       if (err)
         reject(err);

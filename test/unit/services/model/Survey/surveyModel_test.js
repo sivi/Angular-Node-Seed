@@ -55,7 +55,13 @@ var testInitSurveySequence = function(){
       return surveyModel.getSurveyLoadPromise(id);
     })
     .then(function(result){
-      console.log("loaded " + result);
+      console.log("loaded BEFORE update" + result);
+      var updatedDataInstance = result;
+      updatedDataInstance.label = updatedDataInstance.label + ' MODIFIED';
+      return surveyModel.getSurveySavePromise(updatedDataInstance);
+    })
+    .then(function(result){
+      console.log("loaded AFTER update" + result);
       return surveyModel.getSurveyLookupPromise(queryOptions);
     })
     .then(function(result){
