@@ -24,6 +24,7 @@
     "karma-firefox-launcher": "^0.1.6",
     "karma-jasmine": "^0.3.5",
     "karma-junit-reporter": "^0.2.2",
+    "lodash": "^3.10.1",
     "method-override": "~2.1.2",
     "mongoose": "~4.1.5",
     "morgan": "~1.6.1",
@@ -40,6 +41,5 @@
     "karma": "^0.12.37",
     "karma-jasmine": "^0.3.6",
     "mongodb": ">=2.0.42"
-
   }
 }

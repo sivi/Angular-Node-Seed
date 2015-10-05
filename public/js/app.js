@@ -71,6 +71,11 @@ myApp.config(function ($routeProvider, $locationProvider) {
       // DO NOT set controller, if it is set in template !!!
       // controller: 'RestaurantListCtrl'
     }).
+    when('/surveyCreate', {
+      templateUrl: 'partials/survey/surveyCreate'
+      // DO NOT set controller, if it is set in template !!!
+      // controller: 'RestaurantListCtrl'
+    }).
     otherwise({
       redirectTo: '/view1'
     });

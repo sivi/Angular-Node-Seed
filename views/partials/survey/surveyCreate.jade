@@ -1,0 +1,36 @@
+//
+   Created by a on 10/4/2015.
+//
+   Created by a on 9/17/2015.
+div(ng-controller="SurveyCreateCtrl")
+   p aaaaaaa
+   form(name="Survey", ng-submit="commitChanges()")
+      //input(type="hidden" name="_csrf" value="{{ csrf_token }}")
+
+      input(type="button", value="Add page", ng-click="addPage()")
+
+      {{pages.length}}
+
+      div(ng-repeat="page in pages")
+         input(type="button", value="Add section", ng-click="addSection(page.survey_page_id)")
+         div(ng-repeat="section in page.sections")
+            input(type="button", value="Add question", ng-click="addQuestion(page.survey_page_id, section.survey_section_id)")
+            div(ng-repeat="question in section.questions")
+               table
+                  tr
+                     td
+                        input(type="button", value="Add radio", ng-click="addRadio(page.survey_page_id, section.survey_section_id, question.survey_question_id)")
+                     td
+                        input(type="button", value="Add text", ng-click="addText(page.survey_page_id, section.survey_section_id, question.survey_question_id)")
+               div(ng-repeat="valueOption in valueOptions")
+                  label(ng-if="valueOption.questionFormType == 'TextType'"
+                        for="{{valueOption.label}}{{question.survey_question_id}}") {{valueOption.text}}:
+                     input(type="text", name="{{valueOption.label}}{{question.survey_question_id}}",
+                           ng-model="valueOption.userValue", ng-required="true")
+               div(ng-repeat="valueOption in valueOptions")
+                  label(ng-if="valueOption.questionFormType == 'RadioType'"
+                        for="{{valueOption.label}}{{question.survey_question_id}}") {{valueOption.text}}:
+                     input(type="radio", name="{{valueOption.label}}{{question.survey_question_id}}",
+                     ng-model="valueOption.userValue", ng-required="true")
+      div
+         input(type="submit", value="Save")

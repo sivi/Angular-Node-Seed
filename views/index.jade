@@ -23,8 +23,10 @@ block body
           a(href='svgDiagram') SvgDiagram
         li
           a(href='autoCompleteTest') autoCompleteTest
+        li
+          a(href='surveyCreate') surveyCreate
 
-    div(ng-view)
+  div(ng-view)
 
     div(id="AppWrapperDIV" ng-controller="toggler1Ctrl")
         div(ng-show="!isDataReady()")
@@ -37,6 +39,7 @@ block body
         | Angular seed app: v
         span(app-version)
 
+  script(src="/bower_components/lodash/lodash.js")
   script(src="/bower_components/angular/angular.js")
   script(src="/bower_components/angular-resource/angular-resource.js")
   script(src="/bower_components/angular-route/angular-route.js")
@@ -50,7 +53,8 @@ block body
   script(src="/js/userControllers.js")
   script(src="/js/toggleController.js")
   script(src="/js/sortableTableController.js")
+  script(src="/js/surveyCreateCtrl.js")
+  script(src="/js/svgDiagramController.js")
   script(src="/js/filters.js")
   script(src="/js/directives.js")
-  script(src="/js/svgDiagramController.js")
   script(src="/js/onLoad.js")

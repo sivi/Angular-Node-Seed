@@ -120,6 +120,7 @@ module.exports = function (app, passport) {
 // serve index and view partials
   app.get('/', routes.index);
   app.get('/partials/:name', routes.partials);
+  app.get('/partials/:subfolder/:name', routes.partialsSubfolder);
 
 // JSON API
   app.get('/api/csrf', api.csrf);

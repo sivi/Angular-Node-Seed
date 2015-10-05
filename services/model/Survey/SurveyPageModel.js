@@ -16,6 +16,7 @@ var surveyPageSchema = mongoose.Schema({
   video: String,
   label: String,
   html: String,
+  order: Number,
   survey_id: Number,
   survey_page_id: Number
 });

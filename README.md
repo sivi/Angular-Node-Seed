@@ -49,6 +49,14 @@ https://nodejs.org/api/
 https://nodejs.org/en/docs/es6/
 // AngularJS
 https://docs.angularjs.org/api
+// lodash
+http://devdocs.io/lodash/
+https://lodash.com/docs
+
+Drag-and-drop
+http://stackoverflow.com/questions/18555429/how-to-create-simple-drag-and-drop-in-angularjs
+http://ngmodules.org/modules/ngDraggable
+
 
 #### Mobile app
 
