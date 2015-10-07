@@ -14,19 +14,19 @@ angular.module('myApp.controllers').
     };
 
     $scope.isDataReady = function(){
-      console.log("isDataReady " + $scope.dataReady);
+      //console.log("isDataReady " + $scope.dataReady);
       return $scope.dataReady;
     };
 
     $scope.loadData = function(){
-      console.log("before alert loadData " + $scope.dataReady);
+      //console.log("before alert loadData " + $scope.dataReady);
       $scope.toggle();
-      console.log("after toggle loadData " + $scope.dataReady);
+      //console.log("after toggle loadData " + $scope.dataReady);
     };
 
     // Emitted every time the ngView content is reloaded
     $scope.$watch('$viewContentLoaded', function() {
-      console.log("$watch $viewContentLoaded " + $scope.dataReady);
+      //console.log("$watch $viewContentLoaded " + $scope.dataReady);
       $scope.loadData();
     });
 /*

@@ -57,6 +57,10 @@ Drag-and-drop
 http://stackoverflow.com/questions/18555429/how-to-create-simple-drag-and-drop-in-angularjs
 http://ngmodules.org/modules/ngDraggable
 
+CSS frameworks
+http://beebom.com/2015/01/best-front-end-frameworks-for-bootstrap-alternative
+
+http://findicons.com/search/tool
 
 #### Mobile app
 

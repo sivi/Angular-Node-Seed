@@ -28,3 +28,28 @@
   content: "";
   padding: 0;
 }
+
+.toolButton {
+  width:20px; height:20px;
+  /*
+  background-size: 100%; background-size: 20px auto; background-repeat: no-repeat;
+  */
+  border: 1px solid red;
+  /*
+    background-image: url('img_flowers.jpg');
+    background-repeat: no-repeat;
+    background-size: contain;
+  */
+}
+.imageToolButton {
+  width:20px; height:20px;
+  background-size: 100%;
+  background-size: 20px auto;
+  background-repeat: no-repeat;
+  border: 1px solid red;
+  /*
+    background-image: url('img_flowers.jpg');
+    background-repeat: no-repeat;
+    background-size: contain;
+  */
+}

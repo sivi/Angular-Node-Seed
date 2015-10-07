@@ -14,6 +14,7 @@
     "console": false,
     "__dirname": false,
     "process": false,
-    "Promise": false
+    "Promise": false,
+    "_": false
   }
 }
