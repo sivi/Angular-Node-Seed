@@ -8,7 +8,8 @@ var myApp = angular.module('myApp', [
   'myApp.filters',
   'myApp.services',
   'myApp.directives',
-  'autoComplete'
+  'autoComplete',
+  'textAngular'
 ]);
 
 // DO NOT set controller, if it is set in template !!!

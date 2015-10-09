@@ -8,11 +8,14 @@ div(ng-controller="SurveyCreateCtrl")
       div(class="pure-g-r")
          div(class="pure-u-1-6")
             //input(type="hidden" name="_csrf" value="{{ csrf_token }}")
-            label() Page key
-               input(type="text", ng-model="currentPageKey")
+            div
+                label() Page key  {{pages.length}}
+            div
                select(name="pageSelector", id="pageSelector",
-                      ng-model="currentPageId", ng-change="pageSelectorChange()")
-                  option(ng-repeat="page in pages", value="{{page.survey_page_id}}") {{page.key}}
+                      ng-model="currentPageId", ng-change="pageSelectorChange()",
+                      ng-options="page.key for page in selectorPages track by page.survey_page_id")
+                  //option(ng-repeat="page in pages", value="{{page.survey_page_id}}") {{page.key}}
+            div
                input(class="imageToolButton", type="image", id="addPageButton",
                      ng-click="addPage()", src="css/icons/add.png")
                input(class="imageToolButton", type="image", id="editPageButton",
@@ -20,14 +23,15 @@ div(ng-controller="SurveyCreateCtrl")
                input(class="imageToolButton", type="image", id="addPageButton",
                      ng-click="removePage()", src="css/icons/trash.png")
 
-            | {{pages.length}}
-
-            label() Section key
-               input(type="text", ng-model="currentSectionKey")
+            div
+               label() Section key
+            div
                select(name="sectionSelector", id="sectionSelector",
-                      ng-model="currentSectionId", ng-change="sectionSelectorChange()")
-                  option(ng-repeat="section in currentPage.sections",
+                      ng-model="currentSectionId", ng-change="sectionSelectorChange()",
+                      ng-options="section.key for section in selectorSections track by section.survey_section_id")
+                  //option(ng-repeat="section in currentPage.sections",
                          value="{{section.survey_section_id}}") {{section.key}}
+            div
                input(class="imageToolButton", type="image", id="addSectionButton",
                      ng-click="addSection()", src="/css/icons/add.png")
                input(class="imageToolButton", type="image", id="editSectionButton",
@@ -35,12 +39,15 @@ div(ng-controller="SurveyCreateCtrl")
                input(class="imageToolButton", type="image", id="removeSectionButton",
                      ng-click="removeSection()", src="css/icons/trash.png")
 
-            label() Question key
-               input(type="text", ng-model="currentSectionKey")
+            div
+               label() Question key
+            div
                select(name="questionSelector", id="questionSelector",
-                      ng-model="currentQuestionId", ng-change="questionSelectorChange()")
-                  option(ng-repeat="question in currentSection.questions",
+                      ng-model="currentQuestionId", ng-change="questionSelectorChange()",
+                      ng-options="question.key for question in selectorQuestions track by question.survey_question_id")
+                  //option(ng-repeat="question in currentSection.questions",
                          value="{{question.survey_question_id}}") {{question.key}}
+            div
                input(class="imageToolButton", type="image", id="addQuestionButton",
                      ng-click="addQuestion()", src="/css/icons/add.png")
                input(class="imageToolButton", type="image", id="editQuestionButton",
@@ -48,30 +55,47 @@ div(ng-controller="SurveyCreateCtrl")
                input(class="imageToolButton", type="image", id="removeQuestionButton",
                      ng-click="removeQuestion()", src="css/icons/trash.png")
 
-
-            table
-               tr
-                  td
-                     input(type="button", value="Add radio", ng-click="addRadio(page.survey_page_id, section.survey_section_id, question.survey_question_id)")
-                  td
-                     input(type="button", value="Add text", ng-click="addText(page.survey_page_id, section.survey_section_id, question.survey_question_id)")
-
-         div(class="pure-u-5-6")
-            div(ng-repeat="page in pages")
-               div(ng-repeat="section in page.sections")
-                  p section_id = {{section.survey_section_id}}
-                  div(ng-repeat="question in section.questions")
-                     div(ng-repeat="valueOption in question.valueOptions")
-                        //p valueOption(TextType?) {{valueOption.questionFormType}} {{valueOption.questionFormType == 'TextType'}}
-                        label(ng-if="valueOption.questionFormType == 'TextType'"
-                        for="{{valueOption.label}}{{question.survey_question_id}}") {{valueOption.text}}:
-                           input(type="text", name="{{valueOption.label}}.{{question.survey_question_id}}",
-                           ng-model="valueOption.userValue", ng-required="true")
-                        //p valueOption(RadioType?) {{valueOption.questionFormType}} {{valueOption.questionFormType == 'RadioType'}}
-                        label(ng-if="valueOption.questionFormType == 'RadioType'"
-                        for="{{valueOption.label}}{{question.survey_question_id}}") {{valueOption.text}}:
-                           input(type="radio", name="{{valueOption.label}}.{{question.survey_question_id}}",
-                           ng-model="valueOption.userValue", ng-required="true")
             div
-               input(type="submit", value="Save")
+               table
+                  tr
+                     td
+                        input(type="button", value="Add radio", ng-click="addRadio(page.survey_page_id, section.survey_section_id, question.survey_question_id)")
+                     td
+                        input(type="button", value="Add text", ng-click="addText(page.survey_page_id, section.survey_section_id, question.survey_question_id)")
 
+            div
+                input(type="submit", value="Save")
+         div(class="pure-u-5-6")
+            div(ng-show="currentlyEditing === ''")
+                div(ng-repeat="page in pages")
+                   div(style="color:red;" ng-bind-html="page.html")
+                   div(ng-repeat="section in page.sections")
+                      div(ng-bind-html="section.html")
+                      div(ng-repeat="question in section.questions")
+                         div(ng-bind-html="question.html")
+                         div(ng-repeat="valueOption in question.valueOptions")
+                            //p valueOption(TextType?) {{valueOption.questionFormType}} {{valueOption.questionFormType == 'TextType'}}
+                            label(ng-if="valueOption.questionFormType == 'TextType'"
+                            for="{{valueOption.label}}{{question.survey_question_id}}") {{valueOption.text}}:
+                               input(type="text", name="{{valueOption.label}}.{{question.survey_question_id}}",
+                               ng-model="valueOption.userValue", ng-required="true")
+                            //p valueOption(RadioType?) {{valueOption.questionFormType}} {{valueOption.questionFormType == 'RadioType'}}
+                            label(ng-if="valueOption.questionFormType == 'RadioType'"
+                            for="{{valueOption.label}}{{question.survey_question_id}}") {{valueOption.text}}:
+                               input(type="radio", name="{{valueOption.label}}.{{question.survey_question_id}}",
+                               ng-model="valueOption.userValue", ng-required="true")
+            div(ng-show="currentlyEditing !== ''")
+                div
+                    button(class="pure-button", ng-click="saveEdit();")
+                        i(class="fa fa-check")
+                    button(class="pure-button", ng-click="cancelEdit();")
+                        i(class="fa fa-trash")
+
+                div(ng-show="currentlyEditing === 'HTML'")
+                    label Key
+                        input(type="text", ng-model="editingElementKeyValue")
+                    | Description (text, images, videos, ...)
+                    text-angular( ng-model="editingElementHTMLValue")
+
+
+                div(ng-show="currentlyEditing === 'valueOptions'")

@@ -62,6 +62,13 @@ http://beebom.com/2015/01/best-front-end-frameworks-for-bootstrap-alternative
 
 http://findicons.com/search/tool
 
+WYSIWYG
+??(comercial license > $50) https://github.com/froala/angular-froala
+https://github.com/fraywing/textAngular/
+
+Modal window
+?? https://github.com/likeastore/ngDialog (bound to old angular, too complex?)
+
 #### Mobile app
 
 [How to convert an existing AngularJS web app to a Cordova app?](http://stackoverflow.com/questions/25961013/how-to-convert-an-existing-angularjs-web-app-to-a-cordova-app)
