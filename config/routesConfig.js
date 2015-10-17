@@ -1,6 +1,8 @@
 /*!
  * Module dependencies.
  */
+(function() {
+
 'use strict';
 
 var auth = require('./middlewares/authorization');
@@ -231,3 +233,4 @@ module.exports = function (app, passport) {
    */
 
 };
+})();

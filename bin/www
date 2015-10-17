@@ -3,6 +3,8 @@
 /**
  * Module dependencies.
  */
+(function() {
+
 'use strict';
 var app = require('../serverApp');
 var debug = require('debug')('angular-express-seed:server');
@@ -99,3 +101,4 @@ function onListening() {
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }
+})();

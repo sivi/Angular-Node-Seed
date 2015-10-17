@@ -1,11 +1,13 @@
 /**
  * Created by a on 10/3/2015.
  */
-"use strict";
+(function() {
+
+'use strict';
 var mongoose = require('mongoose');
 var dbAuxiliary = require('../../../toolbox/DBAuxiliary');
 
-var surveyQuestionID = "survey_question_id";
+var surveyQuestionID = 'surveyQuestionId';
 var surveyQuestionModelName = 'SurveyQuestionModel';
 var collectionName = 'surveyQuestions';
 
@@ -21,27 +23,29 @@ var surveyQuestionSchema = mongoose.Schema({
   questionColOptions: String,
   questionOptionLabes: String,
   html: String,
-  survey_id: Number,
-  survey_page_id: Number,
-  survey_section_id: Number,
-  survey_question_id: Number
+  surveyId: Number,
+  surveyPageId: Number,
+  surveySectionId: Number,
+  surveyQuestionId: Number
 });
 /**
  * Pre-save hook
  */
 surveyQuestionSchema.pre('save', function(next) {
-  if (!this.isNew) return next();
+  if (!this.isNew) {
+    return next();
+  }
   var thisInstance = this;
   //
   //  create Promise which will retrieve new ID from counter
   //  and insert into new User before saving to DB
   //
   mongoose.model('CounterModel').getIdPromise(surveyQuestionID)
-    .then(function(result){
-      thisInstance.survey_question_id = result;
+    .then(function(result) {
+      thisInstance.surveyQuestionId = result;
       next();
     })
-    .catch(function(err){
+    .catch(function(err) {
       next(new Error(err));
     });
 });
@@ -80,15 +84,15 @@ surveyQuestionSchema.static('itemCount', function (options, aCallback) {
   dbAuxiliary.itemCount(this, options, aCallback);
 });
 
-surveyQuestionSchema.statics.surveyQuestionIdCounter = function(){
+surveyQuestionSchema.statics.surveyQuestionIdCounter = function() {
   return surveyQuestionID;
 };
 /**
  * Obtain Promise for load by ID
  *
- * @param id
+ * @param {number} id
  */
-surveyQuestionSchema.statics.getSurveyQuestionLoadPromise = function(id){
+surveyQuestionSchema.statics.getSurveyQuestionLoadPromise = function(id) {
   return dbAuxiliary.getLoadPromise(mongoose, surveyQuestionModelName, id);
 };
 /**
@@ -97,28 +101,30 @@ surveyQuestionSchema.statics.getSurveyQuestionLoadPromise = function(id){
  *      result is always result set, stored in an array
  *      (which is empty if no result can be located) !!!
  *
- * @param options
+ * @param {object} options
  */
-surveyQuestionSchema.statics.getSurveyQuestionLookupPromise = function(options){
+surveyQuestionSchema.statics.getSurveyQuestionLookupPromise = function(options) {
   return dbAuxiliary.getLookupPromise(mongoose, surveyQuestionModelName, options);
 };
 /**
  *
- * @param surveyData
+ * @param {object} surveyQuestionData
  */
-surveyQuestionSchema.statics.getSurveyQuestionSavePromise = function(surveyQuestionData){
+surveyQuestionSchema.statics.getSurveyQuestionSavePromise = function(surveyQuestionData) {
   return dbAuxiliary.getSavePromise(mongoose, surveyQuestionModelName, surveyQuestionData);
 };
 /**
  *
- * @param options
+ * @param {object} options
  * @returns {Promise}
  */
-surveyQuestionSchema.statics.getSurveyQuestionCountPromise = function(options){
+surveyQuestionSchema.statics.getSurveyQuestionCountPromise = function(options) {
   return dbAuxiliary.getItemCountPromise(mongoose, surveyQuestionModelName, options);
 };
 /**
  *
  * @type {Aggregate|Model|{findElementsOverride, toString}|*}
  */
-var surveySectionModel = mongoose.model(surveyQuestionModelName, surveyQuestionSchema, collectionName);
+var surveySectionModel = mongoose.model(surveyQuestionModelName,
+                                        surveyQuestionSchema, collectionName);
+})();

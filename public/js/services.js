@@ -11,7 +11,6 @@
 
   myServices.factory('RestaurantService', ['$resource',
   function($resource) {
-    console.log("RestaurantService CALL");
     // $resource(url, [paramDefaults], [actions], options);
     return $resource('restaurant/:restaurantId', {}, {
     //  DEFAULT SET --> https://docs.angularjs.org/api/ngResource/service/$resource

@@ -1,6 +1,8 @@
 /**
  * Module dependencies.
  */
+(function() {
+
 'use strict';
 
 var mongoose = require('mongoose');
@@ -19,18 +21,19 @@ module.exports = new LocalStrategy({
   },
   function(username, password, done) {
     var options = {
-      criteria: { username: username },
-      select: 'id name username email userid hashed_password salt'
+      criteria: {username: username},
+      select: 'id name username email userid hashedPassword salt'
     };
     User.load(options, function (err, user) {
       if (err) return done(err);
       if (!user) {
-        return done(null, false, { message: 'Unknown user' });
+        return done(null, false, {message: 'Unknown user'});
       }
       if (!user.authenticate(password)) {
-        return done(null, false, { message: 'Invalid password' });
+        return done(null, false, {message: 'Invalid password'});
       }
       return done(null, user);
     });
   }
 );
+})();

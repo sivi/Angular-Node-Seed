@@ -1,14 +1,15 @@
 /**
  * Created by a on 10/3/2015.
  */
-"use strict";
+(function() {
+
+'use strict';
 var mongoose = require('mongoose');
 var dbAuxiliary = require('../../../toolbox/DBAuxiliary');
 
-var surveySectionID = "survey_section_id";
+var surveySectionID = 'survey_section_id';
 var surveySectionModelName = 'SurveySectionModel';
 var collectionName = 'surveySections';
-
 
 var surveySectionSchema = mongoose.Schema({
   name: String,
@@ -18,26 +19,28 @@ var surveySectionSchema = mongoose.Schema({
   label: String,
   html: String,
   order: Number,
-  survey_id: Number,
-  survey_page_id: Number,
-  survey_section_id: Number
+  surveyId: Number,
+  surveyPageId: Number,
+  surveySectionId: Number
 });
 /**
  * Pre-save hook
  */
 surveySectionSchema.pre('save', function(next) {
-  if (!this.isNew) return next();
+  if (!this.isNew) {
+    return next();
+  }
   var thisInstance = this;
   //
   //  create Promise which will retrieve new ID from counter
   //  and insert into new User before saving to DB
   //
   mongoose.model('CounterModel').getIdPromise(surveySectionID)
-    .then(function(result){
-      thisInstance.survey_section_id = result;
+    .then(function(result) {
+      thisInstance.surveySectionId = result;
       next();
     })
-    .catch(function(err){
+    .catch(function(err) {
       next(new Error(err));
     });
 });
@@ -78,16 +81,16 @@ surveySectionSchema.static('itemCount', function (options, aCallback) {
  *
  * @returns {string}
  */
-surveySectionSchema.statics.surveySectionIdCounter = function(){
+surveySectionSchema.statics.surveySectionIdCounter = function() {
   return surveySectionID;
 };
 
 /**
  * Obtain Promise for load by ID
  *
- * @param id
+ * @param {number} id
  */
-surveySectionSchema.statics.getSurveySectionLoadPromise = function(id){
+surveySectionSchema.statics.getSurveySectionLoadPromise = function(id) {
   return dbAuxiliary.getLoadPromise(mongoose, surveySectionModelName, id);
 };
 /**
@@ -96,28 +99,30 @@ surveySectionSchema.statics.getSurveySectionLoadPromise = function(id){
  *      result is always result set, stored in an array
  *      (which is empty if no result can be located) !!!
  *
- * @param options
+ * @param {Object} options
  */
-surveySectionSchema.statics.getSurveySectionLookupPromise = function(options){
+surveySectionSchema.statics.getSurveySectionLookupPromise = function(options) {
   return dbAuxiliary.getLookupPromise(mongoose, surveySectionModelName, options);
 };
 /**
  *
- * @param surveyData
+ * @param {Object} surveySectionData
  */
-surveySectionSchema.statics.getSurveySectionSavePromise = function(surveySectionData){
+surveySectionSchema.statics.getSurveySectionSavePromise = function(surveySectionData) {
   return dbAuxiliary.getSavePromise(mongoose, surveySectionModelName, surveySectionData);
 };
 /**
  *
- * @param options
+ * @param {Object} options
  * @returns {Promise}
  */
-surveySectionSchema.statics.getSurveySectionCountPromise = function(options){
+surveySectionSchema.statics.getSurveySectionCountPromise = function(options) {
   return dbAuxiliary.getItemCountPromise(mongoose, surveySectionModelName, options);
 };
 /**
  *
  * @type {Aggregate|Model|{findElementsOverride, toString}|*}
  */
-var surveySectionModel = mongoose.model(surveySectionModelName, surveySectionSchema, collectionName);
+var surveySectionModel =
+  mongoose.model(surveySectionModelName, surveySectionSchema, collectionName);
+})();

@@ -1,7 +1,9 @@
 /**
  * Created by a on 9/10/2015.
  */
-"use strict";
+(function() {
+
+'use strict';
 var mongoose = require('mongoose');
 
 /*
@@ -42,7 +44,7 @@ restaurantSchema.method('setStrict', function (strict) {
  * @param {Function} aCallback caller's function
  */
 restaurantSchema.static('load', function (id, aCallback) {
-  this.findOne({ restaurant_id : id })
+  this.findOne({restaurant_id : id})
     .exec(aCallback);
 });
 
@@ -54,21 +56,21 @@ restaurantSchema.static('load', function (id, aCallback) {
  */
 restaurantSchema.static('lookup', function (options, aCallback) {
 
-  console.log("options " + JSON.stringify(options));
+  console.log('options ' + JSON.stringify(options));
 
   var criteria = options.criteria || {};
 
   var query = this.find(criteria);
-  if(options.select){
+  if (options.select) {
     query.select(options.select);
   }
-  if(options.sort){
+  if (options.sort) {
     query.sort(options.sort); // sort by date
   }
-  if(options.perPage){
+  if (options.perPage) {
     query.limit(options.perPage);
   }
-  if(options.page){
+  if (options.page) {
     query.skip(options.perPage * options.page);
   }
   query.exec(aCallback);
@@ -85,10 +87,11 @@ restaurantSchema.static('itemCount', function (options, aCallback) {
     .exec(aCallback);
 });
 
-restaurantSchema.statics.restaurantIdCounter = function(){
-  return "restaurant_id";
-}
+restaurantSchema.statics.restaurantIdCounter = function() {
+  return 'restaurant_id';
+};
 
 var collectionName = 'restaurants';
 var restaurantModel = mongoose.model('RestaurantModel', restaurantSchema, collectionName);
 
+})();

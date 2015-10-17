@@ -1,6 +1,8 @@
 /**
  * Module dependencies.
  */
+(function() {
+
 'use strict';
 
 var mongoose = require('mongoose');
@@ -21,14 +23,14 @@ var oAuthTypes = [
 
 var UserSchema = new Schema({
   userid: {type: Number, default: 0},
-  firstname: { type: String, default: '' },
-  lastname: { type: String, default: '' },
-  email: { type: String, default: '' },
-  username: { type: String, default: '' },
-  provider: { type: String, default: '' },
-  hashed_password: { type: String, default: '' },
-  salt: { type: String, default: '' },
-  authToken: { type: String, default: '' },
+  firstname: {type: String, default: ''},
+  lastname: {type: String, default: ''},
+  email: {type: String, default: ''},
+  username: {type: String, default: ''},
+  provider: {type: String, default: ''},
+  hashedPassword: {type: String, default: ''},
+  salt: {type: String, default: ''},
+  authToken: {type: String, default: ''},
   facebook: {},
   twitter: {},
   github: {},
@@ -45,7 +47,7 @@ UserSchema
   .set(function(password) {
     this._password = password;
     this.salt = this.makeSalt();
-    this.hashed_password = this.encryptPassword(password);
+    this.hashedPassword = this.encryptPassword(password);
   })
   .get(function() {
     return this._password;
@@ -62,39 +64,50 @@ var validatePresenceOf = function (value) {
 // the below 4 validations only apply if you are signing up traditionally
 
 UserSchema.path('email').validate(function (email) {
-  if (this.skipValidation()) return true;
+  if (this.skipValidation()) {
+    return true;
+  }
   return email.length;
 }, 'Email cannot be blank');
 
 UserSchema.path('email').validate(function (email, fn) {
   var User = mongoose.model('User');
-  if (this.skipValidation()) fn(true);
+  if (this.skipValidation()) {
+    fn(true);
+  }
 
   // Check only when it is a new user or when email field is modified
   if (this.isNew || this.isModified('email')) {
-    User.find({ email: email }).exec(function (err, users) {
+    User.find({email: email}).exec(function (err, users) {
       fn(!err && users.length === 0);
     });
-  } else fn(true);
+  } else {
+    fn(true);
+  }
 }, 'Email already exists');
 
 UserSchema.path('username').validate(function (username) {
-  if (this.skipValidation()) return true;
+  if (this.skipValidation()) {
+    return true;
+  }
   return username.length;
 }, 'Username cannot be blank');
 
-UserSchema.path('hashed_password').validate(function (hashed_password) {
-  if (this.skipValidation()) return true;
-  return hashed_password.length && this._password.length;
+UserSchema.path('hashedPassword').validate(function (hashedPassword) {
+  if (this.skipValidation()) {
+    return true;
+  }
+  return hashedPassword.length && this._password.length;
 }, 'Password cannot be blank');
-
 
 /**
  * Pre-save hook
  */
 
 UserSchema.pre('save', function(next) {
-  if (!this.isNew) return next();
+  if (!this.isNew) {
+    return next();
+  }
 
   if (!validatePresenceOf(this.password) && !this.skipValidation()) {
     next(new Error('Invalid password'));
@@ -114,20 +127,20 @@ UserSchema.methods = {
    *
    * @param {String} plainText
    * @return {Boolean}
-   * @api public
+   * @access public
    */
 
   authenticate: function (plainText) {
     //console.log("userModel authenticate " + plainText);
 
-    return this.encryptPassword(plainText) === this.hashed_password;
+    return this.encryptPassword(plainText) === this.hashedPassword;
   },
 
   /**
    * Make salt
    *
    * @return {String}
-   * @api public
+   * @access  public
    */
 
   makeSalt: function () {
@@ -139,11 +152,13 @@ UserSchema.methods = {
    *
    * @param {String} password
    * @return {String}
-   * @api public
+   * @access  public
    */
 
   encryptPassword: function (password) {
-    if (!password) return '';
+    if (!password) {
+      return '';
+    }
     try {
       return crypto
         .createHmac('sha1', this.salt)
@@ -174,7 +189,7 @@ UserSchema.statics = {
    *
    * @param {Object} options
    * @param {Function} cb
-   * @api private
+   * @access  private
    */
 
   load: function (options, cb) {
@@ -184,10 +199,12 @@ UserSchema.statics = {
       .exec(cb);
   },
 
-  userIdCounter:  function(){
-  return "userid";
+  userIdCounter:  function() {
+  return 'userid';
 }
 };
 
 var collectionName = 'users';
 mongoose.model('User', UserSchema, collectionName);
+
+})();

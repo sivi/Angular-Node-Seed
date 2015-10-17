@@ -1,6 +1,7 @@
 /**
  * Module dependencies.
  */
+(function() {
 "use strict";
 
 var mongoose = require('mongoose');
@@ -220,3 +221,4 @@ function login (req, res) {
   delete req.session.returnTo;
   res.redirect(redirectTo);
 }
+})();

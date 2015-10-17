@@ -122,7 +122,6 @@ function UserProfileCtrl($rootScope, $scope, $location, CsrfService, UserProfile
     vm.user = data.user;
     vm.resultOK = data.result === 'OK';
     vm.errorMessage = data.error;
-    console.log("UserProfileService.get " + JSON.stringify(data));
   });
 
   vm.saveUserProfile = function() {
