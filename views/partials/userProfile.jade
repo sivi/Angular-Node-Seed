@@ -1,23 +1,25 @@
 //
    Created by a on 9/17/2015.
+div(ng-hide="vm.resultOK")
+   | {{vm.errorMessage}}
 
-div(ng-controller="userProfileCtrl")
-   form(name="userProfile", ng-submit="saveUserProfile()")
+div(ng-show="vm.resultOK")
+   form(name="userProfile", ng-submit="vm.saveUserProfile()")
       //input(type="hidden" name="_csrf" value="{{ csrf_token }}")
       div
          label(for="username") Username:
-            input(type="text", name="username", ng-model="user.username", ng-required="true")
+            input(type="text", name="username", ng-model="vm.user.username", ng-required="true")
       div
          label(for="email") Email:
-            input(type="email", name="email", ng-model="user.email", ng-required="true")
+            input(type="email", name="email", ng-model="vm.user.email", ng-required="true")
       div
          label(for="password") Password:
-            input(type="password", name="password", ng-model="user.password", ng-required="true")
+            input(type="password", name="password", ng-model="vm.user.password", ng-required="true")
       div
          label(for="firstname") First name:
-            input(type="text", name="firstname", ng-model="user.firstname", ng-required="false")
+            input(type="text", name="firstname", ng-model="vm.user.firstname", ng-required="false")
       div
          label(for="lastname") Last name:
-            input(type="text", name="lastname", ng-model="user.lastname", ng-required="false")
+            input(type="text", name="lastname", ng-model="vm.user.lastname", ng-required="false")
       div
          input(type="submit", value="Save")

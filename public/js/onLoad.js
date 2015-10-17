@@ -1,9 +1,10 @@
 /**
  * Created by a on 9/7/2015.
  */
-"use strict";
+(function() {
+'use strict';
 
-var onPageLoaded = function(){
+var onPageLoaded = function() {
   //alert('LOAD');
   // scope is not available here !!!
   // use $watch('$viewContentLoaded') instead !!!
@@ -12,3 +13,4 @@ var onPageLoaded = function(){
 };
 
 window.onload = onPageLoaded();
+})();

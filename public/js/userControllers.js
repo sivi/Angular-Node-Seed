@@ -1,124 +1,154 @@
 /**
  * Created by a on 9/22/2015.
  */
+(function() {
 'use strict';
-
+//
+//  --------------------- SignUpCtrl
+//
 angular.module('myApp.controllers').
-  controller('SignUpCtrl',
-  ['$rootScope', '$scope', '$routeParams', '$location', 'SignUpService', 'CsrfService',
-    function ($rootScope, $scope, $routeParams, $location, SignUpService, CsrfService) {
+  controller('SignUpCtrl', SignUpCtrl);
 
-      $scope.user = {
-        username: "",
-        email: "",
-        password: "",
-        firstname: "",
-        lastname: ""
+SignUpCtrl.$inject =
+  ['$rootScope', '$scope', '$routeParams', '$location', 'SignUpService', 'CsrfService'];
+
+function SignUpCtrl($rootScope, $scope, $routeParams, $location, SignUpService, CsrfService) {
+
+  var vm = this;
+
+  vm.user = {
+        username: '',
+        email: '',
+        password: '',
+        firstname: '',
+        lastname: ''
       };
-      $scope.signup = function() {
+  vm.signup = function() {
 
-        //$scope.user = angular.copy(user);
-        var csrf_token;
-        CsrfService.get({}, function(data){
-          csrf_token = data;
-          SignUpService.save({user:$scope.user, _csrf:csrf_token._csrf},function(saveResponse){
-            console.error("saveResponse: " + JSON.stringify(saveResponse));
-            if(saveResponse.result === 'OK'){
+    //vm.user = angular.copy(user);
+    var csrfToken;
+    CsrfService.get({}, function(data) {
+          csrfToken = data;
+          SignUpService.save({user:vm.user, _csrf:csrfToken._csrf},function(saveResponse) {
+            console.error('saveResponse: ' + JSON.stringify(saveResponse));
+            if (saveResponse.result === 'OK') {
               $rootScope.currentUser = {
-                username: $scope.user.username,
+                username: vm.user.username,
                 userid: saveResponse.userid
               };
-              $location.path("/loggedIn");
+              $location.path('/loggedIn');
               $location.replace();
             }
-            else{
-              $scope.message = saveResponse.errors;
-              console.log("MSG" + saveResponse.errors);
+            else {
+              vm.message = saveResponse.errors;
+              console.log('MSG' + saveResponse.errors);
             }
           });
         });
-      };
+  };
 
-    }]);
-
+}
+//
+//  --------------------- LogInCtrl
+//
 angular.module('myApp.controllers').
-  controller('LogInCtrl',
-  ['$rootScope', '$scope', '$routeParams', '$location', 'LogInService', 'CsrfService',
-    function ($rootScope, $scope, $routeParams, $location, LogInService, CsrfService) {
+  controller('LogInCtrl', LogInCtrl);
 
-      $scope.user = {
-        username: "",
-        email: "",
-        password: ""
+LogInCtrl.$inject =
+    ['$rootScope', '$scope', '$routeParams', '$location', 'LogInService', 'CsrfService'];
+
+function LogInCtrl($rootScope, $scope, $routeParams, $location, LogInService, CsrfService) {
+
+  var vm = this;
+  vm.user = {
+        username: '',
+        email: '',
+        password: ''
       };
-      $scope.login = function() {
+  vm.login = function() {
 
-        //$scope.user = angular.copy(user);
-        var csrf_token;
-        CsrfService.get({}, function(data){
-          csrf_token = data;
+    //vm.user = angular.copy(user);
+    var csrfToken;
+    CsrfService.get({}, function(data) {
+          csrfToken = data;
           LogInService.save({
-            username:$scope.user.username,
-            password:$scope.user.password,
-            _csrf:csrf_token._csrf
-          },function(saveResponse){
-            console.error("saveResponse: " + JSON.stringify(saveResponse));
-            if(saveResponse.result === 'OK'){
+            username:vm.user.username,
+            password:vm.user.password,
+            _csrf:csrfToken._csrf
+          },function(saveResponse) {
+            console.error('saveResponse: ' + JSON.stringify(saveResponse));
+            if (saveResponse.result === 'OK') {
               $rootScope.currentUser = {
-                username: $scope.user.username,
+                username: vm.user.username,
                 userid: saveResponse.userid
               };
-              $location.path("/loggedIn");
+              $location.path('/loggedIn');
               $location.replace();
             }
-            else{
-              $scope.message = saveResponse.errors;
-              console.log("MSG" + saveResponse.errors);
+            else {
+              vm.message = saveResponse.errors;
+              console.log('MSG' + saveResponse.errors);
             }
           });
         });
-      };
+  };
 
-    }]);
-
+}
+//
+//  --------------------- LoggedInCtrl
+//
 angular.module('myApp.controllers').
-  controller('loggedInCtrl', ['$scope', '$routeParams', 'RestaurantService', function ($scope, $routeParams) {
-  }]);
+  controller('LoggedInCtrl', LoggedInCtrl);
 
+LoggedInCtrl.$inject = ['$rootScope'];
+
+function LoggedInCtrl($rootScope) {
+  var vm = this;
+  vm.username = $rootScope.currentUser.username;
+}
+//
+//  --------------------- UserProfileCtrl
+//
 angular.module('myApp.controllers').
-  controller('userProfileCtrl',
-  ['$rootScope', '$scope', '$location', 'CsrfService', 'UserProfileService',
-    function($rootScope, $scope, $location, CsrfService, UserProfileService) {
+  controller('UserProfileCtrl', UserProfileCtrl);
 
-      UserProfileService.get({userId: $rootScope.currentUser.userid}, function(data){
-        $scope.user = data.user;
-      });
+UserProfileCtrl.$inject =
+  ['$rootScope', '$scope', '$location', 'CsrfService', 'UserProfileService'];
 
-      $scope.saveUserProfile = function() {
+function UserProfileCtrl($rootScope, $scope, $location, CsrfService, UserProfileService) {
+  var vm = this;
 
-        //$scope.user = angular.copy(user);
-        var csrf_token;
-        CsrfService.get({}, function(data){
-          csrf_token = data;
+  UserProfileService.get({userId: $rootScope.currentUser.userid}, function(data) {
+    vm.user = data.user;
+    vm.resultOK = data.result === 'OK';
+    vm.errorMessage = data.error;
+    console.log("UserProfileService.get " + JSON.stringify(data));
+  });
+
+  vm.saveUserProfile = function() {
+
+    //vm.user = angular.copy(user);
+    var csrfToken;
+    CsrfService.get({}, function(data) {
+          csrfToken = data;
           UserProfileService.save({
-            userId: $scope.user.userid,
-            user:$scope.user,
-            _csrf:csrf_token._csrf
-          },function(saveResponse){
-            console.error("saveResponse: " + JSON.stringify(saveResponse));
-            if(saveResponse.updateResult.result === 'OK'){
-              $rootScope.currentUser = {
-                username: $scope.user.username,
-              };
-              $location.path("/loggedIn");
+            userId: vm.user.userid,
+            user: vm.user,
+            _csrf: csrfToken._csrf
+          },function(saveResponse) {
+            console.error('saveResponse: ' + JSON.stringify(saveResponse));
+            if (saveResponse.updateResult.result === 'OK') {
+              $rootScope.currentUser.username = vm.user.username;
+              $location.path('/loggedIn');
               $location.replace();
             }
-            else{
-              $scope.message = saveResponse.updateResult.errors;
-              console.log("MSG" + saveResponse.updateResult.errors);
+            else {
+              vm.message = saveResponse.updateResult.errors;
+              console.log('MSG' + saveResponse.updateResult.errors);
             }
           });
         });
-      };
-    }]);
+  };
+}
+})();
 

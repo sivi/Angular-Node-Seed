@@ -3,8 +3,9 @@
  */
 // Make sure that in html/jade page that this file is after controllers.js
 // (the one that declares controllers array)
+(function() {
 
-"use strict";
+'use strict';
 angular.module('myApp.controllers').
   controller('toggler1Ctrl', ['$scope', function($scope) {
     $scope.dataReady = false;
@@ -13,12 +14,12 @@ angular.module('myApp.controllers').
       $scope.dataReady = !$scope.dataReady;
     };
 
-    $scope.isDataReady = function(){
+    $scope.isDataReady = function() {
       //console.log("isDataReady " + $scope.dataReady);
       return $scope.dataReady;
     };
 
-    $scope.loadData = function(){
+    $scope.loadData = function() {
       //console.log("before alert loadData " + $scope.dataReady);
       $scope.toggle();
       //console.log("after toggle loadData " + $scope.dataReady);
@@ -29,13 +30,13 @@ angular.module('myApp.controllers').
       //console.log("$watch $viewContentLoaded " + $scope.dataReady);
       $scope.loadData();
     });
-/*
-    $scope.$on('profile-updated', function(event, profileObj) {
-      // profileObj contains; name, country and email from emitted event
-    });
+    /*
+        $scope.$on('profile-updated', function(event, profileObj) {
+          // profileObj contains; name, country and email from emitted event
+        });
 */
   }
-  ]);
+]);
 /*
 myApp.controller('toggler1Ctrl', ['$scope', function($scope) {
   $scope.$emit('profile-updated', {
@@ -46,3 +47,4 @@ myApp.controller('toggler1Ctrl', ['$scope', function($scope) {
 }
 ]);
 */
+})();

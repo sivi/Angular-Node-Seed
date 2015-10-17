@@ -1,16 +1,17 @@
-'use strict';
+(function() {
+  'use strict';
 
-/* Services */
+  /* Services */
 
+  // Demonstrate how to register services
+  // In this case it is a simple value service.
+  var myServices = angular.module('myApp.services', ['ngResource']);
 
-// Demonstrate how to register services
-// In this case it is a simple value service.
-var myServices = angular.module('myApp.services', ['ngResource']);
+  myServices.value('version', '0.1');
 
-myServices.value('version', '0.1');
-
-myServices.factory('RestaurantService', ['$resource',
-  function($resource){
+  myServices.factory('RestaurantService', ['$resource',
+  function($resource) {
+    console.log("RestaurantService CALL");
     // $resource(url, [paramDefaults], [actions], options);
     return $resource('restaurant/:restaurantId', {}, {
     //  DEFAULT SET --> https://docs.angularjs.org/api/ngResource/service/$resource
@@ -22,22 +23,22 @@ myServices.factory('RestaurantService', ['$resource',
     });
   }]);
 
-myServices.factory('SignUpService', ['$resource',
-  function($resource){
+  myServices.factory('SignUpService', ['$resource',
+  function($resource) {
     // $resource(url, [paramDefaults], [actions], options);
     return $resource('/signup', {}, {
     });
   }]);
 
-myServices.factory('LogInService', ['$resource',
-  function($resource){
+  myServices.factory('LogInService', ['$resource',
+  function($resource) {
     // $resource(url, [paramDefaults], [actions], options);
     return $resource('/loginLocal', {}, {
     });
   }]);
 
-myServices.factory('UserProfileService', ['$resource',
-  function($resource){
+  myServices.factory('UserProfileService', ['$resource',
+  function($resource) {
     // $resource(url, [paramDefaults], [actions], options);
     return $resource('/users/:userId/', {}, {
       save:{
@@ -47,22 +48,25 @@ myServices.factory('UserProfileService', ['$resource',
     });
   }]);
 
-myServices.factory('CsrfService', ['$resource',
-  function($resource){
+  myServices.factory('CsrfService', ['$resource',
+  function($resource) {
     // $resource(url, [paramDefaults], [actions], options);
     return $resource('/api/csrf', {}, {
     });
   }]);
 
-myServices.factory('AutoCompleteOneService', ['$resource',
-  function($resource){
+  myServices.factory('AutoCompleteOneService', ['$resource',
+  function($resource) {
     // $resource(url, [paramDefaults], [actions], options);
-    return function(message){alert("Service ONE "+message);};
+    console.log('Service ONE ');
+    return function(message) {alert('Service ONE ' + message);};
   }]);
 
-myServices.factory('AutoCompleteTwoService', ['$resource',
-  function($resource){
+  myServices.factory('AutoCompleteTwoService', ['$resource',
+  function($resource) {
     // $resource(url, [paramDefaults], [actions], options);
-    return function(message){alert("Service TWO "+message);};
+    console.log('Service TWO ');
+    return function(message) {alert('Service TWO ' + message);};
   }]);
 
+})();

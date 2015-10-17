@@ -1,7 +1,7 @@
 //
    Created by a on 9/9/2015.
 
-div(ng-controller="RestaurantListCtrl")
+div()
    ul
-      li(ng-repeat="restaurant in restaurants")
+      li(ng-repeat="restaurant in vm.restaurants")
          a(href="/restaurant/{{restaurant.id}}") {{restaurant.name}}

@@ -342,6 +342,22 @@ angular.module('myApp.controllers').
         $scope.currentQuestion.valueOptions.push(valueOption);
       };
 
+      //
+      //  -----------------
+      //
+      $scope.addMultiRadio = function(pageId, sectionId, questionId){
+        console.log("addRadio");
+        var valueOptionCount = $scope.currentQuestion.valueOptions.length + 1;
+        var valueOption = {
+          questionFormType: 'RadioType',
+          label: 'Radio',
+          key: 'Radio.'+ pageId +'.'+ sectionId +'.'+ questionId +'.',
+          selected: false,
+          survey_valueOption_id: valueOptionCount
+        };
+        $scope.currentQuestion.valueOptions.push(valueOption);
+      };
+
       $scope.addText = function(pageId, sectionId, questionId){
         console.log("addText");
         var valueOptionCount = $scope.currentQuestion.valueOptions.length + 1;

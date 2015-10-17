@@ -5,7 +5,7 @@
 
 var express = require('express');
 var session = require('express-session'); // https://www.npmjs.com/package/express-session
-var express_enforces_ssl = require('express-enforces-ssl');
+var expressEnforcesSSL = require('express-enforces-ssl');
 var compression = require('compression');
 var cookieParser = require('cookie-parser');
 var cookieSession = require('cookie-session');
@@ -16,10 +16,10 @@ var csrf = require('csurf');  // https://www.npmjs.com/package/csurf (crossite r
 
 var mongoStore = require('connect-mongo')(session); // https://www.npmjs.com/package/config
 var flash = require('connect-flash'); // https://www.npmjs.com/package/connect-flash
-                                      // http://stackoverflow.com/questions/23160743/how-to-send-flash-messages-in-express-4-0
+// http://stackoverflow.com/questions/23160743/how-to-send-flash-messages-in-express-4-0
 
 // logging
-var morgan = require('morgan'); 		// log requests to the console (express4)
+var morgan = require('morgan');   // log requests to the console (express4)
 var winston = require('winston'); // https://www.npmjs.com/package/winston
 
 var helpers = require('view-helpers');
@@ -40,7 +40,7 @@ module.exports = function (app, passport) {
   // as they are for example used by Heroku and nodejitsu.
   // In such cases, however, the trustProxy parameter has to be set (see below)
   // app.enable('trust proxy');
-  app.use(express_enforces_ssl());
+  app.use(expressEnforcesSSL());
   */
   // Compression middleware (should be placed before express.static)
   app.use(compression({
@@ -66,9 +66,9 @@ module.exports = function (app, passport) {
 
   // Don't log during tests
   // Logging middleware
-  if (env !== 'test')
+  if (env !== 'test') {
     app.use(morgan(log));
-
+  }
   // set views path, template engine and default layout
   // view engine setup
   app.set('views', config.root + '/views');
@@ -87,7 +87,7 @@ module.exports = function (app, passport) {
 
   // bodyParser should be above methodOverride
   app.use(bodyParser.json());
-  app.use(bodyParser.urlencoded({ extended: true }));
+  app.use(bodyParser.urlencoded({extended: true}));
 
   app.use(methodOverride(function (req, res) {
     if (req.body && typeof req.body === 'object' && '_method' in req.body) {
@@ -100,7 +100,7 @@ module.exports = function (app, passport) {
 
   // CookieParser should be above session
   app.use(cookieParser());
-  app.use(cookieSession({ secret: 'secret' }));
+  app.use(cookieSession({secret: 'secret'}));
   app.use(session({
     resave: true,
     saveUninitialized: true,
@@ -127,7 +127,7 @@ module.exports = function (app, passport) {
 
     // This could be moved to view-helpers :-)
     app.use(function (req, res, next) {
-      res.locals.csrf_token = req.csrfToken();
+      res.locals.csrfToken = req.csrfToken();
       next();
     });
   }

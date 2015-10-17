@@ -1,6 +1,7 @@
 /**
  * Created by a on 10/7/2015.
  */
+(function() {
 'use strict';
 //
 //  ---------- http://stackoverflow.com/questions/23646395/rendering-a-star-rating-system-using-angularjs
@@ -49,7 +50,7 @@ starApp.directive('starRating', function () {
       };
 
       scope.toggle = function (index) {
-        if(scope.readonly && scope.readonly === 'true') {
+        if (scope.readonly && scope.readonly === 'true') {
           return;
         }
         scope.ratingValue = index + 1;
@@ -84,14 +85,14 @@ starRatingDirectiveModule.directive('starRating',
         '</ul>',
       scope : {
       ratingValue : '=',
-        max : '=',
-        onRatingSelected : '&',
-        readonly: '@'
+      max : '=',
+      onRatingSelected : '&',
+      readonly: '@'
     },
     link: function (scope, elem, attrs) {
       var updateStars = function() {
         scope.stars = [];
-        for ( var i = 0; i < scope.max; i++) {
+        for (var i = 0; i < scope.max; i++) {
           scope.stars.push({
             filled: i < scope.ratingValue
           });
@@ -99,7 +100,7 @@ starRatingDirectiveModule.directive('starRating',
       };
 
       scope.toggle = function(index) {
-        if(scope.readonly && scope.readonly === 'true') {
+        if (scope.readonly && scope.readonly === 'true') {
           return;
         }
         scope.ratingValue = index + 1;
@@ -114,4 +115,5 @@ starRatingDirectiveModule.directive('starRating',
           }
         });
     }};
-});
+  });
+})();
