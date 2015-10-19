@@ -1,12 +1,14 @@
-module.exports = function(config){
+'use strict';
+
+module.exports = function(config) {
   config.set({
 
     basePath : '../',
 
     files : [
       /*
-       note order of file inclusion !!!
-       */
+          note order of file inclusion !!!
+      */
       'public/bower_components/requirejs/require.js',
       'public/bower_components/lodash/lodash.js',
       'public/bower_components/angular/angular.js',
@@ -32,15 +34,15 @@ module.exports = function(config){
       'public/js/filters.js',
       'public/js/directives/directives.js',
       'public/js/directives/starRatingDirective.js',
-      'test/unit/**/*.js'
+      'test/unit/public/view1_test.js'
     ],
 
     autoWatch : true,
-
-    frameworks: ['jasmine', 'browserify'],
     preprocessors: {
       'test/unit/*.js': ['browserify'] //Mention path as per your test js folder
     },
+    frameworks: ['browserify', 'jasmine'],
+
     browsers : ['Chrome'],
 
     plugins : [

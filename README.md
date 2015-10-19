@@ -54,6 +54,7 @@ http://devdocs.io/lodash/
 https://lodash.com/docs
 
 Drag-and-drop
+[angular-drag-drop.min.js](https://raw.github.com/ggoodman/angular-drag-drop/master/dist/angular-drag-drop.min.js)
 http://stackoverflow.com/questions/18555429/how-to-create-simple-drag-and-drop-in-angularjs
 http://ngmodules.org/modules/ngDraggable
 
@@ -68,6 +69,10 @@ https://github.com/fraywing/textAngular/
 
 Modal window
 ?? https://github.com/likeastore/ngDialog (bound to old angular, too complex?)
+
+Test mocking dependencies
+http://www.sitepoint.com/mocking-dependencies-angularjs-tests/
+
 
 #### Mobile app
 

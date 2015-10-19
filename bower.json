@@ -17,6 +17,7 @@
     "pure": "^0.6.0",
     "font-awesome": "^4.4.0",
     "textAngular": "^1.4.6",
-    "bootstrap": "^3.3.5"
+    "bootstrap": "^3.3.5",
+    "requirejs": "^2.1.20"
   }
 }
