@@ -8,10 +8,11 @@
 
   // Step 2.: Define some f the controllers here, rest of them in toggleControler.js
   angular.module('myApp.controllers').
-  controller('AppCtrl', AppCtrl);
-  AppCtrl.$inject = ['$scope', '$http'];
+  controller('ApplicationController', ApplicationController);
 
-  function AppCtrl($scope, $http) {
+  ApplicationController.$inject = ['$scope', '$http'];
+
+  function ApplicationController($scope, $http) {
 
     $http({
         method: 'GET',

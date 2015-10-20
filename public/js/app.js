@@ -70,7 +70,9 @@
         controllerAs: 'vm'
       }).
       when('/svgDiagram', {
-        templateUrl: 'partials/svgDiagram'
+        templateUrl: 'partials/svgDiagram',
+        controller: 'SvgDiagramController',
+        controllerAs: 'vm'
         // DO NOT set controller, if it is set in template !!!
         // controller: 'RestaurantListCtrl'
       }).

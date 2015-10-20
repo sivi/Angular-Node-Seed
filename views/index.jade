@@ -2,7 +2,7 @@ extends layout
 
 block body
   div(ng-app="myApp", ng-strict-di)
-    div(ng-controller='AppCtrl')
+    div(ng-controller='ApplicationController')
       h2 Hello {{name}}
       ul.menu
         li
@@ -28,14 +28,14 @@ block body
 
   div(ng-view, ng-strict-di)
 
-    div(id="AppWrapperDIV" ng-controller="toggler1Ctrl")
+    div(id="AppWrapperDIV", ng-controller="ToggleController")
         div(ng-show="!isDataReady()")
           | {{dataReady}}
           | Waiting input
         div(ng-show="isDataReady()")
           | {{dataReady}}
           | Input Done.
-    div(ng-controller='AppCtrl')
+    div(ng-controller='ApplicationController')
         | Angular seed app: v
         span(app-version)
 

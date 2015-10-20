@@ -34,7 +34,8 @@ module.exports = function(config) {
       'public/js/filters.js',
       'public/js/directives/directives.js',
       'public/js/directives/starRatingDirective.js',
-      'test/unit/public/view1_test.js'
+      'test/unit/public/view1_test.js',
+      'test/unit/public/toggleControllerTest.js'
     ],
 
     autoWatch : true,

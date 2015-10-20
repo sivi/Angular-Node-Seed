@@ -8,8 +8,15 @@
 // see also http://www.ng-newsletter.com/posts/d3-on-angular.html
 
 angular.module('myApp.controllers').
-controller('svgDiagramController', ['$scope','$interval', function($scope, $interval) {
-  $scope.salesData = [
+  controller('SvgDiagramController', SvgDiagramController);
+
+SvgDiagramController.$inject = ['$scope','$interval'];
+
+function SvgDiagramController($scope, $interval) {
+
+  var vm = this;
+
+  vm.salesData = [
     {hour: 1,sales: 54},
     {hour: 2,sales: 66},
     {hour: 3,sales: 77},
@@ -23,11 +30,11 @@ controller('svgDiagramController', ['$scope','$interval', function($scope, $inte
   ];
 
   $interval(function() {
-    var hour = $scope.salesData.length + 1;
+    var hour = vm.salesData.length + 1;
     var sales = Math.round(Math.random() * 100);
-    $scope.salesData.push({hour: hour, sales:sales});
+    vm.salesData.push({hour: hour, sales:sales});
   }, 1000, 10);
-}]);
+}
 
 angular.module('myApp.controllers').
 directive('linearChart', function($parse, $window) {

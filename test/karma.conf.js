@@ -32,7 +32,7 @@ module.exports = function(config){
       'public/js/filters.js',
       'public/js/directives/directives.js',
       'public/js/directives/starRatingDirective.js',
-      'test/unit/**/*.js'
+      'test/unit/public/**/*.js'
     ],
 
     autoWatch : true,

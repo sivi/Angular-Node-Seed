@@ -6,19 +6,9 @@
 
 describe('myApp.view1 module', function() {
 
-  var $controller = null;
-  var $scope = null;
   beforeEach(function() {
     angular.module('myApp');
   });
-  //
-  //  Here is a black voodoo magic workaround with some AngularJS-mock issues
-  //
-  beforeEach(inject(function($rootScope, _$controller_) {
-    // The injector unwraps the underscores (_) from around the parameter names when matching
-    $controller = _$controller_;
-    $scope = $rootScope.$new();
-  }));
 
   describe('MyApp', function() {
 
@@ -46,8 +36,8 @@ describe('myApp.view1 module', function() {
 
     it('should ....', inject(function($controller) {
         //spec body
-        var view1Ctrl = angular.module('myApp').controller('AppCtrl');
-        console.log('AppCtrl ' + view1Ctrl);
+        var view1Ctrl = angular.module('myApp').controller('ApplicationController');
+        console.log('ApplicationController ' + view1Ctrl);
         expect(view1Ctrl).toBeDefined();
       }));
 
@@ -75,32 +65,4 @@ describe('myApp.view1 module', function() {
       }));
 
   });
-
-  describe('toggler1Ctrl ', function() {
-    var aController;
-
-    beforeEach(inject(function($rootScope, $controller) {
-      aController = $controller('toggler1Ctrl', {
-        $scope: $scope
-      });
-    }));
-
-    it('toggler should ....', inject(function($controller) {
-      //var aController = $controller('toggler1Ctrl', {$scope: $scope});
-      //console.log('toggler1Ctrl ' + JSON.stringify(aController));
-      expect(aController).toBeDefined();
-
-      //console.log('$scope ' + JSON.stringify($scope));
-      expect($scope.isDataReady()).toBeDefined();
-      var dataReady = $scope.isDataReady();
-      console.log('dataReady ' + $scope.isDataReady());
-      expect(dataReady).toBe(false);
-      $scope.toggle();
-      dataReady = $scope.isDataReady();
-      console.log('after toggle dataReady ' + $scope.isDataReady());
-      expect(dataReady).toBe(true);
-    }));
-  });
-  /*
-*/
 });
