@@ -10,7 +10,7 @@
   myServices.value('version', '0.1');
 
   myServices.factory('RestaurantService', ['$resource',
-  function($resource) {
+  function RestaurantService($resource) {
     // $resource(url, [paramDefaults], [actions], options);
     return $resource('restaurant/:restaurantId', {}, {
     //  DEFAULT SET --> https://docs.angularjs.org/api/ngResource/service/$resource
@@ -23,21 +23,21 @@
   }]);
 
   myServices.factory('SignUpService', ['$resource',
-  function($resource) {
+  function SignUpService($resource) {
     // $resource(url, [paramDefaults], [actions], options);
     return $resource('/signup', {}, {
     });
   }]);
 
   myServices.factory('LogInService', ['$resource',
-  function($resource) {
+  function LogInService($resource) {
     // $resource(url, [paramDefaults], [actions], options);
     return $resource('/loginLocal', {}, {
     });
   }]);
 
   myServices.factory('UserProfileService', ['$resource',
-  function($resource) {
+  function UserProfileService($resource) {
     // $resource(url, [paramDefaults], [actions], options);
     return $resource('/users/:userId/', {}, {
       save:{
@@ -48,21 +48,21 @@
   }]);
 
   myServices.factory('CsrfService', ['$resource',
-  function($resource) {
+  function CsrfService($resource) {
     // $resource(url, [paramDefaults], [actions], options);
     return $resource('/api/csrf', {}, {
     });
   }]);
 
   myServices.factory('AutoCompleteOneService', ['$resource',
-  function($resource) {
+  function AutoCompleteOneService($resource) {
     // $resource(url, [paramDefaults], [actions], options);
     console.log('Service ONE ');
     return function(message) {alert('Service ONE ' + message);};
   }]);
 
   myServices.factory('AutoCompleteTwoService', ['$resource',
-  function($resource) {
+  function AutoCompleteTwoService($resource) {
     // $resource(url, [paramDefaults], [actions], options);
     console.log('Service TWO ');
     return function(message) {alert('Service TWO ' + message);};
