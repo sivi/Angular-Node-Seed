@@ -1,11 +1,11 @@
-// Generated on 2015-11-04 using generator-angular-fullstack 2.1.1
+// Generated on 2015-11-06 using generator-angular-fullstack 2.1.1
 'use strict';
 
 module.exports = function (grunt) {
   var localConfig;
   try {
     localConfig = require('./server/config/local.env');
-  } catch(e) {
+  } catch (e) {
     localConfig = {};
   }
 
@@ -17,8 +17,7 @@ module.exports = function (grunt) {
     ngtemplates: 'grunt-angular-templates',
     cdnify: 'grunt-google-cdn',
     protractor: 'grunt-protractor-runner',
-    buildcontrol: 'grunt-build-control',
-    filerev: 'grunt-filerev'
+    buildcontrol: 'grunt-build-control'
   });
 
   // Time how long tasks take. Can help when optimizing build times
@@ -32,8 +31,7 @@ module.exports = function (grunt) {
     projectRoot: {
       // configurable paths
       client: require('./bower.json').appPath || 'client',
-      dist: 'dist',
-      dist2: 'dist2'
+      dist: 'dist'
     },
     express: {
       options: {
@@ -105,9 +103,9 @@ module.exports = function (grunt) {
         files: [
           '{.tmp,<%= projectRoot.client %>}/{app,components}/**/*.css',
           '{.tmp,<%= projectRoot.client %>}/{app,components}/**/*.html',
-          
+
           '{.tmp,<%= projectRoot.client %>}/{app,components}/**/*.js',
-          
+
           '!{.tmp,<%= projectRoot.client %>}{app,components}/**/*.spec.js',
           '!{.tmp,<%= projectRoot.client %>}/{app,components}/**/*.mock.js',
           '<%= projectRoot.client %>/assets/images/{,*//*}*.{png,jpg,jpeg,gif,webp,svg}'
@@ -177,18 +175,6 @@ module.exports = function (grunt) {
           ]
         }]
       },
-      dist2: {
-        files: [{
-          dot: true,
-          src: [
-            '.tmp',
-            '<%= projectRoot.dist2 %>/*',
-            '!<%= projectRoot.dist2 %>/.git*',
-            '!<%= projectRoot.dist2 %>/.openshift',
-            '!<%= projectRoot.dist2 %>/Procfile'
-          ]
-        }]
-      },
       server: '.tmp'
     },
 
@@ -249,14 +235,13 @@ module.exports = function (grunt) {
         // you run `grunt wiredep`
         src: ['<%= projectRoot.client %>/index.html'],
         ignorePath: '<%= projectRoot.client %>/',
-        exclude: [/bootstrap-sass-official/, /bootstrap.js/, '/json3/', '/es5-shim/', /bootstrap.css/, /font-awesome.css/ ],
+        exclude: [/bootstrap-sass-official/, /bootstrap.js/, '/json3/', '/es5-shim/', /bootstrap.css/, /font-awesome.css/],
         options: {
-            // See wiredep's configuration documentation for the options
-            // you may pass:
+          // See wiredep's configuration documentation for the options
+          // you may pass:
 
-            // https://github.com/taptapship/wiredep#configuration
+          // https://github.com/taptapship/wiredep#configuration
         }
-        
       }
     },
 
@@ -267,67 +252,88 @@ module.exports = function (grunt) {
         algorithm: 'md5',
         length: 8
       },
-      dist1: {
-          src: [
-            '<%= projectRoot.dist %>/public/{,*/}*.js',
-            '<%= projectRoot.dist %>/public/{,*/}*.css',
-            '<%= projectRoot.dist %>/public/assets/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
-            '<%= projectRoot.dist %>/public/assets/fonts/*'
-          ]
-      },
-      dist2: {
-          src: [
-            '<%= projectRoot.dist2 %>/public/{,*/}*.js',
-            '<%= projectRoot.dist2 %>/public/{,*/}*.css',
-            '<%= projectRoot.dist2 %>/public/assets/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
-            '<%= projectRoot.dist2 %>/public/assets/fonts/*'
-          ]
-      }
-    },
-    /*
-    // https://github.com/gruntjs/grunt-contrib-concat
-    concat: {
-      basic: {
-        src: ['src/main.js'],
-        dest: 'dist/basic.js',
-      },
-      extras: {
-        src: ['src/main.js', 'src/extras.js'],
-        dest: 'dist/with_extras.js',
-      },
-    },
-    */
-    /*
-    // https://github.com/gruntjs/grunt-contrib-uglify
-    uglify: {
       dist: {
-        files: {
-          'dest/output.min.js': ['src/input1.js', 'src/input2.js']
-        }
-      },
-      dist2: {
-        files: {
-          'dest/output.min.js': ['src/input1.js', 'src/input2.js']
-        }
+        src: [
+          '<%= projectRoot.dist %>/public/{,*/}*.js',
+          '<%= projectRoot.dist %>/public/{,*/}*.css',
+          '<%= projectRoot.dist %>/public/assets/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
+          '<%= projectRoot.dist %>/public/assets/fonts/*'
+        ]
       }
     },
-    */
+
     // Reads HTML for usemin blocks to enable smart builds that automatically
     // concat, minify and revision files. Creates configurations in memory so
     // additional tasks can operate on them
-    // http://grunt-tasks.com/grunt-usemin/
-    // http://stackoverflow.com/questions/20517827/grunt-usemin-and-useminprepare-multiple-targets
+    // https://github.com/yeoman/grunt-usemin
     useminPrepare: {
+      /*
       html: ['<%= projectRoot.client %>/index.html'],
+      */
+      /*
+        NOTE:
+              in html files following comment line instructions determine
+                input: ({.tmp,client}), ({client,node_modules})
+                and output: app/vendor.css, app/vendor.js
+              -- '.tmp' is default temporary folder, removed after procesing
+                 and can be set via options.
+
+       <!-- build:css(client) app/vendor.css -->
+       <!-- build:css({.tmp,client}) app/app.css -->
+       <!-- build:js({client,node_modules}) app/vendor.js -->
+       <!-- build:js({.tmp,client}) app/app.js -->
+
+       To include several index files, make them bound into separate objects
+       (name does not make difference) and ensure that 'type' property is set to 'html'
+
+       Another solution is via runtime modification of config - see in TASKS section.
+      */
+      mainApp: {
+        type: 'html',
+        src: ['<%= projectRoot.client %>/index.html']
+      },
+      adminApp: {
+        type: 'html',
+        src: ['<%= projectRoot.client %>/admin/index.html']
+      },
       options: {
         dest: '<%= projectRoot.dist %>/public'
       }
     },
+    /*
+      If additional configuration is necessary, it is possible to configure
+      concat and uglify steps using
 
+     // https://github.com/gruntjs/grunt-contrib-concat
+     concat: {
+       basic: {
+         src: ['src/main.js'],
+         dest: 'dist/basic.js',
+       },
+       extras: {
+         src: ['src/main.js', 'src/extras.js'],
+         dest: 'dist/with_extras.js',
+       },
+     },
+     */
+    /*
+     // https://github.com/gruntjs/grunt-contrib-uglify
+     uglify: {
+       dist: {
+         files: {
+           'dest/output.min.js': ['src/input1.js', 'src/input2.js']
+         }
+       },
+       dist2: {
+         files: {
+           'dest/output.min.js': ['src/input1.js', 'src/input2.js']
+         }
+       }
+     },
+     */
     // Performs rewrites based on rev and the useminPrepare configuration
     // http://grunt-tasks.com/grunt-usemin/
     // https://www.npmjs.com/package/grunt-usemin
-    // https://github.com/yeoman/grunt-usemin
     usemin: {
       html: ['<%= projectRoot.dist %>/public/{,*/}*.html'],
       css: ['<%= projectRoot.dist %>/public/{,*/}*.css'],
@@ -451,38 +457,6 @@ module.exports = function (grunt) {
           ]
         }]
       },
-      dist2: {
-        files: [{
-          expand: true,
-          dot: true,
-          cwd: '<%= projectRoot.client %>',
-          dest: '<%= projectRoot.dist2 %>/public',
-          src: [
-            '*.{ico,png,txt}',
-            '.htaccess',
-            'bower_components/**/*',
-            'assets/images/{,*/}*.{webp}',
-            'assets/fonts/**/*'
-          ]
-        }, {
-          dest: '<%= projectRoot.dist2 %>/public/index2.html',
-          src: [
-            '<%= projectRoot.client %>/index.html'
-          ]
-        }, {
-          expand: true,
-          cwd: '.tmp/images',
-          dest: '<%= projectRoot.dist2 %>/public/assets/images',
-          src: ['generated/*']
-        }, {
-          expand: true,
-          dest: '<%= projectRoot.dist2 %>',
-          src: [
-            'package.json',
-            'server/**/*'
-          ]
-        }]
-      },
       styles: {
         expand: true,
         cwd: '<%= projectRoot.client %>',
@@ -517,11 +491,11 @@ module.exports = function (grunt) {
     concurrent: {
       server: [
         'jade',
-        'sass',
+        'sass'
       ],
       test: [
         'jade',
-        'sass',
+        'sass'
       ],
       debug: {
         tasks: [
@@ -634,12 +608,12 @@ module.exports = function (grunt) {
         files: {
           '<%= projectRoot.client %>/index.html': [
                [
-                 
+
                  '{.tmp,<%= projectRoot.client %>}/{app,components}/**/*.js',
-                 
-                 '!{.tmp,<%= projectRoot.client %>}/app/app.js',               
+
+                 '!{.tmp,<%= projectRoot.client %>}/app/app.js',
                  '!{.tmp,<%= projectRoot.client %>}/{app,components}/**/*.spec.js',
-                 '!{.tmp,<%= projectRoot.client %>}/{app,components}/**/*.mock.js'               
+                 '!{.tmp,<%= projectRoot.client %>}/{app,components}/**/*.mock.js'
                ]
             ]
         }
@@ -683,7 +657,33 @@ module.exports = function (grunt) {
       }
     },
   });
+  /*
+      --------------------  T A S K S  -------------------------
+   */
+  /*
+      NOTE:
+          if runtime modification of the configuration is required, do through e.g.
+   grunt.registerTask('my_runtime_modification_task', function () {
+     grunt.config('useminPrepare', [{
+      adminApp: {
+       type: 'html',
+        src: ['<%= projectRoot.client %>/admin/index.html']
+      },
+      options: {
+        dest: '<%= projectRoot.dist %>/public'
+      }
+     }]);
+   });
 
+   and run sequence
+
+   grunt.task.run(['useminPrepare', 'my_runtime_modification_task', 'useminPrepare']);
+
+   or register task e.g.
+
+   grunt.registerTask('runWithUpdate', ['useminPrepare', 'my_runtime_modification_task', 'useminPrepare']);
+
+   */
   // Used for delaying livereload until after server has restarted
   grunt.registerTask('wait', function () {
     grunt.log.ok('Waiting for server reload...');
@@ -709,7 +709,7 @@ module.exports = function (grunt) {
       return grunt.task.run([
         'clean:server',
         'env:all',
-        'injector:sass', 
+        'injector:sass',
         'concurrent:server',
         'injector',
         'wiredep',
@@ -721,7 +721,7 @@ module.exports = function (grunt) {
     grunt.task.run([
       'clean:server',
       'env:all',
-      'injector:sass', 
+      'injector:sass',
       'concurrent:server',
       'injector',
       'wiredep',
@@ -751,7 +751,7 @@ module.exports = function (grunt) {
       return grunt.task.run([
         'clean:server',
         'env:all',
-        'injector:sass', 
+        'injector:sass',
         'concurrent:test',
         'injector',
         'autoprefixer',
@@ -764,7 +764,7 @@ module.exports = function (grunt) {
         'clean:server',
         'env:all',
         'env:test',
-        'injector:sass', 
+        'injector:sass',
         'concurrent:test',
         'injector',
         'wiredep',
@@ -774,15 +774,15 @@ module.exports = function (grunt) {
       ]);
     }
 
-    else grunt.task.run([
+    else {grunt.task.run([
       'test:server',
       'test:client'
-    ]);
+    ]);}
   });
 
   grunt.registerTask('build', [
     'clean:dist',
-    'injector:sass', 
+    'injector:sass',
     'concurrent:dist',
     'injector',
     'wiredep',
@@ -792,7 +792,6 @@ module.exports = function (grunt) {
     'concat',
     'ngAnnotate',
     'copy:dist',
-    'copy:dist2',
     'cdnify',
     'cssmin',
     'uglify',
