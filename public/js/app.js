@@ -86,6 +86,12 @@
         // DO NOT set controller, if it is set in template !!!
         // controller: 'RestaurantListCtrl'
       }).
+      when('/404', { // redirect outside of current app
+                     // http://stackoverflow.com/questions/19321765
+                     // /using-routeprovider-to-redirect-to-routes-outside-of-angular
+      controller: function() {
+        window.location.replace('/');
+      }}).
       otherwise({
         redirectTo: '/view1'
       });
