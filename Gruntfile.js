@@ -683,6 +683,7 @@ module.exports = function (grunt) {
 
    grunt.registerTask('runWithUpdate', ['useminPrepare', 'my_runtime_modification_task', 'useminPrepare']);
 
+   http://stackoverflow.com/questions/18128223/change-the-configuration-of-the-task-uglify-dynamically
    */
   // Used for delaying livereload until after server has restarted
   grunt.registerTask('wait', function () {
