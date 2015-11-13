@@ -76,6 +76,12 @@ angular.module('myApp.controllers').
               surveySectionId: $scope.currentPage.sections[0].surveySectionId};
 
           }
+          /*
+          else {
+            $scope.currentSectionId = null;
+            $scope.currentSection = null;
+          }
+          */
           //console.log("---------- BEFORE SECTION PROPAGATE  ");
           //console.log("currentPage " +JSON.stringify($scope.currentPage));
         }

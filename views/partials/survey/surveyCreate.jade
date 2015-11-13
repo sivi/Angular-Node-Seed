@@ -13,7 +13,7 @@ div(ng-controller="SurveyCreateCtrl")
             div
                select(name="pageSelector", id="pageSelector",
                       ng-model="currentPageId", ng-change="pageSelectorChange()",
-                      ng-options="page.key for page in selectorPages track by page.survey_page_id")
+                      ng-options="page.key for page in selectorPages track by page.surveyPageId")
                   //option(ng-repeat="page in pages", value="{{page.survey_page_id}}") {{page.key}}
             div
                input(class="imageToolButton", type="image", id="addPageButton",
@@ -28,7 +28,7 @@ div(ng-controller="SurveyCreateCtrl")
             div
                select(name="sectionSelector", id="sectionSelector",
                       ng-model="currentSectionId", ng-change="sectionSelectorChange()",
-                      ng-options="section.key for section in selectorSections track by section.survey_section_id")
+                      ng-options="section.key for section in selectorSections track by section.surveySectionId")
                   //option(ng-repeat="section in currentPage.sections",
                          value="{{section.survey_section_id}}") {{section.key}}
             div
@@ -44,7 +44,7 @@ div(ng-controller="SurveyCreateCtrl")
             div
                select(name="questionSelector", id="questionSelector",
                       ng-model="currentQuestionId", ng-change="questionSelectorChange()",
-                      ng-options="question.key for question in selectorQuestions track by question.survey_question_id")
+                      ng-options="question.key for question in selectorQuestions track by question.surveyQuestionId")
                   //option(ng-repeat="question in currentSection.questions",
                          value="{{question.survey_question_id}}") {{question.key}}
             div
