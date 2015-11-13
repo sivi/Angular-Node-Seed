@@ -55,13 +55,40 @@ div(ng-controller="SurveyCreateCtrl")
                input(class="imageToolButton", type="image", id="removeQuestionButton",
                      ng-click="removeQuestion()", src="css/icons/trash.png")
 
-            div
-               table
-                  tr
-                     td
-                        input(type="button", value="Add radio", ng-click="addRadio(page.survey_page_id, section.survey_section_id, question.survey_question_id)")
-                     td
-                        input(type="button", value="Add text", ng-click="addText(page.survey_page_id, section.survey_section_id, question.survey_question_id)")
+            div(ng-show="currentQuestion !== null")
+               | Value input
+               label Add multivalued?
+                  input(type="checkbox", ng-model="currentQuestion.valueOptionsIsMultivalued")
+               div(ng-hide="currentQuestion.valueOptionsIsMultivalued")
+                  label Text field
+                     input(type="radio", name="UIType", ng-model="valueOptionsValueUIType", value="text")
+                  label Select list
+                      input(type="radio", name="UIType", ng-model="valueOptionsValueUIType", value="select")
+                  label Radio button
+                     input(type="radio", name="UIType", ng-model="valueOptionsValueUIType", value="radio")
+                  label "Checkbox"
+                     input(type="radio", name="UIType", ng-model="valueOptionsValueUIType", value="checkbox")
+                  label "Star rating"
+                     input(type="radio", name="UIType", ng-model="valueOptionsValueUIType", value="star")
+                  label() "Text area"
+                     input(type="radio", name="UIType", ng-model="valueOptionsValueUIType", value="textArea")
+               div(ng-show="currentQuestion.valueOptionsIsMultivalued")
+                  label Multiple text field
+                     input(type="radio", name="UIType", ng-model="valueOptionsValueUIType", value="text")
+                  label Multi select list
+                      input(type="radio", name="UIType", ng-model="valueOptionsValueUIType", value="select")
+                  label Multirow radio buttons
+                      input(type="radio", name="UIType", ng-model="valueOptionsValueUIType", value="radio")
+                  label Multiple checkboxes
+                      input(type="radio", name="UIType", ng-model="valueOptionsValueUIType", value="checkbox")
+                  label Multiple Star ratings
+                      input(type="radio", name="UIType", ng-model="valueOptionsValueUIType", value="star")
+
+               div
+                  input(class="imageToolButton", type="image", id="editPageButton",
+                    ng-click="editValueOptions()", src="/css/icons/tool.png")
+                  input(class="imageToolButton", type="image", id="addPageButton",
+                    ng-click="removeValueOptions()", src="css/icons/trash.png")
 
             div
                 input(type="submit", value="Save")
@@ -74,16 +101,16 @@ div(ng-controller="SurveyCreateCtrl")
                       div(ng-repeat="question in section.questions")
                          div(ng-bind-html="question.html")
                          div(ng-repeat="valueOption in question.valueOptions")
-                            //p valueOption(TextType?) {{valueOption.questionFormType}} {{valueOption.questionFormType == 'TextType'}}
-                            label(ng-if="valueOption.questionFormType == 'TextType'"
-                            for="{{valueOption.label}}{{question.survey_question_id}}") {{valueOption.text}}:
-                               input(type="text", name="{{valueOption.label}}.{{question.survey_question_id}}",
-                               ng-model="valueOption.userValue", ng-required="true")
-                            //p valueOption(RadioType?) {{valueOption.questionFormType}} {{valueOption.questionFormType == 'RadioType'}}
-                            label(ng-if="valueOption.questionFormType == 'RadioType'"
-                            for="{{valueOption.label}}{{question.survey_question_id}}") {{valueOption.text}}:
-                               input(type="radio", name="{{valueOption.label}}.{{question.survey_question_id}}",
-                               ng-model="valueOption.userValue", ng-required="true")
+                            label(ng-if="question.valueOptionsValueUIType == 'text'",
+                                   for="{{valueOption.key}}") {{valueOption.label}}:
+                               input(type="text", name="{{valueOption.key}}",
+                               ng-model="valueOption.userValue", ng-required="false")
+                            label(ng-if="question.valueOptionsValueUIType == 'radio'",
+                                  for="{{valueOption.key}}") {{valueOption.label}}:
+                               div(ng-repeat="optionEntry in valueOption.optionEntries")
+                                 label {{optionEntry.label}}
+                                 input(type="radio", name="{{valueOption.key}}", value="{{optionEntry.key}}"
+                                   ng-model="valueOption.userValue", ng-required="true")
             div(ng-show="currentlyEditing !== ''")
                 div
                     button(class="pure-button", ng-click="saveEdit();")
@@ -99,3 +126,17 @@ div(ng-controller="SurveyCreateCtrl")
 
 
                 div(ng-show="currentlyEditing === 'valueOptions'")
+                    | Question key: {{currentQuestion.key}}
+                    div(ng-show="currentQuestion.valueOptionsIsMultivalued")
+                        input(class="imageToolButton", type="image", id="addQuestionButton",
+                           ng-click="addValueOption()", src="/css/icons/add.png")
+                    div(ng-repeat="valueOption in currentQuestion.valueOptions")
+                        {{}}
+                        div(ng-show="currentQuestion.valueOptionsValueUIType === 'text'")
+                           label() Label:
+                              input(type="text", name="{{valueOption.key}}",
+                                 ng-model="valueOption.label", ng-required="false")
+                           label() Key:
+                              input(type="text", name="{{valueOption.key}}",
+                                 ng-model="valueOption.key", ng-required="false")
+
