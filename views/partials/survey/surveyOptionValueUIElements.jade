@@ -1,0 +1,35 @@
+//
+   Created by a on 11/14/2015.
+
+| Value input
+label Add multivalued?
+   input(type="checkbox", ng-model="currentQuestion.valueOptionsIsMultivalued")
+div(ng-hide="currentQuestion.valueOptionsIsMultivalued")
+   label Text field
+      input(type="radio", name="UIType", ng-model="valueOptionsValueUIType", value="text")
+   label Select list
+      input(type="radio", name="UIType", ng-model="valueOptionsValueUIType", value="select")
+   label Radio button
+      input(type="radio", name="UIType", ng-model="valueOptionsValueUIType", value="radio")
+   label "Checkbox"
+      input(type="radio", name="UIType", ng-model="valueOptionsValueUIType", value="checkbox")
+   label "Star rating"
+      input(type="radio", name="UIType", ng-model="valueOptionsValueUIType", value="star")
+   label() "Text area"
+      input(type="radio", name="UIType", ng-model="valueOptionsValueUIType", value="textArea")
+div(ng-show="currentQuestion.valueOptionsIsMultivalued")
+   label Multiple text field
+      input(type="radio", name="UIType", ng-model="valueOptionsValueUIType", value="text")
+   label Multi select list
+      input(type="radio", name="UIType", ng-model="valueOptionsValueUIType", value="select")
+   label Multirow radio buttons
+      input(type="radio", name="UIType", ng-model="valueOptionsValueUIType", value="radio")
+   label Multiple checkboxes
+      input(type="radio", name="UIType", ng-model="valueOptionsValueUIType", value="checkbox")
+   label Multiple Star ratings
+      input(type="radio", name="UIType", ng-model="valueOptionsValueUIType", value="star")
+div
+   input(class="imageToolButton", type="image", id="editPageButton",
+         ng-click="editValueOptions()", src="/css/icons/tool.png")
+   input(class="imageToolButton", type="image", id="addPageButton",
+         ng-click="removeValueOptions()", src="css/icons/trash.png")
