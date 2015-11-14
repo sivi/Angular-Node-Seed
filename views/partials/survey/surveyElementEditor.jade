@@ -1,0 +1,27 @@
+//
+   Created by a on 11/14/2015.
+div
+   button(class="pure-button", ng-click="saveEdit();")
+      i(class="fa fa-check")
+   button(class="pure-button", ng-click="cancelEdit();")
+      i(class="fa fa-trash")
+div(ng-show="currentlyEditing === 'HTML'")
+   label Key
+      input(type="text", ng-model="editingElementKeyValue")
+   | Description (text, images, videos, ...)
+   text-angular( ng-model="editingElementHTMLValue")
+div(ng-show="currentlyEditing === 'valueOptions'")
+   | Question key: {{currentQuestion.key}}
+   div(ng-show="currentQuestion.valueOptionsIsMultivalued")
+      input(class="imageToolButton", type="image", id="addQuestionButton",
+      ng-click="addValueOption()", src="/css/icons/add.png")
+   div(ng-repeat="valueOption in currentQuestion.valueOptions")
+
+      div(ng-show="currentQuestion.valueOptionsValueUIType === 'text'")
+         label() Label:
+         input(type="text", name="{{valueOption.key}}",
+               ng-model="valueOption.label", ng-required="false")
+         label() Key:
+         input(type="text", name="{{valueOption.key}}",
+               ng-model="valueOption.key", ng-required="false")
+
