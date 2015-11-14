@@ -1,13 +1,16 @@
 /**
  * Created by a on 10/4/2015.
  */
-
+(function() {
 'use strict';
+angular.module('SurveyCreator', []);
 
-angular.module('myApp.controllers').
+angular.module('SurveyCreator').
   controller('SurveyCreateCtrl',
-  ['$rootScope', '$scope', '$routeParams', '$location', 'CsrfService',
-    function ($rootScope, $scope, $routeParams, $location, CsrfService) {
+  ['$rootScope', '$routeParams', '$location', 'CsrfService',
+    function ($rootScope, $routeParams, $location, CsrfService) {
+
+      var vm = this;
 
       // constants
       var aPAGE = 'page';
@@ -16,34 +19,34 @@ angular.module('myApp.controllers').
       var aHTML = 'HTML';
       var aVALUEOPTIONS = 'valueOptions';
 
-      $scope.pages = [];
-      $scope.selectorPages = [];   // a copy of {page.key, page.surveyPageId} pairs
-      $scope.currentPage = null;
-      $scope.currentPageId = null; // contains page.surveyPageId
-      $scope.selectorSections = []; // a copy of {section.key, section.surveyPageId} pairs
-      $scope.currentSection = null;
-      $scope.currentSectionId = null; // contains section.surveySectionId
-      $scope.selectorQuestions = []; // a copy of {question.key, question.surveyPageId} pairs
-      $scope.currentQuestion = null;
-      $scope.currentQuestionId = null; // contains question.surveyQuestionId
-      $scope.currentValueOption = null;
-      $scope.currentPageKey = '';
-      $scope.currentSectionKey = '';
-      $scope.currentQuestionKey = '';
-      $scope.valueOptionsBackup = []; // fall back of value options if user cancels edit
+      vm.pages = [];
+      vm.selectorPages = [];   // a copy of {page.key, page.surveyPageId} pairs
+      vm.currentPage = null;
+      vm.currentPageId = null; // contains page.surveyPageId
+      vm.selectorSections = []; // a copy of {section.key, section.surveyPageId} pairs
+      vm.currentSection = null;
+      vm.currentSectionId = null; // contains section.surveySectionId
+      vm.selectorQuestions = []; // a copy of {question.key, question.surveyPageId} pairs
+      vm.currentQuestion = null;
+      vm.currentQuestionId = null; // contains question.surveyQuestionId
+      vm.currentValueOption = null;
+      vm.currentPageKey = '';
+      vm.currentSectionKey = '';
+      vm.currentQuestionKey = '';
+      vm.valueOptionsBackup = []; // fall back of value options if user cancels edit
 
       var pagesCount = 0;
       var sectionCount = 0;
       var questionCount = 0;
       //
       // which of the current page/section/question/valueOptions is edited?
-      $scope.editingElement = '';
+      vm.editingElement = '';
       // what is edited HTML/valueOptions
-      $scope.currentlyEditing = '';
+      vm.currentlyEditing = '';
       // element's key value
-      $scope.editingElementKeyValue = '';
+      vm.editingElementKeyValue = '';
       // element's HTML value (if appropriate)
-      $scope.editingElementHTMLValue = '';
+      vm.editingElementHTMLValue = '';
 
       //
       //  -----------------
@@ -51,39 +54,39 @@ angular.module('myApp.controllers').
       var propagatePageChange = function() {
         console.log('propagatePageChange');
         // page has changed, so section must be anew
-        $scope.currentSectionId = null;
-        $scope.currentSection = null;
+        vm.currentSectionId = null;
+        vm.currentSection = null;
         // populate pages to display
-        $scope.selectorPages = [];
-        for (var i = 0; i < $scope.pages.length; i++) {
-          var page = $scope.pages[i];
-          $scope.selectorPages.push({key: page.key, surveyPageId: page.surveyPageId});
+        vm.selectorPages = [];
+        for (var i = 0; i < vm.pages.length; i++) {
+          var page = vm.pages[i];
+          vm.selectorPages.push({key: page.key, surveyPageId: page.surveyPageId});
         }
-        //console.log("Pages " +JSON.stringify($scope.pages));
-        //console.log("selectorPages " +JSON.stringify($scope.selectorPages));
-        //console.log("currentPageId " +JSON.stringify($scope.currentPageId));
+        //console.log("Pages " +JSON.stringify(vm.pages));
+        //console.log("selectorPages " +JSON.stringify(vm.selectorPages));
+        //console.log("currentPageId " +JSON.stringify(vm.currentPageId));
 
         // re/establish selected page (id has been changed by add / delete)
-        if ($scope.currentPageId !== null) {
-          //$scope.currentPage =
-          // _.find($scope.pages, { surveyPageId: parseInt($scope.currentPageId)});
-          $scope.currentPage =
-              _.find($scope.pages, {surveyPageId: $scope.currentPageId.surveyPageId});
+        if (vm.currentPageId !== null) {
+          //vm.currentPage =
+          // _.find(vm.pages, { surveyPageId: parseInt(vm.currentPageId)});
+          vm.currentPage =
+              _.find(vm.pages, {surveyPageId: vm.currentPageId.surveyPageId});
 
           // if current page has any section, make first one as selected
-          if ($scope.currentPage.sections.length > 0) {
-            $scope.currentSectionId = {key: $scope.currentPage.sections[0].key,
-              surveySectionId: $scope.currentPage.sections[0].surveySectionId};
+          if (vm.currentPage.sections.length > 0) {
+            vm.currentSectionId = {key: vm.currentPage.sections[0].key,
+              surveySectionId: vm.currentPage.sections[0].surveySectionId};
 
           }
           /*
           else {
-            $scope.currentSectionId = null;
-            $scope.currentSection = null;
+            vm.currentSectionId = null;
+            vm.currentSection = null;
           }
           */
           //console.log("---------- BEFORE SECTION PROPAGATE  ");
-          //console.log("currentPage " +JSON.stringify($scope.currentPage));
+          //console.log("currentPage " +JSON.stringify(vm.currentPage));
         }
         propagateSectionChange();
       };
@@ -93,31 +96,33 @@ angular.module('myApp.controllers').
       var propagateSectionChange = function() {
         console.log('propagateSectionChange');
         // question must be established anew
-        $scope.currentQuestionId = null;
-        $scope.currentQuestion = null;
+        vm.currentQuestionId = null;
+        vm.currentQuestion = null;
 
-        $scope.selectorSections = [];
-        for (var i = 0; i < $scope.currentPage.sections.length; i++) {
-          var section = $scope.currentPage.sections[i];
-          $scope.selectorSections.push({key: section.key,
+        vm.selectorSections = [];
+        if (vm.currentPage !== null) {
+          for (var i = 0; i < vm.currentPage.sections.length; i++) {
+            var section = vm.currentPage.sections[i];
+            vm.selectorSections.push({key: section.key,
               surveySectionId: section.surveySectionId});
-        }
-        //console.log("Sections " +JSON.stringify($scope.currentPage.sections));
-        //console.log("selectorSections " +JSON.stringify($scope.selectorSections));
-        //console.log("currentSectionId " +JSON.stringify($scope.currentSectionId));
-        // re/establish selected section (id has been changed by add / delete, or page change)
-        if ($scope.currentSectionId !== null) {
-          $scope.currentSection = _.find($scope.currentPage.sections,
-                {surveySectionId: $scope.currentSectionId.surveySectionId});
-
-          // if current page has any section, make first one as selected
-          if ($scope.currentSection.questions.length > 0) {
-            $scope.currentQuestionId = {key: $scope.currentSection.questions[0].key,
-              surveyQuestionId: $scope.currentSection.questions[0].surveyQuestionId};
           }
-          //console.log("-----??----- BEFORE QUESTION PROPAGATE  ");
-          //console.log("currentPage " +JSON.stringify($scope.currentPage));
-          //console.log("currentSection " +JSON.stringify($scope.currentSection));
+          //console.log("Sections " +JSON.stringify(vm.currentPage.sections));
+          //console.log("selectorSections " +JSON.stringify(vm.selectorSections));
+          //console.log("currentSectionId " +JSON.stringify(vm.currentSectionId));
+          // re/establish selected section (id has been changed by add / delete, or page change)
+          if (vm.currentSectionId !== null) {
+            vm.currentSection = _.find(vm.currentPage.sections,
+                {surveySectionId: vm.currentSectionId.surveySectionId});
+
+            // if current page has any section, make first one as selected
+            if (vm.currentSection !== null && vm.currentSection.questions.length > 0) {
+              vm.currentQuestionId = {key: vm.currentSection.questions[0].key,
+                surveyQuestionId: vm.currentSection.questions[0].surveyQuestionId};
+            }
+            //console.log("-----??----- BEFORE QUESTION PROPAGATE  ");
+            //console.log("currentPage " +JSON.stringify(vm.currentPage));
+            //console.log("currentSection " +JSON.stringify(vm.currentSection));
+          }
         }
         propagateQuestionChange();
       };
@@ -125,178 +130,190 @@ angular.module('myApp.controllers').
       //  -----------------
       //
       var propagateQuestionChange = function() {
-        console.log('propagateQuestionChange ' + JSON.stringify($scope.currentQuestion));
+        console.log('propagateQuestionChange ' + JSON.stringify(vm.currentQuestion));
 
-        $scope.currentValueOption = null;
-        $scope.selectorQuestions = [];
-        if ($scope.currentSectionId !== null) {
-          for (var i = 0; i < $scope.currentSection.questions.length; i++) {
-            var question = $scope.currentSection.questions[i];
-            $scope.selectorQuestions.push({key: question.key,
+        vm.currentValueOption = null;
+        vm.selectorQuestions = [];
+        if (vm.currentSectionId !== null) {
+          for (var i = 0; i < vm.currentSection.questions.length; i++) {
+            var question = vm.currentSection.questions[i];
+            vm.selectorQuestions.push({key: question.key,
                 surveyQuestionId: question.surveyQuestionId});
           }
         }
 
-        if ($scope.currentSectionId !== null) {
-          //console.log("Questions " +JSON.stringify($scope.currentSection.questions));
-          //console.log("selectorQuestions " +JSON.stringify($scope.selectorQuestions));
-          //console.log("currentQuestionId " +JSON.stringify($scope.currentQuestionId));
+        if (vm.currentSectionId !== null) {
+          //console.log("Questions " +JSON.stringify(vm.currentSection.questions));
+          //console.log("selectorQuestions " +JSON.stringify(vm.selectorQuestions));
+          //console.log("currentQuestionId " +JSON.stringify(vm.currentQuestionId));
         }
         // re/establish selected section (id has been changed by add / delete, or page change)
-        if ($scope.currentQuestionId !== null) {
-          $scope.currentQuestion = _.find($scope.currentSection.questions,
-                {surveyQuestionId: $scope.currentQuestionId.surveyQuestionId});
+        if (vm.currentQuestionId !== null) {
+          vm.currentQuestion = _.find(vm.currentSection.questions,
+                {surveyQuestionId: vm.currentQuestionId.surveyQuestionId});
         }
 
         console.log('EXIT propagateQuestionChange ' +
-         JSON.stringify($scope.currentQuestion));
+         JSON.stringify(vm.currentQuestion));
       };
       //
       //  -----------------
       //
-      $scope.addPage = function() {
+      vm.addPage = function() {
         console.log('addPage');
         var page = {
           surveyPageId: pagesCount,
           sections: [],
-          key: $scope.currentPageKey.trim(),
+          key: vm.currentPageKey.trim(),
           html: ''
         };
         if (page.key === '') {
           page.key = 'P' + page.surveyPageId;
         }
         pagesCount++;
-        $scope.pages.push(page);
-        $scope.currentPageId = {key: page.key, surveyPageId: page.surveyPageId};
+        vm.pages.push(page);
+        vm.currentPageId = {key: page.key, surveyPageId: page.surveyPageId};
         propagatePageChange();
       };
       //
       //  -----------------
       //
-      $scope.editPage = function() {
+      vm.editPage = function() {
         console.log('editPage');
-        $scope.editingElement = aPAGE;
+        vm.editingElement = aPAGE;
         // what is edited HTML/valueOptions
-        $scope.currentlyEditing = aHTML;
+        vm.currentlyEditing = aHTML;
         // element's key value
-        $scope.editingElementKeyValue = $scope.currentPage.key;
+        vm.editingElementKeyValue = vm.currentPage.key;
         // element's HTML value (if appropriate)
-        $scope.editingElementHTMLValue = $scope.currentPage.html;
+        vm.editingElementHTMLValue = vm.currentPage.html;
 
       };
       //
       //  -----------------
       //
-      $scope.removePage = function() {
-        var pageIndex = _.findIndex($scope.pages, {surveyPageId: parseInt($scope.currentPageId)});
+      vm.removePage = function() {
+        if (vm.pages.length === 0) {
+          return;
+        }
+        var pageIndex = _.findIndex(vm.pages, {surveyPageId: vm.currentPageId.surveyPageId});
         console.log('removePage ' + pageIndex);
-        $scope.pages.slice(pageIndex);
-        if ($scope.pages.length === 0)
+        vm.pages.splice(pageIndex, 1);
+        if (vm.pages.length === 0)
         {
-          $scope.currentPage = null;
+          vm.currentPage = null;
+          vm.currentPageId = null;
         }
         else {
-          if ($scope.pages.length - 1 == pageIndex) {
+          if (vm.pages.length === pageIndex) {
             pageIndex--;
           }
-          $scope.currentPage = $scope.pages[pageIndex];
+          vm.currentPage = vm.pages[pageIndex];
+          vm.currentPageId = {key: vm.currentPage.key,
+                              surveyPageId: vm.currentPage.surveyPageId};
         }
         propagatePageChange();
       };
       //
       //  -----------------
       //
-      $scope.pageSelectorChange = function() {
-        console.log('pageSelectorChange $scope.currentPageId ' +
-            JSON.stringify($scope.currentPageId));
-        //var page = _.find($scope.pages, {surveyPageId: parseInt($scope.currentPageId)});
-        //$scope.currentPage = page;
+      vm.pageSelectorChange = function() {
+        console.log('pageSelectorChange vm.currentPageId ' +
+            JSON.stringify(vm.currentPageId));
+        //var page = _.find(vm.pages, {surveyPageId: parseInt(vm.currentPageId)});
+        //vm.currentPage = page;
         propagatePageChange();
       };
       //
       //  -----------------
       //
-      $scope.addSection = function() {
+      vm.addSection = function() {
         console.log('addSection');
         var section = {
           surveySectionId: sectionCount,
           questions: [],
-          key: $scope.currentSectionKey.trim(),
+          key: vm.currentSectionKey.trim(),
           html: ''
         };
         if (section.key === '') {
           section.key = 'S' + section.surveySectionId;
         }
         sectionCount++;
-        $scope.currentPage.sections.push(section);
-        $scope.currentSectionId = {key: section.key, surveySectionId: section.surveySectionId};
+        vm.currentPage.sections.push(section);
+        vm.currentSectionId = {key: section.key, surveySectionId: section.surveySectionId};
 
         propagateSectionChange();
       };
       //
       //  -----------------
       //
-      $scope.editSection = function() {
+      vm.editSection = function() {
         console.log('editSection');
-        $scope.editingElement = aSECTION;
+        vm.editingElement = aSECTION;
         // what is edited HTML/valueOptions
-        $scope.currentlyEditing = aHTML;
+        vm.currentlyEditing = aHTML;
         // element's key value
-        $scope.editingElementKeyValue = $scope.currentSection.key;
+        vm.editingElementKeyValue = vm.currentSection.key;
         // element's HTML value (if appropriate)
-        $scope.editingElementHTMLValue = $scope.currentSection.html;
+        vm.editingElementHTMLValue = vm.currentSection.html;
 
       };
       //
       //  -----------------
       //
-      $scope.removeSection = function() {
+      vm.removeSection = function() {
         console.log('removeSection');
-        var sectionIndex = _.findIndex($scope.currentPage.sections,
-              {surveySectionId: parseInt($scope.currentSectionId)});
-        $scope.currentPage.sections.slice(sectionIndex);
-        if ($scope.currentPage.sections.length === 0)
+        if (vm.currentPage === null || vm.currentPage.sections.length === 0) {
+          return;
+        }
+        var sectionIndex = _.findIndex(vm.currentPage.sections,
+              {surveySectionId: vm.currentSectionId.surveySectionId});
+        vm.currentPage.sections.splice(sectionIndex, 1);
+        if (vm.currentPage.sections.length === 0)
         {
-          $scope.currentSection = null;
+          vm.currentSection = null;
+          vm.currentSectionId = null;
         }
         else {
-          if ($scope.currentPage.sections.length - 1 == sectionIndex) {
+          if (vm.currentPage.sections.length === sectionIndex) {
             sectionIndex--;
           }
-          $scope.currentSection = $scope.currentPage.sections[sectionIndex];
+          vm.currentSection = vm.currentPage.sections[sectionIndex];
+          vm.currentSectionId = {key: vm.currentSection.key,
+                                 surveySectionId: vm.currentSection.surveySectionId};
         }
         propagateSectionChange();
       };
       //
       //  -----------------
       //
-      $scope.sectionSelectorChange = function() {
+      vm.sectionSelectorChange = function() {
         console.log('sectionSelectorChange');
-        //console.log("--currentSectionId " +JSON.stringify($scope.currentSectionId));
-        //var section = _.find($scope.currentPage.sections,
-        // { surveySectionId: parseInt($scope.currentSectionId)});
-        //$scope.currentSection = section;
+        //console.log("--currentSectionId " +JSON.stringify(vm.currentSectionId));
+        //var section = _.find(vm.currentPage.sections,
+        // { surveySectionId: parseInt(vm.currentSectionId)});
+        //vm.currentSection = section;
         propagateSectionChange();
       };
       //
       //  -----------------
       //
-      $scope.addQuestion = function() {
+      vm.addQuestion = function() {
         console.log('addQuestion');
         var question = {
           surveyQuestionId: questionCount,
           valueOptions: [],
           valueOptionsIsMultivalued: true,
           valueOptionsValueUIType: 'text',
-          key: $scope.currentQuestionKey.trim(),
+          key: vm.currentQuestionKey.trim(),
           html: ''
         };
         if (question.key === '') {
           question.key = 'Q' + question.surveyQuestionId;
         }
         questionCount++;
-        $scope.currentSection.questions.push(question);
-        $scope.currentQuestionId = {key: question.key,
+        vm.currentSection.questions.push(question);
+        vm.currentQuestionId = {key: question.key,
           surveyQuestionId: question.surveyQuestionId};
 
         propagateQuestionChange();
@@ -304,179 +321,185 @@ angular.module('myApp.controllers').
       //
       //  -----------------
       //
-      $scope.editQuestion = function() {
+      vm.editQuestion = function() {
         console.log('editQuestion');
-        $scope.editingElement = aQUESTION;
+        vm.editingElement = aQUESTION;
         // what is edited HTML/valueOptions
-        $scope.currentlyEditing = aHTML;
+        vm.currentlyEditing = aHTML;
         // element's key value
-        $scope.editingElementKeyValue = $scope.currentQuestion.key;
+        vm.editingElementKeyValue = vm.currentQuestion.key;
         // element's HTML value (if appropriate)
-        $scope.editingElementHTMLValue = $scope.currentQuestion.html;
+        vm.editingElementHTMLValue = vm.currentQuestion.html;
       };
       //
       //  -----------------
       //
-      $scope.removeQuestion = function() {
-        console.log('removeQuestion ' + $scope.currentQuestionId);
-        var questionIndex = _.findIndex($scope.currentSection.questions,
-            {surveySectionId: parseInt($scope.currentQuestionId)});
-        $scope.currentSection.questions.slice(questionIndex);
-        if ($scope.currentSection.questions.length === 0)
+      vm.removeQuestion = function() {
+        if (vm.currentSection === null || vm.currentSection.questions.length === 0) {
+          return;
+        }
+        var questionIndex = _.findIndex(vm.currentSection.questions,
+                                        {surveyQuestionId: vm.currentQuestionId.surveyQuestionId});
+        vm.currentSection.questions.splice(questionIndex, 1);
+        if (vm.currentSection.questions.length === 0)
         {
-          $scope.currentQuestion = null;
+          vm.currentQuestion = null;
+          vm.currentQuestionId = null;
         }
         else {
-          if ($scope.currentSection.questions.length - 1 == questionIndex) {
+          if (vm.currentSection.questions.length === questionIndex) {
             questionIndex--;
           }
-          $scope.currentQuestion = $scope.currentSection.questions[questionIndex];
+          vm.currentQuestion = vm.currentSection.questions[questionIndex];
+          vm.currentQuestionId = {key: vm.currentQuestion.key,
+                                  surveyQuestionId: vm.currentQuestion.surveyQuestionId};
         }
         console.log('removeQuestion ' + questionIndex +
-            ' currentSection.questions ' + JSON.stringify($scope.currentSection.questions));
+            ' currentSection.questions ' + JSON.stringify(vm.currentSection.questions));
         propagateQuestionChange();
       };
       //
       //  -----------------
       //
-      $scope.questionSelectorChange = function() {
-        console.log('questionSelectorChange ' + JSON.stringify($scope.currentSection.questions) +
-            ' $scope.currentQuestionId ' + JSON.stringify($scope.currentQuestionId));
-        //var question = _.find($scope.currentSection.questions,
-        // { surveyQuestionId: parseInt($scope.currentQuestionId)});
-        //$scope.currentQuestion = question;
+      vm.questionSelectorChange = function() {
+        console.log('questionSelectorChange ' + JSON.stringify(vm.currentSection.questions) +
+            ' vm.currentQuestionId ' + JSON.stringify(vm.currentQuestionId));
+        //var question = _.find(vm.currentSection.questions,
+        // { surveyQuestionId: parseInt(vm.currentQuestionId)});
+        //vm.currentQuestion = question;
         propagateQuestionChange();
       };
       //
       //  -----------------
       //
-      $scope.valueOptionSelectorChange = function() {
+      vm.valueOptionSelectorChange = function() {
         console.log('valueOptionSelectorChange');
-        var valueOption = _.find($scope.currentQuestion.valueOptions,
-            {surveyQuestionId: parseInt($scope.currentQuestionId)});
-        $scope.currentValueOption = valueOption;
+        var valueOption = _.find(vm.currentQuestion.valueOptions,
+            {surveyQuestionId: parseInt(vm.currentQuestionId)});
+        vm.currentValueOption = valueOption;
         //propagateQuestionChange();
       };
       //
       //  -----------------
       //
-      $scope.editValueOptions = function() {
-        $scope.currentlyEditing = aVALUEOPTIONS;
-        if ($scope.currentQuestion.valueOptions.length === 0) {
-          $scope.addValueOption();
+      vm.editValueOptions = function() {
+        vm.currentlyEditing = aVALUEOPTIONS;
+        if (vm.currentQuestion.valueOptions.length === 0) {
+          vm.addValueOption();
         }
         else {
-          $scope.valueOptionsBackup = JSON.parse(
-              JSON.stringify($scope.currentQuestion.valueOptions));
+          vm.valueOptionsBackup = JSON.parse(
+              JSON.stringify(vm.currentQuestion.valueOptions));
         }
       };
       //
       //  -----------------
       //
-      $scope.addValueOption = function() {
-        if ($scope.currentQuestion.valueOptionsValueUIType === 'text') {
-          $scope.addText();
+      vm.addValueOption = function() {
+        if (vm.currentQuestion.valueOptionsValueUIType === 'text') {
+          vm.addText();
         }
-        if ($scope.currentQuestion.valueOptionsValueUIType === 'radio') {
-          //$scope.addRadio();
+        if (vm.currentQuestion.valueOptionsValueUIType === 'radio') {
+          //vm.addRadio();
         }
       };
       //
       //  -----------------
       //
-      $scope.removeValueOptions = function() {
+      vm.removeValueOptions = function() {
 
       };
       //
       //  -----------------
       //
-      $scope.addRadio = function() {
+      vm.addRadio = function() {
         console.log('addRadio');
-        var valueOptionCount = $scope.currentQuestion.valueOptions.length + 1;
+        var valueOptionCount = vm.currentQuestion.valueOptions.length + 1;
         var valueOption = {
           optionEntries: [],
           label: 'Radio',
-          key: 'Radio.' + $scope.currentPage.surveyPageId + '.' +
-                          $scope.currentSection.surveySectionId + '.' +
-                          $scope.currentQuestion.surveyQuestionId + '.' + valueOptionCount,
+          key: 'Radio.' + vm.currentPage.surveyPageId + '.' +
+                          vm.currentSection.surveySectionId + '.' +
+                          vm.currentQuestion.surveyQuestionId + '.' + valueOptionCount,
           selected: false,
           userValue: '',
           surveyValueOptionId: valueOptionCount
         };
-        $scope.currentQuestion.valueOptions.push(valueOption);
+        vm.currentQuestion.valueOptions.push(valueOption);
       };
 
       //
       //  -----------------
       //
-      $scope.addText = function() {
+      vm.addText = function() {
         console.log('addText');
-        var valueOptionCount = $scope.currentQuestion.valueOptions.length + 1;
+        var valueOptionCount = vm.currentQuestion.valueOptions.length + 1;
         var valueOption = {
           label: 'Text',
 
-          key: 'Text.' + $scope.currentPage.surveyPageId + '.' +
-                        $scope.currentSection.surveySectionId + '.' +
-                        $scope.currentQuestion.surveyQuestionId + '.' + valueOptionCount,
+          key: 'Text.' + vm.currentPage.surveyPageId + '.' +
+                        vm.currentSection.surveySectionId + '.' +
+                        vm.currentQuestion.surveyQuestionId + '.' + valueOptionCount,
           selected: false,
           userValue: '',
           surveyValueOptionId: valueOptionCount
         };
-        $scope.currentQuestion.valueOptions.push(valueOption);
+        vm.currentQuestion.valueOptions.push(valueOption);
       };
       //
       //  -----------------
       //
-      $scope.saveEdit = function() {
-        console.log('saveEdit ' + $scope.currentlyEditing + ' ' + $scope.editingElement);
+      vm.saveEdit = function() {
+        console.log('saveEdit ' + vm.currentlyEditing + ' ' + vm.editingElement);
         // what is edited HTML/valueOptions
         var displayId = null;
 
-        if ($scope.currentlyEditing === aHTML) {
-          if ($scope.editingElement === aPAGE) {
-            $scope.currentPage.key = $scope.editingElementKeyValue;
-            $scope.currentPage.html = $scope.editingElementHTMLValue;
+        if (vm.currentlyEditing === aHTML) {
+          if (vm.editingElement === aPAGE) {
+            vm.currentPage.key = vm.editingElementKeyValue;
+            vm.currentPage.html = vm.editingElementHTMLValue;
             // update display value as well
-            displayId = _.find($scope.selectorPages,
-                {surveyPageId: $scope.currentPageId.surveyPageId});
-            displayId.key = $scope.editingElementKeyValue;
-            console.log('saveEdit P id ' + $scope.currentPage.surveyPageId);
+            displayId = _.find(vm.selectorPages,
+                {surveyPageId: vm.currentPageId.surveyPageId});
+            displayId.key = vm.editingElementKeyValue;
+            console.log('saveEdit P id ' + vm.currentPage.surveyPageId);
           }
-          if ($scope.editingElement === aSECTION) {
-            $scope.currentSection.key = $scope.editingElementKeyValue;
-            $scope.currentSection.html = $scope.editingElementHTMLValue;
+          if (vm.editingElement === aSECTION) {
+            vm.currentSection.key = vm.editingElementKeyValue;
+            vm.currentSection.html = vm.editingElementHTMLValue;
 
             // update display value as well
-            displayId = _.find($scope.selectorSections,
-                {surveySectionId: $scope.currentSectionId.surveySectionId});
-            displayId.key = $scope.editingElementKeyValue;
-            console.log('saveEdit S id ' + $scope.currentSection.surveySectionId);
+            displayId = _.find(vm.selectorSections,
+                {surveySectionId: vm.currentSectionId.surveySectionId});
+            displayId.key = vm.editingElementKeyValue;
+            console.log('saveEdit S id ' + vm.currentSection.surveySectionId);
           }
-          if ($scope.editingElement === aQUESTION) {
-            $scope.currentQuestion.key = $scope.editingElementKeyValue;
-            $scope.currentQuestion.html = $scope.editingElementHTMLValue;
+          if (vm.editingElement === aQUESTION) {
+            vm.currentQuestion.key = vm.editingElementKeyValue;
+            vm.currentQuestion.html = vm.editingElementHTMLValue;
 
             // update display value as well
-            displayId = _.find($scope.selectorQuestions,
-                {surveyQuestionId: $scope.currentQuestionId.surveyQuestionId});
-            displayId.key = $scope.editingElementKeyValue;
-            console.log('saveEdit Q id ' + $scope.currentQuestion.surveyQuestionId);
+            displayId = _.find(vm.selectorQuestions,
+                {surveyQuestionId: vm.currentQuestionId.surveyQuestionId});
+            displayId.key = vm.editingElementKeyValue;
+            console.log('saveEdit Q id ' + vm.currentQuestion.surveyQuestionId);
           }
         }
         // this will close editing dialog
-        $scope.currentlyEditing = '';
+        vm.currentlyEditing = '';
       };
       //
       //  -----------------
       //
-      $scope.cancelEdit = function() {
+      vm.cancelEdit = function() {
         // this will close editing dialog
-        if ($scope.currentlyEditing === aVALUEOPTIONS) {
-          $scope.currentQuestion.valueOptions = $scope.valueOptionsBackup;
+        if (vm.currentlyEditing === aVALUEOPTIONS) {
+          vm.currentQuestion.valueOptions = vm.valueOptionsBackup;
         }
-        $scope.currentlyEditing = '';
-        $scope.valueOptionsBackup = [];
+        vm.currentlyEditing = '';
+        vm.valueOptionsBackup = [];
       };
 
     }]);
 
+})();

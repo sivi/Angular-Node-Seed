@@ -10,6 +10,7 @@
     'myApp.services',
     'myApp.directives',
     'autoComplete',
+    'SurveyCreator',
     'textAngular'
   ]);
 

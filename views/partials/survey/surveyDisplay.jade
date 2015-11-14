@@ -2,7 +2,7 @@
    Created by a on 11/14/2015.
    Survey display
 
-div(ng-repeat="page in pages")
+div(ng-repeat="page in vm.pages")
    div(style="color:red;" ng-bind-html="page.html")
    div(ng-repeat="section in page.sections")
       div(ng-bind-html="section.html")

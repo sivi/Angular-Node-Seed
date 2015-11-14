@@ -6,42 +6,42 @@ div
    label() Page key  {{pages.length}}
 div
    select(name="pageSelector", id="pageSelector",
-          ng-model="currentPageId", ng-change="pageSelectorChange()",
-          ng-options="page.key for page in selectorPages track by page.surveyPageId")
+          ng-model="vm.currentPageId", ng-change="vm.pageSelectorChange()",
+          ng-options="page.key for page in vm.selectorPages track by page.surveyPageId")
           //option(ng-repeat="page in pages", value="{{page.survey_page_id}}") {{page.key}}
 div
    input(class="imageToolButton", type="image", id="addPageButton",
-         ng-click="addPage()", src="css/icons/add.png")
+         ng-click="vm.addPage()", src="css/icons/add.png")
    input(class="imageToolButton", type="image", id="editPageButton",
-         ng-click="editPage()", src="/css/icons/tool.png")
+         ng-click="vm.editPage()", src="/css/icons/tool.png")
    input(class="imageToolButton", type="image", id="addPageButton",
-         ng-click="removePage()", src="css/icons/trash.png")
+         ng-click="vm.removePage()", src="css/icons/trash.png")
 div
    label() Section key
 div
    select(name="sectionSelector", id="sectionSelector",
-          ng-model="currentSectionId", ng-change="sectionSelectorChange()",
-          ng-options="section.key for section in selectorSections track by section.surveySectionId")
+          ng-model="vm.currentSectionId", ng-change="vm.sectionSelectorChange()",
+          ng-options="section.key for section in vm.selectorSections track by section.surveySectionId")
 div
    input(class="imageToolButton", type="image", id="addSectionButton",
-         ng-click="addSection()", src="/css/icons/add.png")
+         ng-click="vm.addSection()", src="/css/icons/add.png")
    input(class="imageToolButton", type="image", id="editSectionButton",
-         ng-click="editSection()", src="/css/icons/tool.png")
+         ng-click="vm.editSection()", src="/css/icons/tool.png")
    input(class="imageToolButton", type="image", id="removeSectionButton",
-         ng-click="removeSection()", src="css/icons/trash.png")
+         ng-click="vm.removeSection()", src="css/icons/trash.png")
 div
    label() Question key
 div
    select(name="questionSelector", id="questionSelector",
-          ng-model="currentQuestionId", ng-change="questionSelectorChange()",
-          ng-options="question.key for question in selectorQuestions track by question.surveyQuestionId")
+          ng-model="vm.currentQuestionId", ng-change="vm.questionSelectorChange()",
+          ng-options="question.key for question in vm.selectorQuestions track by question.surveyQuestionId")
 div
    input(class="imageToolButton", type="image", id="addQuestionButton",
-         ng-click="addQuestion()", src="/css/icons/add.png")
+         ng-click="vm.addQuestion()", src="/css/icons/add.png")
    input(class="imageToolButton", type="image", id="editQuestionButton",
-         ng-click="editQuestion()", src="/css/icons/tool.png")
+         ng-click="vm.editQuestion()", src="/css/icons/tool.png")
    input(class="imageToolButton", type="image", id="removeQuestionButton",
-         ng-click="removeQuestion()", src="css/icons/trash.png")
+         ng-click="vm.removeQuestion()", src="css/icons/trash.png")
 div(ng-show="currentQuestion !== null")
    include ./surveyOptionValueUIElements.jade
 div
