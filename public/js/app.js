@@ -10,6 +10,7 @@
     'myApp.services',
     'myApp.directives',
     'autoComplete',
+    'SurveyCreatorDirective',
     'SurveyCreator',
     'textAngular'
   ]);
@@ -87,6 +88,11 @@
         // DO NOT set controller, if it is set in template !!!
         // controller: 'RestaurantListCtrl'
       }).
+        when('/surveyCreateDirectiveTest', {
+          templateUrl: 'partials/survey/surveyCreateDirectiveTest',
+          controller: 'SurveyCreateDirectiveTestController',
+          controllerAs: 'vm'
+        }).
       when('/404', { // redirect outside of current app
                      // http://stackoverflow.com/questions/19321765
                      // /using-routeprovider-to-redirect-to-routes-outside-of-angular

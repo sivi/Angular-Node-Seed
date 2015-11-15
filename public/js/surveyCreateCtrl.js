@@ -5,53 +5,73 @@
 'use strict';
 angular.module('SurveyCreator', []);
 
-angular.module('SurveyCreator').
-  controller('SurveyCreateCtrl',
-  ['$rootScope', '$routeParams', '$location', 'CsrfService',
-    function ($rootScope, $routeParams, $location, CsrfService) {
+angular.module('SurveyCreator').controller('SurveyCreateCtrl', SurveyCreateCtrl);
 
-      var vm = this;
+SurveyCreateCtrl.$inject = ['$rootScope', '$scope', '$routeParams', '$location', 'CsrfService'];
 
-      // constants
-      var aPAGE = 'page';
-      var aSECTION = 'section';
-      var aQUESTION = 'question';
-      var aHTML = 'HTML';
-      var aVALUEOPTIONS = 'valueOptions';
+function SurveyCreateCtrl($rootScope, $scope, $routeParams, $location, CsrfService) {
 
-      vm.pages = [];
-      vm.selectorPages = [];   // a copy of {page.key, page.surveyPageId} pairs
-      vm.currentPage = null;
-      vm.currentPageId = null; // contains page.surveyPageId
-      vm.selectorSections = []; // a copy of {section.key, section.surveyPageId} pairs
-      vm.currentSection = null;
-      vm.currentSectionId = null; // contains section.surveySectionId
-      vm.selectorQuestions = []; // a copy of {question.key, question.surveyPageId} pairs
-      vm.currentQuestion = null;
-      vm.currentQuestionId = null; // contains question.surveyQuestionId
-      vm.currentValueOption = null;
-      vm.currentPageKey = '';
-      vm.currentSectionKey = '';
-      vm.currentQuestionKey = '';
-      vm.valueOptionsBackup = []; // fall back of value options if user cancels edit
+  console.log('SurveyCreateCtrl');
 
-      var pagesCount = 0;
-      var sectionCount = 0;
-      var questionCount = 0;
-      //
-      // which of the current page/section/question/valueOptions is edited?
-      vm.editingElement = '';
-      // what is edited HTML/valueOptions
-      vm.currentlyEditing = '';
-      // element's key value
-      vm.editingElementKeyValue = '';
-      // element's HTML value (if appropriate)
-      vm.editingElementHTMLValue = '';
+  var vm = this;
 
-      //
-      //  -----------------
-      //
-      var propagatePageChange = function() {
+  // constants
+  var aPAGE = 'page';
+  var aSECTION = 'section';
+  var aQUESTION = 'question';
+  var aHTML = 'HTML';
+  var aVALUEOPTIONS = 'valueOptions';
+
+  vm.pages = [];
+  vm.selectorPages = [];   // a copy of {page.key, page.surveyPageId} pairs
+  vm.currentPage = null;
+  vm.currentPageId = null; // contains page.surveyPageId
+  vm.selectorSections = []; // a copy of {section.key, section.surveyPageId} pairs
+  vm.currentSection = null;
+  vm.currentSectionId = null; // contains section.surveySectionId
+  vm.selectorQuestions = []; // a copy of {question.key, question.surveyPageId} pairs
+  vm.currentQuestion = null;
+  vm.currentQuestionId = null; // contains question.surveyQuestionId
+  vm.currentValueOption = null;
+  vm.currentPageKey = '';
+  vm.currentSectionKey = '';
+  vm.currentQuestionKey = '';
+  vm.valueOptionsBackup = []; // fall back of value options if user cancels edit
+
+  var pagesCount = 0;
+  var sectionCount = 0;
+  var questionCount = 0;
+  //
+  // which of the current page/section/question/valueOptions is edited?
+  vm.editingElement = '';
+  // what is edited HTML/valueOptions
+  vm.currentlyEditing = '';
+  // element's key value
+  vm.editingElementKeyValue = '';
+  // element's HTML value (if appropriate)
+  vm.editingElementHTMLValue = '';
+
+  // register itself with the parent, so that parent can access members
+  if (typeof $scope.domainData !== 'undefined') {
+    $scope.domainData.child = this;
+  }
+
+  vm.callChild = function() {
+    alert('CCCC');
+  };
+  vm.addNewSurvey = function () {
+    alert('addNewSurvey');
+  };
+  vm. editExistingSurvey = function () {
+    alert('editExistingSurvey');
+  };
+  vm.commitChanges = function() {
+    $scope.domainData.commitChanges();
+  };
+  //
+  //  -----------------
+  //
+  var propagatePageChange = function() {
         console.log('propagatePageChange');
         // page has changed, so section must be anew
         vm.currentSectionId = null;
@@ -90,10 +110,10 @@ angular.module('SurveyCreator').
         }
         propagateSectionChange();
       };
-      //
-      //  -----------------
-      //
-      var propagateSectionChange = function() {
+  //
+  //  -----------------
+  //
+  var propagateSectionChange = function() {
         console.log('propagateSectionChange');
         // question must be established anew
         vm.currentQuestionId = null;
@@ -126,10 +146,10 @@ angular.module('SurveyCreator').
         }
         propagateQuestionChange();
       };
-      //
-      //  -----------------
-      //
-      var propagateQuestionChange = function() {
+  //
+  //  -----------------
+  //
+  var propagateQuestionChange = function() {
         console.log('propagateQuestionChange ' + JSON.stringify(vm.currentQuestion));
 
         vm.currentValueOption = null;
@@ -156,10 +176,10 @@ angular.module('SurveyCreator').
         console.log('EXIT propagateQuestionChange ' +
          JSON.stringify(vm.currentQuestion));
       };
-      //
-      //  -----------------
-      //
-      vm.addPage = function() {
+  //
+  //  -----------------
+  //
+  vm.addPage = function() {
         console.log('addPage');
         var page = {
           surveyPageId: pagesCount,
@@ -175,10 +195,10 @@ angular.module('SurveyCreator').
         vm.currentPageId = {key: page.key, surveyPageId: page.surveyPageId};
         propagatePageChange();
       };
-      //
-      //  -----------------
-      //
-      vm.editPage = function() {
+  //
+  //  -----------------
+  //
+  vm.editPage = function() {
         console.log('editPage');
         vm.editingElement = aPAGE;
         // what is edited HTML/valueOptions
@@ -189,10 +209,10 @@ angular.module('SurveyCreator').
         vm.editingElementHTMLValue = vm.currentPage.html;
 
       };
-      //
-      //  -----------------
-      //
-      vm.removePage = function() {
+  //
+  //  -----------------
+  //
+  vm.removePage = function() {
         if (vm.pages.length === 0) {
           return;
         }
@@ -214,20 +234,20 @@ angular.module('SurveyCreator').
         }
         propagatePageChange();
       };
-      //
-      //  -----------------
-      //
-      vm.pageSelectorChange = function() {
+  //
+  //  -----------------
+  //
+  vm.pageSelectorChange = function() {
         console.log('pageSelectorChange vm.currentPageId ' +
             JSON.stringify(vm.currentPageId));
         //var page = _.find(vm.pages, {surveyPageId: parseInt(vm.currentPageId)});
         //vm.currentPage = page;
         propagatePageChange();
       };
-      //
-      //  -----------------
-      //
-      vm.addSection = function() {
+  //
+  //  -----------------
+  //
+  vm.addSection = function() {
         console.log('addSection');
         var section = {
           surveySectionId: sectionCount,
@@ -244,10 +264,10 @@ angular.module('SurveyCreator').
 
         propagateSectionChange();
       };
-      //
-      //  -----------------
-      //
-      vm.editSection = function() {
+  //
+  //  -----------------
+  //
+  vm.editSection = function() {
         console.log('editSection');
         vm.editingElement = aSECTION;
         // what is edited HTML/valueOptions
@@ -258,10 +278,10 @@ angular.module('SurveyCreator').
         vm.editingElementHTMLValue = vm.currentSection.html;
 
       };
-      //
-      //  -----------------
-      //
-      vm.removeSection = function() {
+  //
+  //  -----------------
+  //
+  vm.removeSection = function() {
         console.log('removeSection');
         if (vm.currentPage === null || vm.currentPage.sections.length === 0) {
           return;
@@ -284,10 +304,10 @@ angular.module('SurveyCreator').
         }
         propagateSectionChange();
       };
-      //
-      //  -----------------
-      //
-      vm.sectionSelectorChange = function() {
+  //
+  //  -----------------
+  //
+  vm.sectionSelectorChange = function() {
         console.log('sectionSelectorChange');
         //console.log("--currentSectionId " +JSON.stringify(vm.currentSectionId));
         //var section = _.find(vm.currentPage.sections,
@@ -295,10 +315,10 @@ angular.module('SurveyCreator').
         //vm.currentSection = section;
         propagateSectionChange();
       };
-      //
-      //  -----------------
-      //
-      vm.addQuestion = function() {
+  //
+  //  -----------------
+  //
+  vm.addQuestion = function() {
         console.log('addQuestion');
         var question = {
           surveyQuestionId: questionCount,
@@ -318,10 +338,10 @@ angular.module('SurveyCreator').
 
         propagateQuestionChange();
       };
-      //
-      //  -----------------
-      //
-      vm.editQuestion = function() {
+  //
+  //  -----------------
+  //
+  vm.editQuestion = function() {
         console.log('editQuestion');
         vm.editingElement = aQUESTION;
         // what is edited HTML/valueOptions
@@ -331,10 +351,10 @@ angular.module('SurveyCreator').
         // element's HTML value (if appropriate)
         vm.editingElementHTMLValue = vm.currentQuestion.html;
       };
-      //
-      //  -----------------
-      //
-      vm.removeQuestion = function() {
+  //
+  //  -----------------
+  //
+  vm.removeQuestion = function() {
         if (vm.currentSection === null || vm.currentSection.questions.length === 0) {
           return;
         }
@@ -358,10 +378,10 @@ angular.module('SurveyCreator').
             ' currentSection.questions ' + JSON.stringify(vm.currentSection.questions));
         propagateQuestionChange();
       };
-      //
-      //  -----------------
-      //
-      vm.questionSelectorChange = function() {
+  //
+  //  -----------------
+  //
+  vm.questionSelectorChange = function() {
         console.log('questionSelectorChange ' + JSON.stringify(vm.currentSection.questions) +
             ' vm.currentQuestionId ' + JSON.stringify(vm.currentQuestionId));
         //var question = _.find(vm.currentSection.questions,
@@ -369,20 +389,20 @@ angular.module('SurveyCreator').
         //vm.currentQuestion = question;
         propagateQuestionChange();
       };
-      //
-      //  -----------------
-      //
-      vm.valueOptionSelectorChange = function() {
+  //
+  //  -----------------
+  //
+  vm.valueOptionSelectorChange = function() {
         console.log('valueOptionSelectorChange');
         var valueOption = _.find(vm.currentQuestion.valueOptions,
             {surveyQuestionId: parseInt(vm.currentQuestionId)});
         vm.currentValueOption = valueOption;
         //propagateQuestionChange();
       };
-      //
-      //  -----------------
-      //
-      vm.editValueOptions = function() {
+  //
+  //  -----------------
+  //
+  vm.editValueOptions = function() {
         vm.currentlyEditing = aVALUEOPTIONS;
         if (vm.currentQuestion.valueOptions.length === 0) {
           vm.addValueOption();
@@ -392,10 +412,10 @@ angular.module('SurveyCreator').
               JSON.stringify(vm.currentQuestion.valueOptions));
         }
       };
-      //
-      //  -----------------
-      //
-      vm.addValueOption = function() {
+  //
+  //  -----------------
+  //
+  vm.addValueOption = function() {
         if (vm.currentQuestion.valueOptionsValueUIType === 'text') {
           vm.addText();
         }
@@ -403,16 +423,16 @@ angular.module('SurveyCreator').
           //vm.addRadio();
         }
       };
-      //
-      //  -----------------
-      //
-      vm.removeValueOptions = function() {
+  //
+  //  -----------------
+  //
+  vm.removeValueOptions = function() {
 
-      };
-      //
-      //  -----------------
-      //
-      vm.addRadio = function() {
+  };
+  //
+  //  -----------------
+  //
+  vm.addRadio = function() {
         console.log('addRadio');
         var valueOptionCount = vm.currentQuestion.valueOptions.length + 1;
         var valueOption = {
@@ -428,10 +448,10 @@ angular.module('SurveyCreator').
         vm.currentQuestion.valueOptions.push(valueOption);
       };
 
-      //
-      //  -----------------
-      //
-      vm.addText = function() {
+  //
+  //  -----------------
+  //
+  vm.addText = function() {
         console.log('addText');
         var valueOptionCount = vm.currentQuestion.valueOptions.length + 1;
         var valueOption = {
@@ -446,10 +466,10 @@ angular.module('SurveyCreator').
         };
         vm.currentQuestion.valueOptions.push(valueOption);
       };
-      //
-      //  -----------------
-      //
-      vm.saveEdit = function() {
+  //
+  //  -----------------
+  //
+  vm.saveEdit = function() {
         console.log('saveEdit ' + vm.currentlyEditing + ' ' + vm.editingElement);
         // what is edited HTML/valueOptions
         var displayId = null;
@@ -488,10 +508,10 @@ angular.module('SurveyCreator').
         // this will close editing dialog
         vm.currentlyEditing = '';
       };
-      //
-      //  -----------------
-      //
-      vm.cancelEdit = function() {
+  //
+  //  -----------------
+  //
+  vm.cancelEdit = function() {
         // this will close editing dialog
         if (vm.currentlyEditing === aVALUEOPTIONS) {
           vm.currentQuestion.valueOptions = vm.valueOptionsBackup;
@@ -500,6 +520,6 @@ angular.module('SurveyCreator').
         vm.valueOptionsBackup = [];
       };
 
-    }]);
+}
 
 })();
