@@ -20,3 +20,4 @@ div(ng-repeat="page in vm.pages")
                   input(type="radio", name="{{valueOption.key}}", value="{{optionEntry.key}}"
                        ng-model="valueOption.userValue", ng-required="true")
 
+input(type="button", value="Submit", ng-click="vm.submitSurvey()")

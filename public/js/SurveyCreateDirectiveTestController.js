@@ -14,15 +14,15 @@
     var vm = this;
     console.log('SurveyCreateDirectiveTestController');
     $scope.One = {
-      testProp: 'A Prop',
-      commitChanges: function() { vm.commitChanges(); }
+      surveyEditor: null,
+      parentController: vm
     };
 
     vm.addNew = function() {
-      $scope.One.child.addNewSurvey();
+      $scope.One.surveyEditor.addNewSurvey();
     };
     vm.editExisting = function() {
-      $scope.One.child.editExistingSurvey();
+      $scope.One.surveyEditor.editExistingSurvey();
     };
     vm.commitChanges = function() {
       alert('vm.commitChanges');

@@ -45,4 +45,4 @@ div
 div(ng-show="currentQuestion !== null")
    include ./surveyOptionValueUIElements.jade
 div
-   input(type="submit", value="Save")
+   input(type="button", value="Save", ng-click="vm.saveSurveyEditing()")
