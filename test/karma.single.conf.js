@@ -29,7 +29,7 @@ module.exports = function(config) {
       'public/js/userControllers.js',
       'public/js/toggleController.js',
       'public/js/sortableTableController.js',
-      'public/js/surveyCreateCtrl.js',
+      '../public/js/Survey/surveyCreateCtrl.js',
       'public/js/svgDiagramController.js',
       'public/js/filters.js',
       'public/js/directives/directives.js',

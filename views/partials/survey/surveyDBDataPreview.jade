@@ -1,0 +1,21 @@
+//
+   Created by a on 11/14/2015.
+   Survey display
+table(border="1")
+   tr(ng-repeat="row in vm.surveyDBDataLayout")
+      td
+         | {{row.pageKey}}
+      td
+         | {{row.sectionKey}}
+      td
+         | {{row.questionKey}}
+      td
+         table(border="1")
+            tr(ng-repeat="optionRow in row.valueOutput")
+              td
+                 | {{optionRow.key}}
+              td
+                 | {{optionRow.value}}
+
+
+input(type="button", value="Close preview", ng-click="vm.closeDBDataPreview()")

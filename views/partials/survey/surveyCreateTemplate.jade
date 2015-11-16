@@ -7,6 +7,9 @@ form(name="Survey")
          include ./surveyCreateNavigator.jade
       div(class="pure-u-5-6")
          div(ng-show="vm.currentlyEditing === ''")
-            include ./surveyDisplay.jade
+            div(ng-if="!vm.showDBDatapreview")
+               include ./surveyDisplay.jade
+            div(ng-if="vm.showDBDatapreview")
+               include ./surveyDBDataPreview.jade
          div(ng-show="vm.currentlyEditing !== ''")
             include ./surveyElementEditor.jade

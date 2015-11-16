@@ -1,23 +1,31 @@
 //
    Created by a on 11/14/2015.
    Survey display
-
+//| Current page {{vm.currentlyDisplayedPage}}
 div(ng-repeat="page in vm.pages")
-   div(style="color:red;" ng-bind-html="page.html")
-   div(ng-repeat="section in page.sections")
-      div(ng-bind-html="section.html")
-      div(ng-repeat="question in section.questions")
-         div(ng-bind-html="question.html")
-         div(ng-repeat="valueOption in question.valueOptions")
-            label(ng-if="question.valueOptionsValueUIType == 'text'",
-                  for="{{valueOption.key}}") {{valueOption.label}}:
-               input(type="text", name="{{valueOption.key}}",
-                  ng-model="valueOption.userValue", ng-required="false")
-            label(ng-if="question.valueOptionsValueUIType == 'radio'",
-                  for="{{valueOption.key}}") {{valueOption.label}}:
-               div(ng-repeat="optionEntry in valueOption.optionEntries")
-                  label {{optionEntry.label}}
-                  input(type="radio", name="{{valueOption.key}}", value="{{optionEntry.key}}"
-                       ng-model="valueOption.userValue", ng-required="true")
+   div(ng-show="vm.displayThisPage(page)")
+      div(style="color:red;" ng-bind-html="page.html")
+      div(ng-repeat="section in page.sections")
+         div(ng-bind-html="section.html")
+         div(ng-repeat="question in section.questions")
+            div(ng-bind-html="question.html")
+            div(ng-repeat="valueOption in question.valueOptions")
+               label(ng-if="question.valueOptionsValueUIType == 'text'",
+                     for="{{valueOption.key}}") {{valueOption.label}}:
+                  input(type="text", name="{{valueOption.key}}",
+                     ng-model="valueOption.userValue", ng-required="false")
+               label(ng-if="question.valueOptionsValueUIType == 'radio'",
+                     for="{{valueOption.key}}") {{valueOption.label}}:
+                  div(ng-repeat="optionEntry in valueOption.optionEntries")
+                     label {{optionEntry.label}}
+                     input(type="radio", name="{{valueOption.key}}", value="{{optionEntry.key}}"
+                          ng-model="valueOption.userValue", ng-required="true")
 
-input(type="button", value="Submit", ng-click="vm.submitSurvey()")
+div(ng-show="vm.currentlyDisplayedPage > 0")
+   input(type="button", value="Previous", ng-click="vm.previousPage()")
+
+div(ng-show="vm.currentlyDisplayedPage + 1 < vm.pages.length")
+   input(type="button", value="Next", ng-click="vm.nextPage()")
+
+div(ng-show="vm.currentlyDisplayedPage + 1 === vm.pages.length")
+   input(type="button", value="Submit", ng-click="vm.submitSurvey()")
