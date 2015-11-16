@@ -1,6 +1,12 @@
 //
    Created by a on 11/14/2015.
    Survey display
+
+h3  Format of the data as they will be stored into database.
+|     Please, verify that your keys proffer enough distinction
+|     among data and that are recognizable enough for further processing
+p
+
 table(border="1")
    tr(ng-repeat="row in vm.surveyDBDataLayout")
       td
@@ -14,6 +20,8 @@ table(border="1")
             tr(ng-repeat="optionRow in row.valueOutput")
               td
                  | {{optionRow.key}}
+              td
+                 p
               td
                  | {{optionRow.value}}
 
