@@ -52,14 +52,10 @@ var SurveyEditorNavigation = (function(vm) {
         var page = vm.pages[i];
         vm.selectorPages.push({key: page.key, surveyPageId: page.surveyPageId});
       }
-      //console.log("Pages " +JSON.stringify(vm.pages));
-      //console.log("selectorPages " +JSON.stringify(vm.selectorPages));
-      //console.log("currentPageId " +JSON.stringify(vm.currentPageId));
 
       // re/establish selected page (id has been changed by add / delete)
       if (vm.currentPageId !== null) {
-        //vm.currentPage =
-        // _.find(vm.pages, { surveyPageId: parseInt(vm.currentPageId)});
+
         vm.currentPage =
             _.find(vm.pages, {surveyPageId: vm.currentPageId.surveyPageId});
 
@@ -72,14 +68,6 @@ var SurveyEditorNavigation = (function(vm) {
             surveySectionId: vm.currentPage.sections[0].surveySectionId};
 
         }
-        /*
-         else {
-         vm.currentSectionId = null;
-         vm.currentSection = null;
-         }
-         */
-        //console.log("---------- BEFORE SECTION PROPAGATE  ");
-        //console.log("currentPage " +JSON.stringify(vm.currentPage));
       }
       vm.propagateSectionChange();
     };
@@ -99,9 +87,6 @@ var SurveyEditorNavigation = (function(vm) {
           vm.selectorSections.push({key: section.key,
             surveySectionId: section.surveySectionId});
         }
-        //console.log("Sections " +JSON.stringify(vm.currentPage.sections));
-        //console.log("selectorSections " +JSON.stringify(vm.selectorSections));
-        //console.log("currentSectionId " +JSON.stringify(vm.currentSectionId));
         // re/establish selected section (id has been changed by add / delete, or page change)
         if (vm.currentSectionId !== null) {
           vm.currentSection = _.find(vm.currentPage.sections,
@@ -112,9 +97,6 @@ var SurveyEditorNavigation = (function(vm) {
             vm.currentQuestionId = {key: vm.currentSection.questions[0].key,
               surveyQuestionId: vm.currentSection.questions[0].surveyQuestionId};
           }
-          //console.log("-----??----- BEFORE QUESTION PROPAGATE  ");
-          //console.log("currentPage " +JSON.stringify(vm.currentPage));
-          //console.log("currentSection " +JSON.stringify(vm.currentSection));
         }
       }
       vm.propagateQuestionChange();
@@ -135,11 +117,6 @@ var SurveyEditorNavigation = (function(vm) {
         }
       }
 
-      if (vm.currentSectionId !== null) {
-        //console.log("Questions " +JSON.stringify(vm.currentSection.questions));
-        //console.log("selectorQuestions " +JSON.stringify(vm.selectorQuestions));
-        //console.log("currentQuestionId " +JSON.stringify(vm.currentQuestionId));
-      }
       // re/establish selected section (id has been changed by add / delete, or page change)
       if (vm.currentQuestionId !== null) {
         vm.currentQuestion = _.find(vm.currentSection.questions,

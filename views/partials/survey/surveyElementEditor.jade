@@ -19,7 +19,7 @@ div(ng-show="vm.currentlyEditing === 'valueOptions'")
       label(for="addValueOptionButton") Add field
    div(ng-repeat="valueOption in vm.currentQuestion.valueOptions")
 
-      div(ng-show="vm.currentQuestion.valueOptionsValueUIType === 'text'")
+      div(ng-if="vm.currentQuestion.valueOptionsValueUIType === 'text'")
          label() Label:
          input(type="text", name="{{valueOption.htmlName}}.Label",
                ng-model="valueOption.label", ng-required="false")
@@ -33,7 +33,7 @@ div(ng-show="vm.currentlyEditing === 'valueOptions'")
             i(class="fa fa-trash")
 
 
-      div(ng-show="vm.currentQuestion.valueOptionsValueUIType === 'radio'")
+      div(ng-if="vm.currentQuestion.valueOptionsValueUIType === 'radio'")
          label(for=id="addRadioButton") Add radio
          input(class="imageToolButton", type="image", id="addRadioButton",
             ng-click="vm.addEntryOption(valueOption.surveyValueOptionId)", src="/css/icons/add.png")
@@ -62,13 +62,14 @@ div(ng-show="vm.currentlyEditing === 'valueOptions'")
                i(class="fa fa-trash")
 
 
-      div(ng-show="vm.currentQuestion.valueOptionsValueUIType === 'star'")
+      div(ng-if="vm.currentQuestion.valueOptionsValueUIType === 'star'")
          label() Label:
          input(type="text", name="{{valueOption.htmlName}}.Label",
          ng-model="valueOption.label", ng-required="false")
          label() Key:
          input(type="text", name="{{valueOption.htmlName}}.Key",
          ng-model="valueOption.key", ng-required="false")
+         label() Max stars
          input(type="text", name="{{valueOption.htmlName}}.Max",
             ng-model="valueOption.maxStarsValue", ng-required="true")
          label() Required field

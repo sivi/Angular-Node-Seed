@@ -66,7 +66,7 @@ var SurveyValueEntryFieldEditor = (function(vm) {
         htmlName: 'StarRating.' + vm.currentPage.surveyPageId + '.' +
         vm.currentSection.surveySectionId + '.' +
         vm.currentQuestion.surveyQuestionId + '.' + valueOptionIndex,
-        userValue: '5',
+        userValue: 0,
         maxStarsValue: 10,
         isRequired: false,
         surveyValueOptionId: valueOptionIndex

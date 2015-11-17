@@ -25,12 +25,23 @@ var SurveyDisplay = (function(vm) {
     //
     vm.nextPage = function() {
       vm.currentlyDisplayedPage++;
+      vm.updateEditorNavigationFromDisplay();
     };
     //
     //  -----------------
     //
     vm.previousPage = function() {
       vm.currentlyDisplayedPage--;
+      vm.updateEditorNavigationFromDisplay();
+    };
+    //
+    //  -----------------
+    //
+    vm.updateEditorNavigationFromDisplay = function() {
+      if (typeof vm.selectorPages  !== 'undefined') {
+        vm.currentPageId = vm.selectorPages[vm.currentlyDisplayedPage];
+        vm.propagatePageChange();
+      }
     };
     //
     //  -----------------
