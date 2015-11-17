@@ -23,7 +23,7 @@ var SurveyStructureEditor = (function(vm) {
     vm.addPage = function() {
       console.log('addPage');
       var page = {
-        surveyPageId: vm.pagesCount,
+        surveyPageId: vm.getNewPageIndex(),
         sections: [],
         key: vm.currentPageKey.trim(),
         html: ''
@@ -91,7 +91,7 @@ var SurveyStructureEditor = (function(vm) {
     vm.addSection = function() {
       console.log('addSection');
       var section = {
-        surveySectionId: vm.sectionCount,
+        surveySectionId: vm.getNewSectionIndex(),
         questions: [],
         key: vm.currentSectionKey.trim(),
         html: ''
@@ -162,7 +162,7 @@ var SurveyStructureEditor = (function(vm) {
     vm.addQuestion = function() {
       console.log('addQuestion');
       var question = {
-        surveyQuestionId: vm.questionCount,
+        surveyQuestionId: vm.getNewQuestionIndex(),
         valueOptions: [],
         valueOptionsIsMultivalued: true,
         valueOptionsValueUIType: 'text',
@@ -215,7 +215,6 @@ var SurveyStructureEditor = (function(vm) {
         vm.currentQuestionId = {key: vm.currentQuestion.key,
           surveyQuestionId: vm.currentQuestion.surveyQuestionId};
       }
-      vm.updateHtmlBindPaths();
 
       console.log('removeQuestion ' + questionIndex +
           ' currentSection.questions ' + JSON.stringify(vm.currentSection.questions));
@@ -263,14 +262,13 @@ var SurveyStructureEditor = (function(vm) {
         vm.addText();
       }
       if (vm.currentQuestion.valueOptionsValueUIType === 'radio') {
-        //vm.addRadio();
+        vm.addRadio();
       }
     };
     //
     //  -----------------
     //
     vm.removeValueOptions = function() {
-      vm.updateHtmlBindPaths();
     };
     //
     //  -----------------
@@ -324,6 +322,42 @@ var SurveyStructureEditor = (function(vm) {
       }
       vm.currentlyEditing = '';
       vm.valueOptionsBackup = [];
+    };
+    //
+    //  -----------------
+    //
+    vm.getNewPageIndex = function() {
+      var index = -1;
+      for (var i = 0; i < vm.pages.length; i++) {
+        if (vm.pages[i].surveyPageId > index) {
+          index = vm.pages[i].surveyPageId;
+        }
+      }
+      return index + 1;
+    };
+    //
+    //  -----------------
+    //
+    vm.getNewSectionIndex = function() {
+      var index = -1;
+      for (var i = 0; i < vm.currentPage.sections.length; i++) {
+        if (vm.currentPage.sections[i].surveySectionId > index) {
+          index = vm.currentPage.sections[i].surveySectionId;
+        }
+      }
+      return index + 1;
+    };
+    //
+    //  -----------------
+    //
+    vm.getNewQuestionIndex = function() {
+      var index = -1;
+      for (var i = 0; i < vm.currentSection.questions.length; i++) {
+        if (vm.currentSection.questions[i].surveyQuestionId > index) {
+          index = vm.currentSection.questions[i].surveyQuestionId;
+        }
+      }
+      return index + 1;
     };
   };
   return {

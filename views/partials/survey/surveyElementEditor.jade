@@ -14,15 +14,49 @@ div(ng-show="vm.currentlyEditing === 'HTML'")
 div(ng-show="vm.currentlyEditing === 'valueOptions'")
    | Question key: {{currentQuestion.key}}
    div(ng-show="vm.currentQuestion.valueOptionsIsMultivalued")
-      input(class="imageToolButton", type="image", id="addQuestionButton",
+      input(class="imageToolButton", type="image", id="addValueOptionButton",
       ng-click="vm.addValueOption()", src="/css/icons/add.png")
+      label(for="addValueOptionButton") Add field
    div(ng-repeat="valueOption in vm.currentQuestion.valueOptions")
 
       div(ng-show="vm.currentQuestion.valueOptionsValueUIType === 'text'")
          label() Label:
-         input(type="text", name="{{valueOption.key}}",
+         input(type="text", name="{{valueOption.htmlName}}.Label",
                ng-model="valueOption.label", ng-required="false")
          label() Key:
-         input(type="text", name="{{valueOption.key}}",
+         input(type="text", name="{{valueOption.htmlName}}.Key",
                ng-model="valueOption.key", ng-required="false")
+         label() Required field
+         input(type="checkbox", name="{{valueOption.htmlName}}.Require",
+               ng-model="valueOption.isRequired", ng-required="false")
+         button(class="pure-button", ng-click="vm.deleteValueOption(valueOption.surveyValueOptionId);")
+            i(class="fa fa-trash")
 
+
+      div(ng-show="vm.currentQuestion.valueOptionsValueUIType === 'radio'")
+         label(for=id="addRadioButton") Add radio
+         input(class="imageToolButton", type="image", id="addRadioButton",
+            ng-click="vm.addEntryOption(valueOption.surveyValueOptionId)", src="/css/icons/add.png")
+
+         label() Field label:
+         input(type="text", name="{{valueOption.htmlName}}.Label",
+               ng-model="valueOption.label", ng-required="false")
+         label() Field key:
+         input(type="text", name="{{valueOption.htmlName}}.Key",
+               ng-model="valueOption.key", ng-required="false")
+         label(for="idRequiredFieldCheckBox") Required field
+         input(type="checkbox", name="{{valueOption.htmlName}}.Require",
+               ng-model="valueOption.isRequired", ng-required="false", id="idRequiredFieldCheckBox")
+         button(class="pure-button", ng-click="vm.deleteValueOption(valueOption.surveyValueOptionId);")
+            i(class="fa fa-trash")
+         p Radio entries
+         div(ng-repeat="entryOption in valueOption.optionEntries")
+            label() Label:
+            input(type="text", name="{{entryOption.htmlName}}.Label",
+                  ng-model="entryOption.label", ng-required="false")
+            label() Key:
+            input(type="text", name="{{entryOption.htmlName}}.Key",
+                  ng-model="entryOption.key", ng-required="false")
+            button(class="pure-button",
+                  ng-click="vm.deleteEntryOption(valueOption.surveyValueOptionId, entryOption.entryOptionId);")
+               i(class="fa fa-trash")

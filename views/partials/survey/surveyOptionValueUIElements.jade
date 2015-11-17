@@ -5,30 +5,61 @@ div(ng-hide="vm.currentQuestion===null")
    label Add multivalued?
      input(type="checkbox", ng-model="vm.currentQuestion.valueOptionsIsMultivalued")
    div(ng-hide="vm.currentQuestion.valueOptionsIsMultivalued")
-      label Text field
-         input(type="radio", name="UIType", ng-model="vm.currentQuestion.valueOptionsValueUIType", value="text")
-      label Select list
-         input(type="radio", name="UIType", ng-model="vm.currentQuestion.valueOptionsValueUIType", value="select")
-      label Radio button
-         input(type="radio", name="UIType", ng-model="vm.currentQuestion.valueOptionsValueUIType", value="radio")
-      label Checkbox
-         input(type="radio", name="UIType", ng-model="vm.currentQuestion.valueOptionsValueUIType", value="checkbox")
-      label Star rating
-         input(type="radio", name="UIType", ng-model="vm.currentQuestion.valueOptionsValueUIType", value="star")
-      label() Text area
-         input(type="radio", name="UIType", ng-model="vm.currentQuestion.valueOptionsValueUIType", value="textArea")
+      input(type="radio", name="UIType", ng-model="vm.currentQuestion.valueOptionsValueUIType",
+            value="text", id="UIType01")
+      label(for="UIType01") Text field
+      </br>
+
+      input(type="radio", name="UIType", ng-model="vm.currentQuestion.valueOptionsValueUIType",
+         value="select", id="UIType02")
+      label(for="UIType02") Select list
+      </br>
+
+      input(type="radio", name="UIType", ng-model="vm.currentQuestion.valueOptionsValueUIType",
+            value="radio", id="UIType03")
+      label(for="UIType03") Radio button
+      </br>
+
+      input(type="radio", name="UIType", ng-model="vm.currentQuestion.valueOptionsValueUIType",
+         value="checkbox", id="UIType04")
+      label(for="UIType04") Checkbox
+      </br>
+
+      input(type="radio", name="UIType", ng-model="vm.currentQuestion.valueOptionsValueUIType",
+            value="star", id="UIType05")
+      label(for="UIType05") Star rating
+      </br>
+
+      input(type="radio", name="UIType", ng-model="vm.currentQuestion.valueOptionsValueUIType",
+            value="textArea", id="UIType06")
+      label(for="UIType06") Text area
+      </br>
 
    div(ng-show="vm.currentQuestion.valueOptionsIsMultivalued")
-      label Multiple text field
-         input(type="radio", name="UITypeM", ng-model="vm.currentQuestion.valueOptionsValueUIType", value="text")
-      label Multi select list
-         input(type="radio", name="UITypeM", ng-model="vm.currentQuestion.valueOptionsValueUIType", value="select")
-      label Multirow radio buttons
-         input(type="radio", name="UITypeM", ng-model="vm.currentQuestion.valueOptionsValueUIType", value="radio")
-      label Multiple checkboxes
-         input(type="radio", name="UITypeM", ng-model="vm.currentQuestion.valueOptionsValueUIType", value="checkbox")
-      label Multiple Star ratings
-         input(type="radio", name="UITypeM", ng-model="vm.currentQuestion.valueOptionsValueUIType", value="star")
+      input(type="radio", name="UITypeM", ng-model="vm.currentQuestion.valueOptionsValueUIType",
+            value="text", id="UIType21")
+      label(for="UIType21") Multiple text field
+      </br>
+
+      input(type="radio", name="UITypeM", ng-model="vm.currentQuestion.valueOptionsValueUIType",
+            value="select", id="UIType22")
+      label(for="UIType22") Multi select list
+      </br>
+
+      input(type="radio", name="UITypeM", ng-model="vm.currentQuestion.valueOptionsValueUIType",
+            value="radio", id="UIType23")
+      label(for="UIType23") Multirow radio buttons
+      </br>
+
+      input(type="radio", name="UITypeM", ng-model="vm.currentQuestion.valueOptionsValueUIType",
+            value="checkbox", id="UIType24")
+      label(for="UIType24") Multiple checkboxes
+      </br>
+
+      input(type="radio", name="UITypeM", ng-model="vm.currentQuestion.valueOptionsValueUIType",
+            value="star", id="UIType25")
+      label(for="UIType25") Multiple Star ratings
+      </br>
    div
       input(class="imageToolButton", type="image", id="editPageButton",
             ng-click="vm.editValueOptions()", src="/css/icons/tool.png")

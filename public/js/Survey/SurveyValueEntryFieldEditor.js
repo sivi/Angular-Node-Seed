@@ -21,9 +21,12 @@ var SurveyValueEntryFieldEditor = (function(vm) {
         key: 'Radio.' + vm.currentPage.surveyPageId + '.' +
         vm.currentSection.surveySectionId + '.' +
         vm.currentQuestion.surveyQuestionId + '.' + valueOptionCount,
-        selected: false,
+        htmlName: 'Radio.' + vm.currentPage.surveyPageId + '.' +
+        vm.currentSection.surveySectionId + '.' +
+        vm.currentQuestion.surveyQuestionId + '.' + valueOptionCount,
         userValue: '',
-        surveyValueOptionId: valueOptionCount
+        isRequired: false,
+        surveyValueOptionId: vm.getNewValueOptionIndex()
       };
       vm.currentQuestion.valueOptions.push(valueOption);
     };
@@ -32,18 +35,77 @@ var SurveyValueEntryFieldEditor = (function(vm) {
     //
     vm.addText = function() {
       console.log('addText');
-      var valueOptionCount = vm.currentQuestion.valueOptions.length + 1;
+      var valueOptionIndex = vm.getNewValueOptionIndex();
+
       var valueOption = {
         label: 'Text',
         key: 'Text.' + vm.currentPage.surveyPageId + '.' +
         vm.currentSection.surveySectionId + '.' +
-        vm.currentQuestion.surveyQuestionId + '.' + valueOptionCount,
-        selected: false,
-        htmlBindPath: '',
+        vm.currentQuestion.surveyQuestionId + '.' + valueOptionIndex,
+        htmlName: 'Text.' + vm.currentPage.surveyPageId + '.' +
+        vm.currentSection.surveySectionId + '.' +
+        vm.currentQuestion.surveyQuestionId + '.' + valueOptionIndex,
         userValue: '',
-        surveyValueOptionId: valueOptionCount
+        isRequired: false,
+        surveyValueOptionId: valueOptionIndex
       };
       vm.currentQuestion.valueOptions.push(valueOption);
+    };
+    //
+    //  -----------------
+    //
+    vm.deleteValueOption = function(surveyValueOptionId) {
+      var valueOptionIndex = _.findIndex(vm.currentQuestion.valueOptions,
+          {surveyValueOptionId: surveyValueOptionId});
+      vm.currentQuestion.valueOptions.splice(valueOptionIndex, 1);
+    };
+    //
+    //  -----------------
+    //
+    vm.addEntryOption = function(surveyValueOptionId) {
+      // console.log(JSON.stringify(vm.currentQuestion));
+      var valueOption = _.find(vm.currentQuestion.valueOptions, {surveyValueOptionId: surveyValueOptionId});
+      var entryOptionIndex =  vm.getNewEntryOptionIndex(valueOption);
+      var entryOption = {
+        key: 'ReplaceMe' + '.' + entryOptionIndex,
+        label: 'Select' + '.' + entryOptionIndex,
+        htmlName: valueOption.htmlName + '.' + entryOptionIndex,
+        entryOptionId: entryOptionIndex
+      };
+      valueOption.optionEntries.push(entryOption);
+    };
+    //
+    //  -----------------
+    //
+    vm.deleteEntryOption = function(surveyValueOptionId, entryOptionId) {
+      var valueOption = _.find(vm.currentQuestion.valueOptions,
+          {surveyValueOptionId: surveyValueOptionId});
+      var entryIndex = _.findIndex(valueOption.optionEntries, {entryOptionId: entryOptionId});
+      valueOption.optionEntries.splice(entryIndex, 1);
+    };
+    //
+    //  -----------------
+    //
+    vm.getNewValueOptionIndex = function() {
+      var index = -1;
+      for (var i = 0; i < vm.currentQuestion.valueOptions.length; i++) {
+        if (vm.currentQuestion.valueOptions[i].surveyValueOptionId > index) {
+          index = vm.currentQuestion.valueOptions[i].surveyValueOptionId;
+        }
+      }
+      return index + 1;
+    };
+    //
+    //  -----------------
+    //
+    vm.getNewEntryOptionIndex = function(valueOption) {
+      var index = -1;
+      for (var i = 0; i < valueOption.optionEntries.length; i++) {
+        if (valueOption.optionEntries[i].entryOptionId > index) {
+          index = valueOption.optionEntries[i].entryOptionId;
+        }
+      }
+      return index + 1;
     };
   };
   return {

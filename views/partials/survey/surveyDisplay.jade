@@ -4,7 +4,7 @@
 //| Current page {{vm.currentlyDisplayedPage}}
 div(ng-repeat="page in vm.pages")
    div(ng-show="vm.displayThisPage(page)")
-      div(style="color:red;" ng-bind-html="page.html")
+      div(ng-bind-html="page.html")
       div(ng-repeat="section in page.sections")
          div(ng-bind-html="section.html")
          div(ng-repeat="question in section.questions")
@@ -13,13 +13,13 @@ div(ng-repeat="page in vm.pages")
                label(ng-if="question.valueOptionsValueUIType == 'text'",
                      for="{{valueOption.key}}") {{valueOption.label}}:
                   input(type="text", name="{{valueOption.key}}",
-                     ng-model="valueOption.userValue", ng-required="false")
+                     ng-model="valueOption.userValue", ng-required="valueOption.isRequired")
                label(ng-if="question.valueOptionsValueUIType == 'radio'",
                      for="{{valueOption.key}}") {{valueOption.label}}:
-                  div(ng-repeat="optionEntry in valueOption.optionEntries")
-                     label {{optionEntry.label}}
-                     input(type="radio", name="{{valueOption.key}}", value="{{optionEntry.key}}"
-                          ng-model="valueOption.userValue", ng-required="true")
+               div(ng-repeat="optionEntry in valueOption.optionEntries")
+                  input(type="radio", name="{{valueOption.key}}", value="{{optionEntry.key}}"
+                         ng-model="valueOption.userValue", ng-required="valueOption.isRequired")
+                  label {{optionEntry.label}}
 
 div(ng-show="vm.currentlyDisplayedPage > 0")
    input(type="button", value="Previous", ng-click="vm.previousPage()")
