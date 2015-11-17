@@ -14,12 +14,17 @@ div(ng-repeat="page in vm.pages")
                      for="{{valueOption.key}}") {{valueOption.label}}:
                   input(type="text", name="{{valueOption.key}}",
                      ng-model="valueOption.userValue", ng-required="valueOption.isRequired")
-               label(ng-if="question.valueOptionsValueUIType == 'radio'",
-                     for="{{valueOption.key}}") {{valueOption.label}}:
-               div(ng-repeat="optionEntry in valueOption.optionEntries")
-                  input(type="radio", name="{{valueOption.key}}", value="{{optionEntry.key}}"
+               div(ng-if="question.valueOptionsValueUIType == 'radio'")
+                  label(for="{{valueOption.key}}") {{valueOption.label}}:
+                  div(ng-repeat="optionEntry in valueOption.optionEntries")
+                     input(type="radio", name="{{valueOption.key}}", value="{{optionEntry.key}}"
                          ng-model="valueOption.userValue", ng-required="valueOption.isRequired")
-                  label {{optionEntry.label}}
+                    label {{optionEntry.label}}
+               div(ng-if="question.valueOptionsValueUIType == 'star'")
+                  label() {{valueOption.label}}:
+                  star-rating(rating-value="valueOption.userValue", ng-value="valueOption.userValue",
+                      max="valueOption.maxStarsValue")
+
 
 div(ng-show="vm.currentlyDisplayedPage > 0")
    input(type="button", value="Previous", ng-click="vm.previousPage()")

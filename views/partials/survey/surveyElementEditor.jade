@@ -60,3 +60,19 @@ div(ng-show="vm.currentlyEditing === 'valueOptions'")
             button(class="pure-button",
                   ng-click="vm.deleteEntryOption(valueOption.surveyValueOptionId, entryOption.entryOptionId);")
                i(class="fa fa-trash")
+
+
+      div(ng-show="vm.currentQuestion.valueOptionsValueUIType === 'star'")
+         label() Label:
+         input(type="text", name="{{valueOption.htmlName}}.Label",
+         ng-model="valueOption.label", ng-required="false")
+         label() Key:
+         input(type="text", name="{{valueOption.htmlName}}.Key",
+         ng-model="valueOption.key", ng-required="false")
+         input(type="text", name="{{valueOption.htmlName}}.Max",
+            ng-model="valueOption.maxStarsValue", ng-required="true")
+         label() Required field
+         input(type="checkbox", name="{{valueOption.htmlName}}.Require",
+         ng-model="valueOption.isRequired", ng-required="false")
+         button(class="pure-button", ng-click="vm.deleteValueOption(valueOption.surveyValueOptionId);")
+            i(class="fa fa-trash")

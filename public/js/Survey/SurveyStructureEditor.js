@@ -264,6 +264,9 @@ var SurveyStructureEditor = (function(vm) {
       if (vm.currentQuestion.valueOptionsValueUIType === 'radio') {
         vm.addRadio();
       }
+      if (vm.currentQuestion.valueOptionsValueUIType === 'star') {
+        vm.addStarRating();
+      }
     };
     //
     //  -----------------

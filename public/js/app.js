@@ -12,6 +12,7 @@
     'autoComplete',
     'SurveyCreatorDirective',
     'SurveyCreator',
+    'starRatingDirectiveModule',
     'textAngular'
   ]);
 

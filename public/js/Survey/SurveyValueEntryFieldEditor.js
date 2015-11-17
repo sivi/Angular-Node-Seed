@@ -54,6 +54,28 @@ var SurveyValueEntryFieldEditor = (function(vm) {
     //
     //  -----------------
     //
+    vm.addStarRating = function() {
+      console.log('addStarRating');
+      var valueOptionIndex = vm.getNewValueOptionIndex();
+
+      var valueOption = {
+        label: 'StarRating',
+        key: 'StarRating.' + vm.currentPage.surveyPageId + '.' +
+        vm.currentSection.surveySectionId + '.' +
+        vm.currentQuestion.surveyQuestionId + '.' + valueOptionIndex,
+        htmlName: 'StarRating.' + vm.currentPage.surveyPageId + '.' +
+        vm.currentSection.surveySectionId + '.' +
+        vm.currentQuestion.surveyQuestionId + '.' + valueOptionIndex,
+        userValue: '5',
+        maxStarsValue: 10,
+        isRequired: false,
+        surveyValueOptionId: valueOptionIndex
+      };
+      vm.currentQuestion.valueOptions.push(valueOption);
+    };
+    //
+    //  -----------------
+    //
     vm.deleteValueOption = function(surveyValueOptionId) {
       var valueOptionIndex = _.findIndex(vm.currentQuestion.valueOptions,
           {surveyValueOptionId: surveyValueOptionId});
@@ -64,7 +86,8 @@ var SurveyValueEntryFieldEditor = (function(vm) {
     //
     vm.addEntryOption = function(surveyValueOptionId) {
       // console.log(JSON.stringify(vm.currentQuestion));
-      var valueOption = _.find(vm.currentQuestion.valueOptions, {surveyValueOptionId: surveyValueOptionId});
+      var valueOption = _.find(vm.currentQuestion.valueOptions,
+          {surveyValueOptionId: surveyValueOptionId});
       var entryOptionIndex =  vm.getNewEntryOptionIndex(valueOption);
       var entryOption = {
         key: 'ReplaceMe' + '.' + entryOptionIndex,

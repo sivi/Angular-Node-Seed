@@ -31,7 +31,10 @@
   angular.module('myApp.controllers').
   controller('MyCtrl1', function ($scope) {
     // write Ctrl here
-
+    $scope.current = 5;
+    $scope.getSelectedRating = function(rating) {
+      alert(rating);
+    };
   });
   //
   //  -----------------
