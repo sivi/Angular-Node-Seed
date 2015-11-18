@@ -27,6 +27,7 @@ function SurveyCreateCtrl($rootScope, $scope, $routeParams, $location,
   SurveyEditorNavigation.init(vm);
   SurveyStructureEditor.init(vm);
   SurveyValueEntryFieldEditor.init(vm);
+  SurveyDisplayConditionEditor.init(vm);
   SurveyDisplay.init(vm);
   //
   //  -----------------

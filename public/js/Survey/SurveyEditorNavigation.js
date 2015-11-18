@@ -37,6 +37,14 @@ var SurveyEditorNavigation = (function(vm) {
     vm.editingElementKeyValue = '';
     // element's HTML value (if appropriate)
     vm.editingElementHTMLValue = '';
+    // elements display condition
+    vm.editingElementDisplayCondition = {};
+    // auxiliary set of sections for page selected in condition
+    vm.conditionSelectorSections = []; // a copy of {section.key, section.surveyPageId} pairs
+    // auxiliary set of questions for section selected in condition
+    vm.conditionSelectorQuestions = []; // a copy of {section.key, section.surveyPageId} pairs
+    // auxiliary set of valueOPtions for question selected in condition
+    vm.conditionSelectorValueOptions = [];
 
     //
     //  -----------------
@@ -125,6 +133,74 @@ var SurveyEditorNavigation = (function(vm) {
 
       console.log('EXIT propagateQuestionChange ' +
           JSON.stringify(vm.currentQuestion));
+    };
+    //
+    //  -----------------
+    //
+    vm.pageSelectorChange = function() {
+      console.log('pageSelectorChange vm.currentPageId ' +
+          JSON.stringify(vm.currentPageId));
+      //var page = _.find(vm.pages, {surveyPageId: parseInt(vm.currentPageId)});
+      //vm.currentPage = page;
+      vm.propagatePageChange();
+    };
+    //
+    //  -----------------
+    //
+    vm.sectionSelectorChange = function() {
+      console.log('sectionSelectorChange');
+      //console.log("--currentSectionId " +JSON.stringify(vm.currentSectionId));
+      //var section = _.find(vm.currentPage.sections,
+      // { surveySectionId: parseInt(vm.currentSectionId)});
+      //vm.currentSection = section;
+      vm.propagateSectionChange();
+    };
+    //
+    //  -----------------
+    //
+    vm.questionSelectorChange = function() {
+      console.log('questionSelectorChange ' + JSON.stringify(vm.currentSection.questions) +
+          ' vm.currentQuestionId ' + JSON.stringify(vm.currentQuestionId));
+      //var question = _.find(vm.currentSection.questions,
+      // { surveyQuestionId: parseInt(vm.currentQuestionId)});
+      //vm.currentQuestion = question;
+      vm.propagateQuestionChange();
+    };
+    //
+    //  -----------------
+    //
+    vm.getNewPageIndex = function() {
+      var index = -1;
+      for (var i = 0; i < vm.pages.length; i++) {
+        if (vm.pages[i].surveyPageId > index) {
+          index = vm.pages[i].surveyPageId;
+        }
+      }
+      return index + 1;
+    };
+    //
+    //  -----------------
+    //
+    vm.getNewSectionIndex = function() {
+      var index = -1;
+      for (var i = 0; i < vm.currentPage.sections.length; i++) {
+        if (vm.currentPage.sections[i].surveySectionId > index) {
+          index = vm.currentPage.sections[i].surveySectionId;
+        }
+      }
+      return index + 1;
+    };
+    //
+    //  -----------------
+    //
+    vm.getNewQuestionIndex = function() {
+      var index = -1;
+      for (var i = 0; i < vm.currentSection.questions.length; i++) {
+        if (vm.currentSection.questions[i].surveyQuestionId > index) {
+          index = vm.currentSection.questions[i].surveyQuestionId;
+        }
+      }
+      return index + 1;
     };
 
   };

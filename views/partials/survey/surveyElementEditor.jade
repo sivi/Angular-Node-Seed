@@ -11,6 +11,60 @@ div(ng-show="vm.currentlyEditing === 'HTML'")
       input(type="text", ng-model="vm.editingElementKeyValue")
    | Description (text, images, videos, ...)
    text-angular( ng-model="vm.editingElementHTMLValue")
+
+   label(for="conditionalDisplay") conditional display?
+   input(type="checkbox", ng-model="vm.editingElementDisplayCondition.applyCondition", id="conditionalDisplay")
+   span(ng-show="vm.editingElementDisplayCondition.applyCondition")
+      label(for="addDisplayConditionButton") Add display condition
+      input(class="imageToolButton", type="image", id="addDisplayConditionButton",
+            ng-click="vm.addDisplayCondition()", src="/css/icons/add.png",
+            ng-disabled="!vm.editingElementDisplayCondition.applyCondition")
+      button(class="pure-button", ng-click="vm.removeDisplayConditions();")
+         i(class="fa fa-trash")
+      div(ng-repeat="condition in vm.editingElementDisplayCondition.conditions")
+         table()
+            tr()
+               td()
+                  input(type="radio", ng-model="condition.show", name="{{condition.id}}.showCondionRadio",
+                     id="{{condition.id}}.showRadio", value="true")
+                  label(for="{{condition.id}}.showRadio") Show
+                  input(type="radio", ng-model="condition.show", name="{{condition.id}}.showCondionRadio",
+                        id="{{condition.id}}.hideRadio", value="false")
+                  label(for="{{condition.id}}.hideRadio") Hide
+                  | &nbsp; when &nbsp;
+               td()
+                  select(name="pageSector", ng-model="condition.surveyPageId",
+                         ng-change="vm.conditionPageChanged(condition.id)")
+                     option(ng-repeat="page in vm.selectorPages",
+                        value="{{page.surveyPageId}}") {{page.key}}
+               td()
+                  select(name="sectionSector", ng-model="condition.surveySectionId",
+                  ng-change="vm.conditionSectionChanged(condition.id)")
+                     option(ng-repeat="section in vm.conditionSelectorSections",
+                     value="{{section.surveySectionId}}") {{section.key}}
+
+               td()
+                  select(name="questionSector", ng-model="condition.surveyQuestionId",
+                        ng-change="vm.conditionQuestionChanged(condition.id)")
+                     option(ng-repeat="question in vm.conditionSelectorQuestions",
+                     value="{{question.surveyQuestionId}}") {{question.key}}
+            tr()
+               td()
+                  select(name="keySector", ng-model="condition.constraint.key")
+                     option(ng-repeat="conditionValueOption in vm.conditionSelectorValueOptions",
+                     value="{{conditionValueOption.key}}") {{conditionValueOption.key}}
+               td()
+                  select(name="logicalPositiveSector", ng-model="condition.constraint.logicalPositive")
+                     option(ng-repeat="(key, val) in vm.conditionLogicalPositive",
+                     value="{{val}}") {{val}}
+               td()
+                  select(name="constraintTypeSector", ng-model="condition.constraint.constraintType")
+                     option(ng-repeat="(key, val) in vm.conditionConstraintType",
+                     value="{{val}}") {{val}}
+               td()
+                  label() a value &nbsp;
+                  input(type="text", ng-model="condition.constraint.userValue", ng-required="true")
+
 div(ng-show="vm.currentlyEditing === 'valueOptions'")
    | Question key: {{currentQuestion.key}}
    div(ng-show="vm.currentQuestion.valueOptionsIsMultivalued")

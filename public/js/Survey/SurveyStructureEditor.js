@@ -26,7 +26,8 @@ var SurveyStructureEditor = (function(vm) {
         surveyPageId: vm.getNewPageIndex(),
         sections: [],
         key: vm.currentPageKey.trim(),
-        html: ''
+        html: '',
+        displayCondition: vm.getDefaultDisplayCondition()
       };
       if (page.key === '') {
         page.key = 'P' + page.surveyPageId;
@@ -48,7 +49,8 @@ var SurveyStructureEditor = (function(vm) {
       vm.editingElementKeyValue = vm.currentPage.key;
       // element's HTML value (if appropriate)
       vm.editingElementHTMLValue = vm.currentPage.html;
-
+      // elements display condition
+      vm.editingElementDisplayCondition = vm.currentPage.displayCondition;
     };
     //
     //  -----------------
@@ -78,24 +80,15 @@ var SurveyStructureEditor = (function(vm) {
     //
     //  -----------------
     //
-    vm.pageSelectorChange = function() {
-      console.log('pageSelectorChange vm.currentPageId ' +
-          JSON.stringify(vm.currentPageId));
-      //var page = _.find(vm.pages, {surveyPageId: parseInt(vm.currentPageId)});
-      //vm.currentPage = page;
-      vm.propagatePageChange();
-    };
-    //
-    //  -----------------
-    //
     vm.addSection = function() {
       console.log('addSection');
       var section = {
         surveySectionId: vm.getNewSectionIndex(),
         questions: [],
         key: vm.currentSectionKey.trim(),
-        html: ''
-      };
+        html: '',
+        displayCondition: vm.getDefaultDisplayCondition()
+    };
       if (section.key === '') {
         section.key = 'S' + section.surveySectionId;
       }
@@ -117,7 +110,8 @@ var SurveyStructureEditor = (function(vm) {
       vm.editingElementKeyValue = vm.currentSection.key;
       // element's HTML value (if appropriate)
       vm.editingElementHTMLValue = vm.currentSection.html;
-
+      // elements display condition
+      vm.editingElementDisplayCondition = vm.currentSection.displayCondition;
     };
     //
     //  -----------------
@@ -148,17 +142,6 @@ var SurveyStructureEditor = (function(vm) {
     //
     //  -----------------
     //
-    vm.sectionSelectorChange = function() {
-      console.log('sectionSelectorChange');
-      //console.log("--currentSectionId " +JSON.stringify(vm.currentSectionId));
-      //var section = _.find(vm.currentPage.sections,
-      // { surveySectionId: parseInt(vm.currentSectionId)});
-      //vm.currentSection = section;
-      vm.propagateSectionChange();
-    };
-    //
-    //  -----------------
-    //
     vm.addQuestion = function() {
       console.log('addQuestion');
       var question = {
@@ -167,7 +150,8 @@ var SurveyStructureEditor = (function(vm) {
         valueOptionsIsMultivalued: true,
         valueOptionsValueUIType: 'text',
         key: vm.currentQuestionKey.trim(),
-        html: ''
+        html: '',
+        displayCondition: vm.getDefaultDisplayCondition()
       };
       if (question.key === '') {
         question.key = 'Q' + question.surveyQuestionId;
@@ -191,6 +175,8 @@ var SurveyStructureEditor = (function(vm) {
       vm.editingElementKeyValue = vm.currentQuestion.key;
       // element's HTML value (if appropriate)
       vm.editingElementHTMLValue = vm.currentQuestion.html;
+      // elements display condition
+      vm.editingElementDisplayCondition = vm.currentQuestion.displayCondition;
     };
     //
     //  -----------------
@@ -218,17 +204,6 @@ var SurveyStructureEditor = (function(vm) {
 
       console.log('removeQuestion ' + questionIndex +
           ' currentSection.questions ' + JSON.stringify(vm.currentSection.questions));
-      vm.propagateQuestionChange();
-    };
-    //
-    //  -----------------
-    //
-    vm.questionSelectorChange = function() {
-      console.log('questionSelectorChange ' + JSON.stringify(vm.currentSection.questions) +
-          ' vm.currentQuestionId ' + JSON.stringify(vm.currentQuestionId));
-      //var question = _.find(vm.currentSection.questions,
-      // { surveyQuestionId: parseInt(vm.currentQuestionId)});
-      //vm.currentQuestion = question;
       vm.propagateQuestionChange();
     };
     //
@@ -272,6 +247,7 @@ var SurveyStructureEditor = (function(vm) {
     //  -----------------
     //
     vm.removeValueOptions = function() {
+      vm.currentQuestion.valueOptions = [];
     };
     //
     //  -----------------
@@ -285,6 +261,7 @@ var SurveyStructureEditor = (function(vm) {
         if (vm.editingElement === aPAGE) {
           vm.currentPage.key = vm.editingElementKeyValue;
           vm.currentPage.html = vm.editingElementHTMLValue;
+          vm.currentPage.displayCondition = vm.editingElementDisplayCondition;
           // update display value as well
           displayId = _.find(vm.selectorPages,
               {surveyPageId: vm.currentPageId.surveyPageId});
@@ -294,6 +271,7 @@ var SurveyStructureEditor = (function(vm) {
         if (vm.editingElement === aSECTION) {
           vm.currentSection.key = vm.editingElementKeyValue;
           vm.currentSection.html = vm.editingElementHTMLValue;
+          vm.currentSection.displayCondition = vm.editingElementDisplayCondition;
 
           // update display value as well
           displayId = _.find(vm.selectorSections,
@@ -304,6 +282,7 @@ var SurveyStructureEditor = (function(vm) {
         if (vm.editingElement === aQUESTION) {
           vm.currentQuestion.key = vm.editingElementKeyValue;
           vm.currentQuestion.html = vm.editingElementHTMLValue;
+          vm.currentQuestion.displayCondition = vm.editingElementDisplayCondition;
 
           // update display value as well
           displayId = _.find(vm.selectorQuestions,
@@ -325,42 +304,6 @@ var SurveyStructureEditor = (function(vm) {
       }
       vm.currentlyEditing = '';
       vm.valueOptionsBackup = [];
-    };
-    //
-    //  -----------------
-    //
-    vm.getNewPageIndex = function() {
-      var index = -1;
-      for (var i = 0; i < vm.pages.length; i++) {
-        if (vm.pages[i].surveyPageId > index) {
-          index = vm.pages[i].surveyPageId;
-        }
-      }
-      return index + 1;
-    };
-    //
-    //  -----------------
-    //
-    vm.getNewSectionIndex = function() {
-      var index = -1;
-      for (var i = 0; i < vm.currentPage.sections.length; i++) {
-        if (vm.currentPage.sections[i].surveySectionId > index) {
-          index = vm.currentPage.sections[i].surveySectionId;
-        }
-      }
-      return index + 1;
-    };
-    //
-    //  -----------------
-    //
-    vm.getNewQuestionIndex = function() {
-      var index = -1;
-      for (var i = 0; i < vm.currentSection.questions.length; i++) {
-        if (vm.currentSection.questions[i].surveyQuestionId > index) {
-          index = vm.currentSection.questions[i].surveyQuestionId;
-        }
-      }
-      return index + 1;
     };
   };
   return {
