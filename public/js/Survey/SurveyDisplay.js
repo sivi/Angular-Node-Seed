@@ -111,19 +111,15 @@ var SurveyDisplay = (function(vm) {
       if (!Boolean(displayCondition.applyCondition)) {
         return true;
       }
-      console.log('Evaluate ' + displayCondition.id);
       var showConditions = [];
       var hideConditions = [];
       for (var i = 0; i < displayCondition.conditions.length; i++) {
         var condition = displayCondition.conditions[i];
-        console.log('Condition SHOW ' + condition.show + ' -->' + Boolean(condition.show));
-        if (Boolean(condition.show)) {
+        if (condition.show === 'true') {
           showConditions.push(condition);
-          console.log('Adding to SHOW Conditions');
         }
         else {
           hideConditions.push(condition);
-          console.log('Adding to HIDE Conditions');
         }
       }
       if (vm.evaluateDisplayConditions(showConditions, true) &&
@@ -136,17 +132,14 @@ var SurveyDisplay = (function(vm) {
     //  -----------------
     //
     vm.evaluateDisplayConditions = function (conditions, isShowConditions) {
-      console.log('evaluate for show ' + isShowConditions);
       if (isShowConditions) {
         if (conditions === [] || vm.evaluateConditions(conditions)) {
           return true;
         }
-        console.log('FALSE evaluate for show ' + isShowConditions);
         return false;
       }
       // hide conditions
       if (conditions === [] || !vm.evaluateConditions(conditions)) {
-        console.log('FALSE evaluate for show ' + isShowConditions);
         return false;
       }
       return true;
@@ -160,7 +153,6 @@ var SurveyDisplay = (function(vm) {
         var condition = conditions[i];
         var valueOptions = vm.locateValueOptions(condition);
         var singleConditonResult = vm.evaluateConstraint(valueOptions, condition.constraint);
-        console.log('singleConditonResult ' + singleConditonResult);
         if (i === 0) {
           result = singleConditonResult;
         }
@@ -173,7 +165,6 @@ var SurveyDisplay = (function(vm) {
           }
         }
       }
-      console.log('Result ' + result);
       return result;
     };
     //
@@ -190,17 +181,13 @@ var SurveyDisplay = (function(vm) {
           if (option.key === constraint.key &&
               option.userValue === constraint.userValue) {
             found = true;
-            console.log('evaluateConstraint FOUND ' + constraint.userValue);
             break;
           }
         }
         if (constraint.logicalPositive === vm.conditionLogicalPositive.is && found ||
             constraint.logicalPositive === vm.conditionLogicalPositive.isNot && !found) {
-          console.log('TRUE evaluateConstraint CONTAIN ' + constraint.userValue);
           return true;
         }
-
-        console.log('evaluateConstraint failed, FOUND ' + constraint.userValue);
         return false;
       }
       // remap constraint type if negation is applied
@@ -220,25 +207,35 @@ var SurveyDisplay = (function(vm) {
         }
       }
       // <, <=, >, >=
+      // To compare, both sides should be NUMBER
+      var userEntry;
+      var constraintEntry = Number(constraint.userValue);
+      if (isNaN(constraintEntry)) {
+        return false;
+      }
       for (j = 0; j < valueOptions.length; j++) {
         option = valueOptions[j];
-        if (option.key !== constraint.key ||
-            typeof option.userValue !== 'number') {
-          console.log('NOT NUMBER ' + option.userValue);
+        if (option.key !== constraint.key) {
           continue;
         }
+        userEntry = Number(option.userValue);
+        if (isNaN(userEntry)) {
+          continue;
+        }
+
         var comparisonResult = 0;
-        if (option.userValue === constraint.userValue) {
+        if (userEntry === constraintEntry) {
           comparisonResult = 0;
         }
         else {
-          if (option.userValue < constraint.userValue) {
+          if (userEntry < constraintEntry) {
             comparisonResult = -1;
           }
           else {
             comparisonResult = 1;
           }
         }
+
         if ((constraintType === vm.conditionConstraintType.greaterThan &&
              comparisonResult === 1) ||
             (constraintType === vm.conditionConstraintType.lessThan &&
@@ -247,26 +244,26 @@ var SurveyDisplay = (function(vm) {
              comparisonResult === 0) ||
             (constraintType === vm.conditionConstraintType.lessOrEqual &&
              comparisonResult === 0)) {
-          console.log('TRUE evaluateConstraint NUMBER ' + constraint.userValue);
           return true;
         }
       }
-      console.log('evaluateConstraint failed, FINAL ' + constraint.userValue);
       return false;
     };
     //
     //  -----------------
     //
     vm.locateValueOptions = function(condition) {
-      var page = _.find(vm.pages, {surveyPageId: condition.surveyPageId});
+      var page = _.find(vm.pages, {surveyPageId: parseInt(condition.surveyPageId)});
       if (typeof page === 'undefined') {
         return [];
       }
-      var section = _.find(page.sections, {surveySectionId: condition.surveySectionId});
+      var section = _.find(page.sections,
+          {surveySectionId: parseInt(condition.surveySectionId)});
       if (typeof section === 'undefined') {
         return [];
       }
-      var question = _.find(section.questions, {surveyQuestionId: condition.surveyQuestionId});
+      var question = _.find(section.questions,
+          {surveyQuestionId: parseInt(condition.surveyQuestionId)});
       if (typeof question === 'undefined') {
         return [];
       }
