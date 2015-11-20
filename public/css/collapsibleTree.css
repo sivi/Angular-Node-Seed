@@ -1,0 +1,103 @@
+/* http://cssdeck.com/labs/pure-css-tree-menu-framework */
+/**
+ * Framework starts from here ...
+ * ------------------------------
+ */
+
+.tree ul {
+  margin:0; /* indentation */
+  padding:0;
+  list-style:none;
+  color:#ccc;
+  position:relative;
+}
+
+.tree ul:before {
+  content:"";
+  display:block;
+  margin-left:2em;
+  width:0;
+  position:absolute;
+  top:0;
+  bottom:0;
+  left:0;
+  border-left:1px solid;
+}
+
+.tree li {margin-top:0em; margin-bottom:0.5em;} /* space between childern */
+
+.tree li {
+  padding:0.5em 0 0 3em; /* top right bottom left */
+  line-height:1.0em; /* default list item's `line-height` */
+  font-weight:bold;
+  position:relative;
+}
+
+
+.tree li:before {
+  content:"";
+  display:block;
+  margin-left:2em;
+  margin-top:0.5em;
+  width:1.0em; /* same with indentation */
+  height:0;
+  border-top:1px solid;
+  position:absolute;
+  top:1em; /* (line-height/2) */
+  left:0em;
+}
+
+
+.tree li:last-child:before{
+  background:white;
+  height:auto;
+  top:1em;
+  bottom:0;
+}
+
+.tree li input:checked + a + ul {
+	display: none;
+	}
+.tree li input + a +ul {
+	display: block;
+	}
+
+.tree li input:checked {
+		background: url(css/icons/toggle-small.png) 40px 5px no-repeat;
+	}
+.tree li input {
+			background: url(css/icons/toggle-small-expand.png) 40px 0 no-repeat;
+	}
+	
+/* anchor as a block entity */
+.tree li a{
+	border: 1px solid #999;
+	padding: 5px 5px 5px 5px;
+	text-decoration: none;
+	color: #555;
+	font-family: arial, verdana, tahoma;
+	font-size: 11px;
+	display: inline-block;
+	
+	border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	
+	transition: all 0.5s;
+	-webkit-transition: all 0.5s;
+	-moz-transition: all 0.5s;
+}
+
+/*Time for some hover effects*/
+/*We will apply the hover effect the the lineage of the element also*/
+.tree li a:hover, .tree li a:hover+ul li a {
+	background: #c8e4f8; color: #000; border: 1px solid #94a0b4;
+}
+/*Connector styles on hover*/
+
+.tree li a:hover+ul li::after, 
+.tree li a:hover+ul li::before, 
+.tree li a:hover+ul::before, 
+.tree li a:hover+ul ul::before{
+	border-color:  #94a0b4;
+}

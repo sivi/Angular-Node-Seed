@@ -6,3 +6,5 @@ test/unit/services/testData0.js
 tmp
 .DS_Store
 .idea
+public/Thumbs.db
+public/css/icons/Thumbs.db
