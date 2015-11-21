@@ -16,7 +16,15 @@ var SurveyStructureEditor = (function(vm) {
     var aQUESTION = 'question';
     var aHTML = 'HTML';
     var aVALUEOPTIONS = 'valueOptions';
+    var aLAYOUT = 'layout';
 
+    //
+    //  -----------------
+    //
+    vm.editSurveyLayout = function() {
+
+      vm.currentlyEditing = aLAYOUT;
+    };
     //
     //  -----------------
     //

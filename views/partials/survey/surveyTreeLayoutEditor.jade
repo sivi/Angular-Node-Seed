@@ -1,0 +1,18 @@
+//
+   Created by a on 11/21/2015.
+
+div(class="tree")
+   ul
+      li(ng-repeat="page in vm.pages")
+         input(type="checkbox")
+         a(href="#")
+            | {{page.key}}
+         ul
+            li(ng-repeat="section in page.sections")
+               input(type="checkbox")
+               a(href="#")
+                  | {{section.key}}
+               ul
+                  li(ng-repeat="question in section.questions")
+                     a(href="#")
+                        | {{question.key}}

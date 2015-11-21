@@ -6,6 +6,9 @@ div
       i(class="fa fa-check")
    button(class="pure-button", ng-click="vm.cancelEdit();")
       i(class="fa fa-trash")
+div(ng-show="vm.currentlyEditing === 'layout'")
+   include ./surveyTreeLayoutEditor.jade
+
 div(ng-show="vm.currentlyEditing === 'HTML'")
    label Key
       input(type="text", ng-model="vm.editingElementKeyValue")
