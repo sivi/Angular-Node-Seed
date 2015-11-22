@@ -5,14 +5,38 @@ div(class="tree")
    ul
       li(ng-repeat="page in vm.pages")
          input(type="checkbox")
-         a(href="#")
-            | {{page.key}}
+         span(draggable="true",
+         draggable-type="page",
+         draggable-data="{page: {{page.surveyPageId}}}",
+         drop-identifier="{page: {{page.surveyPageId}}}",
+         drag-over="vm.onDragOver($event)" drag-over-class="drag-over",
+         drop="vm.onDrop($data, $event, $identifier)",
+         drop-effect="move",
+         drop-accept="['json/page','json/section']" )
+            a(href="#")
+               | {{page.key}}
          ul
             li(ng-repeat="section in page.sections")
                input(type="checkbox")
-               a(href="#")
-                  | {{section.key}}
+               span(draggable="true",
+               draggable-type="section",
+               drop-identifier="{page:{{page.surveyPageId}},section:{{section.surveySectionId}}}",
+               draggable-data="{page:{{page.surveyPageId}},section:{{section.surveySectionId}}}",
+               drag-over="vm.onDragOver($event)", drag-over-class="drag-over",
+               drop="vm.onDrop($data, $event, $identifier)",
+               drop-effect="move",
+               drop-accept="['json/section','json/question']" )
+                  a(href="#")
+                     | {{section.key}}
                ul
                   li(ng-repeat="question in section.questions")
-                     a(href="#")
-                        | {{question.key}}
+                     span(draggable="true",
+                     draggable-type="question",
+                     drop-identifier="{page:{{page.surveyPageId}},section:{{section.surveySectionId}},question:{{question.surveyQuestionId}}}",
+                     draggable-data="{page:{{page.surveyPageId}},section:{{section.surveySectionId}},question:{{question.surveyQuestionId}}}",
+                     drag-over="vm.onDragOver($event)", drag-over-class="drag-over",
+                     drop="vm.onDrop($data, $event, $identifier)",
+                     drop-effect="move",
+                     drop-accept="['json/question']" )
+                        a(href="#")
+                           | {{question.key}}

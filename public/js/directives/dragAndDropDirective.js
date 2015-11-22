@@ -88,6 +88,7 @@ function dropDirective($parse) {
 
       var dragOverHandler = $parse(attrs.dragOver);
       var dropHandler = $parse(attrs.drop);
+      var dropIdentifier = $parse(attrs.dropIdentifier);
 
       domElement.addEventListener('dragover', dragOverListener);
       domElement.addEventListener('drop', dropListener);
@@ -128,7 +129,8 @@ function dropDirective($parse) {
 
         // Call dropHandler
         scope.$apply(function () {
-          dropHandler(scope, {$data: data, $event: event, identifier: attrs.dropRecipient});
+          var dropParams = {$data: data, $event: event,  $identifier: dropIdentifier()};
+          dropHandler(scope, dropParams);
         });
 
         // Prevent default navigator behaviour.

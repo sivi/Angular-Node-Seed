@@ -24,6 +24,42 @@ var SurveyStructureEditor = (function(vm) {
     vm.editSurveyLayout = function() {
 
       vm.currentlyEditing = aLAYOUT;
+      vm.layoutBackup = vm.pages;
+    };
+    //
+    //  -----------------
+    //
+    vm.moveSurveyLayoutBranch = function(source, destination) {
+      var pageSource = _.findIndex(vm.pages, {surveyPageId: source.page});
+      var pageDestination = _.findIndex(vm.pages, {surveyPageId: destination.page});
+      var sectionSource = null;
+      var sectionDestination = null;
+      var questionSource = null;
+      var questionDestination = null;
+
+      console.log('source ' + JSON.stringify(source));
+      console.log('destination ' + JSON.stringify(destination));
+
+      if (typeof source.section !== 'undefined') {
+        sectionSource = _.findIndex(vm.pages[pageSource].sections,
+            {surveySectionId: source.section});
+      }
+      if (typeof destination.section !== 'undefined') {
+        sectionDestination = _.findIndex(vm.pages[pageDestination].sections,
+            {surveySectionId: destination.section});
+      }
+      if (typeof source.question !== 'undefined') {
+        questionSource = _.findIndex(vm.pages[pageSource].sections[sectionSource],
+            {surveyQuestionId: source.question});
+      }
+      if (typeof source.question !== 'undefined') {
+        questionDestination = _.findIndex(vm.pages[pageDestination].sections[sectionDestination],
+            {surveyQuestionId: destination.question});
+      }
+      if (sectionSource === null) {
+        var page = vm.pages.splice(pageSource, 1)[0];
+        vm.pages.splice(pageDestination, 0, page);
+      }
     };
     //
     //  -----------------
@@ -96,7 +132,7 @@ var SurveyStructureEditor = (function(vm) {
         key: vm.currentSectionKey.trim(),
         html: '',
         displayCondition: vm.getDefaultDisplayCondition()
-    };
+      };
       if (section.key === '') {
         section.key = 'S' + section.surveySectionId;
       }
@@ -310,8 +346,12 @@ var SurveyStructureEditor = (function(vm) {
       if (vm.currentlyEditing === aVALUEOPTIONS) {
         vm.currentQuestion.valueOptions = vm.valueOptionsBackup;
       }
+      if (vm.currentlyEditing === aLAYOUT) {
+        vm.pages = vm.layoutBackup;
+      }
       vm.currentlyEditing = '';
       vm.valueOptionsBackup = [];
+      vm.layoutBackup = [];
     };
   };
   return {

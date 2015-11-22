@@ -24,6 +24,7 @@ var SurveyEditorNavigation = (function(vm) {
     vm.currentSectionKey = '';
     vm.currentQuestionKey = '';
     vm.valueOptionsBackup = []; // fall back of value options if user cancels edit
+    vm.layoutBackup = []; // fall back of layout if user cancels edit
 
     vm.pagesCount = 0;
     vm.sectionCount = 0;

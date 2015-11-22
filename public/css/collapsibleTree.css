@@ -55,10 +55,10 @@
   bottom:0;
 }
 
-.tree li input:checked + a + ul {
+.tree li input:checked + span  + ul {
 	display: none;
 	}
-.tree li input + a +ul {
+.tree li input + span + ul {
 	display: block;
 	}
 .tree_checkbox:checked,
@@ -78,7 +78,7 @@
 }
 	
 /* anchor as a block entity */
-.tree li a{
+.tree li span a{
 	border: 1px solid #999;
 	padding: 5px 5px 5px 5px;
 	text-decoration: none;
@@ -98,14 +98,16 @@
 
 /*Time for some hover effects*/
 /*We will apply the hover effect the the lineage of the element also*/
-.tree li a:hover, .tree li a:hover+ul li a {
+.tree li span:hover,
+.tree li span a:hover,
+.tree li span:hover+ul li span a {
 	background: #c8e4f8; color: #000; border: 1px solid #94a0b4;
 }
 /*Connector styles on hover*/
 
-.tree li a:hover+ul li::after, 
-.tree li a:hover+ul li::before, 
-.tree li a:hover+ul::before, 
-.tree li a:hover+ul ul::before{
+.tree li span:hover+ul li::after,
+.tree li span:hover+ul li::before,
+.tree li span:hover+ul::before,
+.tree li span:hover+ul ul::before{
 	border-color:  #94a0b4;
 }

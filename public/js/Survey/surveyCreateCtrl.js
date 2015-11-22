@@ -3,7 +3,7 @@
  */
 (function() {
 'use strict';
-angular.module('SurveyCreator', []);
+angular.module('SurveyCreator', ['dragAndDrop']);
 
 angular.module('SurveyCreator').controller('SurveyCreateCtrl', SurveyCreateCtrl);
 
@@ -74,6 +74,13 @@ function SurveyCreateCtrl($rootScope, $scope, $routeParams, $location,
         }
       }
     }
+  };
+  vm.onDragOver = function($event) {
+  };
+  vm.onDrop = function($data, $event,  $identifier) {
+    var draggableType = $event.dataTransfer.getData('draggableType');
+    var source = JSON.parse($event.dataTransfer.getData('json/' + draggableType));
+    vm.moveSurveyLayoutBranch(source, $identifier);
   };
 }
 
