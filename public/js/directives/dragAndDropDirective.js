@@ -1,6 +1,17 @@
 /*! Angular draganddrop v0.2.2 | (c) 2013 Greg Bergé | License MIT */
 // https://github.com/neoziro/angular-draganddrop
 
+//  N O T E !!!
+//            parameters of drop function in HTML / jade  MUST be declared EXACTLY as it used here,
+//            i.e.
+//                ($data, $event, $dropIdentifier)
+//
+//            while name of the function must be equal to one declared in controller
+//            $dropIdentifier is not mandatory, yet if used, must be defined as such
+//            and accompanied with 'drop-identifier' attribute
+//
+//
+
 (function() {
 'use strict';
 
@@ -64,8 +75,12 @@ function draggableDirective() {
  * Drop directive.
  *
  * @example
- * <div drop="onDrop($data, $event)" drop-effect="link" drop-accept="'json/image'"
- * drag-over="onDragOver($event)" drag-over-class="drag-over"></div>
+ * <div drop="onDrop($data, $event, $dropIdentifier)"
+ * drop-identifier="{page: {{page.surveyPageId}}}"
+ * drop-effect="link"
+ * drop-accept="'json/image'"
+ * drag-over="onDragOver($event)"
+ * drag-over-class="drag-over"></div>
  *
  * - "drop" Drop handler, executed on drop. Accepts an Angular expression.
  * - "drop-effect" Drop effect to set,
@@ -88,7 +103,7 @@ function dropDirective($parse) {
 
       var dragOverHandler = $parse(attrs.dragOver);
       var dropHandler = $parse(attrs.drop);
-      var dropIdentifier = $parse(attrs.dropIdentifier);
+      var dropIdentifier = scope.$eval(attrs.dropIdentifier);
 
       domElement.addEventListener('dragover', dragOverListener);
       domElement.addEventListener('drop', dropListener);
@@ -129,7 +144,7 @@ function dropDirective($parse) {
 
         // Call dropHandler
         scope.$apply(function () {
-          var dropParams = {$data: data, $event: event,  $identifier: dropIdentifier()};
+          var dropParams = {$data: data, $event: event,  $dropIdentifier: dropIdentifier};
           dropHandler(scope, dropParams);
         });
 
